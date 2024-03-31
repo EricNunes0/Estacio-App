@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
 
-export const loginStyle = StyleSheet.create({
+export const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		backgroundColor: "#fff",
@@ -129,9 +129,6 @@ export const loginStyle = StyleSheet.create({
 		backgroundColor: "#64a5f0",
 		padding: 10,
 		borderRadius: 10
-	},
-	menuButtonDisabled: {
-		backgroundColor: "#b0b0b0",
 	},
 	menuButtonText: {	
 		color: "#fff",

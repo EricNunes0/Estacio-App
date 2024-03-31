@@ -1,21 +1,20 @@
 
 import React from "react";
-import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
+import Root from "./root";
 import Index from "./assets/pages/index";
 import Login from "./assets/pages/login";
 import Cadastro from "./assets/pages/cadastro";
 
-const AppStack = createStackNavigator();
+const Stack = createStackNavigator();
 
 export default function Routes() {
 	return (
-		<NavigationContainer>
-			<AppStack.Navigator initialRouteName="Index" screenOptions={{headerShown: false}}>
-				<AppStack.Screen name="Index" component={Index} />
-				<AppStack.Screen name="Login" component={Login} />
-				<AppStack.Screen name="Cadastro" component={Cadastro} />
-			</AppStack.Navigator>
-		</NavigationContainer>
+		<Stack.Navigator initialRouteName="Index" screenOptions={{headerShown: false}}>
+			<Stack.Screen name="Index" component={Index}/>
+			<Stack.Screen name="Login" component={Login} />
+			<Stack.Screen name="Cadastro" component={Cadastro} />
+			<Stack.Screen name="Root" component={Root}></Stack.Screen>
+		</Stack.Navigator>
 	);
 }

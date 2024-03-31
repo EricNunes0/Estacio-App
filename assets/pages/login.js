@@ -1,31 +1,36 @@
 import { StatusBar } from "expo-status-bar";
 import { useState } from "react";
-import { StyleSheet, Text, View, Alert, Button, Image, ImageBackground, TextInput, TouchableOpacity } from "react-native";
-import { MaterialCommunityIcons } from '@expo/vector-icons'; 
-import { styles } from "../styles/login";
+import { Text, View, Image, ImageBackground, TextInput, TouchableOpacity } from "react-native";
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { loginStyle } from "../styles/login";
 import { useNavigation } from "@react-navigation/native";
+import navigateTo from "../../functions/navigateTo";
 
 export default function Login() {
-
-    /* Ir para a página cadastro */
     const navigation = useNavigation();
-    function navigateToSecond() {
-        navigation.navigate("Cadastro");
-    }
 
     /* Ativar/desativar botão de prosseguir */
     const [emailInput, setEmailInput] = useState('');
     const [passwordInput, setPasswordInput] = useState('');
 
-	const [button, setButton] = useState(true);
+	const [buttonDisabled, setButtonDisabled] = useState(true);
     const disableButton = () => { 
-        setButton(true); 
+        setButtonDisabled(true); 
     };
     const enableButton = () => { 
-        setButton(false); 
+        setButtonDisabled(false); 
     };
-    const textsInputCheck = () => {
-        console.log(emailInput);
+    const textsInputCheck = (input, text) => {
+		switch(input) {
+			case "e-mail":
+				setEmailInput(text);
+				break;
+			case "password":
+				setPasswordInput(text);
+				break;
+			default:
+				break;
+		}
         emailInput.length === 0 || passwordInput.length === 0 ? disableButton() : enableButton();
     }
 
@@ -36,43 +41,44 @@ export default function Login() {
     };
 
     return (
-        <View style={styles.container}>
-			<View style={styles.viewBottom}>
-				<View style={styles.logoView}>
-					<Image source={require("../logo.png")} style={styles.logo}></Image>
+        <View style={loginStyle.container}>
+			<View style={loginStyle.viewBottom}>
+				<View style={loginStyle.logoView}>
+					<Image source={require("../images/logo.png")} style={loginStyle.logo}></Image>
 				</View>
-				<View style={styles.titleView}>
-					<Text style={styles.title}>Bem-vindo</Text>
-					<Text style={styles.subtitle}>Faça o login para continuar</Text>
+				<View style={loginStyle.titleView}>
+					<Text style={loginStyle.title}>Bem-vindo</Text>
+					<Text style={loginStyle.subtitle}>Faça o login para continuar</Text>
 				</View>
-				<TextInput autoComplete="email" keyboardType="email-address" placeholder="E-mail" placeholderTextColor="#888" value={emailInput} onChangeText={(text) => {setEmailInput(text); textsInputCheck()}} style={styles.input}></TextInput>
-				<View style={styles.viewRow}>
-					<TextInput autoComplete="password" keyboardType="password" secureTextEntry={!showPassword} value={passwordInput} onChangeText={(text) => {setPasswordInput(text); textsInputCheck()}}  placeholder="Senha"  placeholderTextColor="#888" style={styles.input}></TextInput>
-					<MaterialCommunityIcons style={styles.passwordButton}
-						name={showPassword ? 'eye-off' : 'eye'} 
-						size={24} 
-						color="#aaa"
-						onPress={toggleShowPassword} 
-					/> 
+				<View>
+					<TextInput autoComplete="email" keyboardType="email-address" placeholder="E-mail" placeholderTextColor="#888" value={emailInput} onChangeText={(text) => {textsInputCheck("e-mail", text)}} style={loginStyle.input}></TextInput>
 				</View>
-				<View style={styles.viewStretch}>
-					<TouchableOpacity style={styles.forgot}>Esqueceu a senha?</TouchableOpacity>
+				<View style={loginStyle.viewRow}>
+					<TextInput autoComplete="password" keyboardType="password" secureTextEntry={!showPassword} value={passwordInput} onChangeText={(text) => {textsInputCheck("password", text)}}  placeholder="Senha"  placeholderTextColor="#888" style={loginStyle.input}></TextInput>
+					<MaterialCommunityIcons style={loginStyle.passwordButton} name={showPassword ? 'eye-off' : 'eye'} size={24} color="#aaa" onPress={toggleShowPassword}/> 
+				</View>
+				<View style={loginStyle.viewStretch}>
+					<TouchableOpacity style={loginStyle.forgot}>Esqueceu a senha?</TouchableOpacity>
 				</View>
 			</View>
-			<View style={styles.viewStretch}>
-				<View style={styles.viewBottomMargin}>
-					<View style={styles.viewStretch}>
-						<Text style={styles.sub}>Não tem uma conta? <TouchableOpacity style={styles.subButton} onPress={navigateToSecond}>Cadastre-se</TouchableOpacity></Text>
+			<View style={loginStyle.viewStretch}>
+				<View style={loginStyle.viewBottomMargin}>
+					<View style={loginStyle.viewStretch}>
+						<Text style={loginStyle.sub}>Não tem uma conta? 
+							<TouchableOpacity style={loginStyle.subButton} onPress={() => {navigateTo(navigation, "Cadastro")}}>
+								<Text> Cadastre-se</Text>
+							</TouchableOpacity>
+						</Text>
 					</View>
-					<View style={styles.menuButtonView}>
-						<TouchableOpacity style={styles.menuButton} onPress={() => {Alert.alert("Login concluído!")}} disabled={button}>
-							<Text style={styles.menuButtonText}>Entrar</Text>
+					<View style={loginStyle.menuButtonView}>
+						<TouchableOpacity onPress={() => {navigateTo(navigation, "Root")}} disabled={buttonDisabled} style={!buttonDisabled ? loginStyle.menuButton : [loginStyle.menuButton, loginStyle.menuButtonDisabled]}>
+							<Text style={loginStyle.menuButtonText}>Entrar</Text>
 						</TouchableOpacity>
 					</View>
 					<StatusBar style="auto" />
 				</View>
-				<View style={styles.viewBackground}>
-					<ImageBackground source={require("../background.png")} resizeMode="cover" style={styles.loginBackground}>
+				<View style={loginStyle.viewBackground}>
+					<ImageBackground source={require("../images/background.png")} resizeMode="cover" style={loginStyle.loginBackground}>
 					</ImageBackground>
 				</View>
 			</View>

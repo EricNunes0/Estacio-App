@@ -1,3 +1,4 @@
+import { NavigationContainer } from "@react-navigation/native";
 import { useFonts } from "expo-font";
 import Routes from "./routes.js";
 
@@ -8,6 +9,8 @@ export default function App() {
 	});
 
 	return (
-		<Routes></Routes>
+		<NavigationContainer>
+			<Routes></Routes>
+		</NavigationContainer>
 	);
 }

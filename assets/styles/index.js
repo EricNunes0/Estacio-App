@@ -36,10 +36,11 @@ export const indexStyle = StyleSheet.create({
     },
     mainBackgroundCity: {
         position: "absolute",
-        top: "calc(100% - 350px)",
-        width: screen.width,
-        height: 350,
-        opacity: 0.4
+        top: "calc(100% - 255px)",
+        left: 0,
+        width: screen.width * 2,
+        height: 255,
+        opacity: 0.6
     },
     mainBackgroundWave: {
         position: "absolute",
