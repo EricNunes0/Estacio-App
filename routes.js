@@ -10,7 +10,7 @@ const Stack = createStackNavigator();
 
 export default function Routes() {
 	return (
-		<Stack.Navigator initialRouteName="Index" screenOptions={{headerShown: false}}>
+		<Stack.Navigator initialRouteName="Root" screenOptions={{headerShown: false}}>
 			<Stack.Screen name="Index" component={Index}/>
 			<Stack.Screen name="Login" component={Login} />
 			<Stack.Screen name="Cadastro" component={Cadastro} />
