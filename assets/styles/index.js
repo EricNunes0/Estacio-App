@@ -14,12 +14,12 @@ export const indexStyle = StyleSheet.create({
         top: 0,
         left: 0,
         width: "100%",
-        height: "70%",
+        height: "75%",
         flex: 1,
         justifyContent: "flex-start",
         alignItems: "center",
         backgroundColor: "#2090ff",
-        backgroundImage: "linear-gradient(180deg, #2090ff, #1050d0)",
+        backgroundImage: "linear-gradient(180deg, #b040c0, #802060)",
         padding: 40
     },
     mainBackgroundWhite: {
@@ -27,30 +27,23 @@ export const indexStyle = StyleSheet.create({
         bottom: 0,
         left: 0,
         width: "100%",
-        height: "30%",
+        height: "25%",
         flex: 1,
         justifyContent: "flex-start",
         alignItems: "center",
         backgroundColor: "#ffffff",
         padding: 40
     },
-    mainBackgroundCity: {
-        position: "absolute",
-        top: "calc(100% - 255px)",
-        left: 0,
-        width: screen.width * 2,
-        height: 255,
-        opacity: 0.6
-    },
     mainBackgroundWave: {
         position: "absolute",
-        top: "calc(-150px + 2px)",
-        width: screen.width,
-        height: 150
+        top: "calc(-60px + 2px)",
+        left: 0,
+        width: screen.width * 2,
+        height: 60
     },
-    mainBackgroundBike: {
+    mainBackgroundLogo: {
         position: "absolute",
-        top: "calc(-150px * 1.5)",
+        top: "calc(-300px * 1.5)",
         width: screen.width - 20
     },
     mainTextsView: {
@@ -60,13 +53,13 @@ export const indexStyle = StyleSheet.create({
         color: "#fff",
         fontFamily: "Poppins",
         fontSize: 34,
-        textAlign: "left"
+        textAlign: "center"
     },
     mainSubtitle1: {
         color: "#f0f0f0",
         fontFamily: "Poppins thin",
-        fontSize: 16,
-        textAlign: "left"
+        fontSize: 20,
+        textAlign: "center"
     },
     navigateView: {
         justifyContent: "flex-end",
@@ -92,13 +85,13 @@ export const indexStyle = StyleSheet.create({
         fontFamily: "Poppins"
     },
     navigateButton1: {
-        backgroundColor: "#3060ff",
+        backgroundColor: "#b030ff",
         color: "#fff"
     },
     navigateButton2: {
         backgroundColor: "transparent",
-        color: "#3060ff",
-        borderColor: "#3060ff",
+        color: "#b030ff",
+        borderColor: "#b030ff",
         borderWidth: 1
     }
 });

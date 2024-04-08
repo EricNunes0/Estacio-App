@@ -1,10 +1,9 @@
 import React, { useEffect, useRef } from 'react';
 import { Animated, Dimensions, Easing, ImageBackground } from 'react-native';
-import cityImage from '../images/city.png';
 import { indexStyle } from "../styles/index";
+import image from "../svgs/index_wave.svg"
 
-
-export default function CityBackground() {
+export default function WaveBackground() {
 	const screen = Dimensions.get("screen");
 
 	const INPUT_RANGE_START = 0;
@@ -12,7 +11,7 @@ export default function CityBackground() {
 	const OUTPUT_RANGE_START = -screen.width;
 	const OUTPUT_RANGE_END = 1;
 	const ANIMATION_TO_VALUE = 1;
-	const ANIMATION_DURATION = 20000;
+	const ANIMATION_DURATION = 3000;
 
 	const initialValue = 0;
 	const translateValue = useRef(new Animated.Value(initialValue)).current;
@@ -39,10 +38,10 @@ export default function CityBackground() {
 	return (
 		<AnimatedImage 
 			resizeMode="repeat" 
-			style={[indexStyle.mainBackgroundCity, {
+			style={[indexStyle.mainBackgroundWave, {
 				left: translateAnimation
 			}]}
-			source={cityImage}>
+			source = {image}>
 		</AnimatedImage>
 	);
 }
