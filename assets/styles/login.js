@@ -1,5 +1,8 @@
-import { StyleSheet } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
 
+const screen = Dimensions.get("screen");
+const formWidth = 280 > screen.width ? screen.width : 280; /* Largura do formulário */
+const buttonsHeight = 50; /* Altura dos botões */
 export const loginStyle = StyleSheet.create({
 	container: {
 		flex: 1,
@@ -7,37 +10,39 @@ export const loginStyle = StyleSheet.create({
 		alignItems: "center",
 		justifyContent: "center"
 	},
-	viewCenter: {
+	main: {
 		flex: 1,
-    	justifyContent: "center"
+		justifyContent: "center",
+		alignItems: "center",
+		width: screen.width
 	},
-	viewBottom: {
-		flex: 1,
-    	justifyContent: "flex-end"
+	mainArticle: {
 	},
-	viewBottomMargin: {
-		alignSelf: "stretch",
-    	textAlign: "center",
-		marginTop: 40,
-		marginBottom: 40
+	mainArticleTextsView: {
+		width: formWidth
 	},
-	viewStretch: {
-		alignSelf: "stretch",
-    	textAlign: "center"
+	mainArticleFormView: {
+		width: formWidth
 	},
-    viewRow: {
+	mainArticleFormInputView: {
         position: "relative",
-        flex: 1,
+        display: "flex",
         flexDirection: "row",
-		justifyContent: "flex-end",
-		alignItems: "flex-start"
+		justifyContent: "center",
+		alignItems: "center"
     },
-	viewBackground: {
-		width: "100%",
-		resizeMode: "cover",
-    	alignSelf: "flex-end"
+	mainArticleFormInput: {
+		width: formWidth,
+		height: 40,
+		backgroundColor: "#f5f5f5",
+		borderRadius: 10,
+		fontFamily: "Poppins",
+		fontSize: 14,
+		marginTop: 5,
+		marginBottom: 10,
+		padding: 10
 	},
-    passwordButton: {
+    mainArticleFormPasswordButton: {
         position: "absolute",
         top: 5,
         right: 4,
@@ -49,36 +54,74 @@ export const loginStyle = StyleSheet.create({
         alignItems: "center",
         alignContent: "center"
     },
+	mainArticleForgotView: {
+		width: formWidth,
+		marginTop: 10,
+		marginBottom: 10
+	},
+	mainArticleButtonsView: {
+		width: formWidth,
+		height: buttonsHeight,
+		marginTop: 10,
+		marginBottom: 10
+	},
+	mainArticleButtonsFlex: {
+		display: "flex",
+		flexDirection: "row",
+		justifyContent: "space-between",
+		alignItems: "center"
+	},
+	mainArticleButton: {
+		display: "flex",
+		justifyContent: "center",
+		alignItems: "center",
+		width: `calc(${formWidth}px / 3 - 10px)`,
+		height: buttonsHeight,
+		borderColor: "rgba(0, 0, 0, 0.1)",
+		borderStyle: "solid",
+		borderRadius: 5,
+		borderWidth: 2
+	},
+	mainArticleButtonImage: {
+		width: 30,
+		height: 30
+	},
+	viewCenter: {
+		flex: 1,
+    	justifyContent: "center"
+	},
+	viewBottomMargin: {
+		alignSelf: "stretch",
+    	textAlign: "center",
+		marginTop: 40,
+		marginBottom: 40
+	},
+	viewStretch: {
+		alignSelf: "stretch",
+    	textAlign: "center"
+	},
+	viewBackground: {
+		width: "100%",
+		resizeMode: "cover",
+    	alignSelf: "flex-end"
+	},
 	loginBackground: {
 		width: "100%",
 		minHeight: 200
-	},
-	logoView: {
-		width: 280,
-		flex: 1,
-		justifyContent: "flex-end",
-		alignItems: "flex-start"
-	},
-	logo: {
-		width: 60,
-		height: 60
-	},
-	titleView: {
-		width: 280
 	},
 	title: {
 		color: "#000",
 		fontFamily: "Poppins",
 		fontSize: 40,
 		fontWeight: "bold",
-		textAlign: "left"
+		textAlign: "center"
 	},
 	subtitle: {
 		color: "#666",
 		fontFamily: "Poppins",
 		fontSize: 14,
 		fontWeight: "100",
-		textAlign: "left"
+		textAlign: "center"
 	},
 	forgot: {
 		width: 120,
@@ -98,27 +141,12 @@ export const loginStyle = StyleSheet.create({
 		marginBottom: 10
 	},
 	subButton: {
-		color: "#0030ff",
+		color: "#d060f0",
 		fontFamily: "Poppins",
 		fontSize: 12,
 		fontWeight: "bold",
 		textAlign: "center",
 		marginTop: 10
-	},
-	input: {
-		width: 280,
-		height: 40,
-		backgroundColor: "#e0e0e0",
-		borderBottomColor: "#64a5f0",
-		borderBottomWidth: 3,
-		borderColor: "#ffffff",
-		borderRadius: 5,
-		borderWidth: 2,
-		fontFamily: "Poppins",
-		fontSize: 14,
-		marginTop: 5,
-		marginBottom: 10,
-		padding: 5
 	},
 	menuButtonView: {
 		alignItems: "center"
@@ -126,7 +154,7 @@ export const loginStyle = StyleSheet.create({
 	menuButton: {
 		width: 280,
 		alignItems: "center",
-		backgroundColor: "#64a5f0",
+		backgroundColor: "#d060f0",
 		padding: 10,
 		borderRadius: 10
 	},

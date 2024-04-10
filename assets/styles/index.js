@@ -9,7 +9,7 @@ export const indexStyle = StyleSheet.create({
 		justifyContent: "center",
 		backgroundColor: "#fff"
 	},
-    mainBackgroundBlue: {
+    mainBackgroundHeader: {
         position: "absolute",
         top: 0,
         left: 0,
@@ -22,7 +22,7 @@ export const indexStyle = StyleSheet.create({
         backgroundImage: "linear-gradient(180deg, #b040c0, #802060)",
         padding: 40
     },
-    mainBackgroundWhite: {
+    mainBackgroundFooter: {
         position: "absolute",
         bottom: 0,
         left: 0,
@@ -36,15 +36,14 @@ export const indexStyle = StyleSheet.create({
     },
     mainBackgroundWave: {
         position: "absolute",
-        top: "calc(-60px + 2px)",
+        top: "calc(-50px + 2px)",
         left: 0,
         width: screen.width * 2,
-        height: 60
+        height: 50
     },
     mainBackgroundLogo: {
-        position: "absolute",
-        top: "calc(-300px * 1.5)",
-        width: screen.width - 20
+        width: screen.width - 50,
+        height: screen.width - 50
     },
     mainTextsView: {
         width: "100%"
@@ -52,13 +51,21 @@ export const indexStyle = StyleSheet.create({
     mainTitle1: {
         color: "#fff",
         fontFamily: "Poppins",
-        fontSize: 34,
+        fontSize: 24,
+        fontWeight: 100,
+        textAlign: "center"
+    },
+    mainTitle2: {
+        color: "#fff",
+        fontFamily: "Poppins",
+        fontSize: 32,
+        fontWeight: "bold",
         textAlign: "center"
     },
     mainSubtitle1: {
         color: "#f0f0f0",
         fontFamily: "Poppins thin",
-        fontSize: 20,
+        fontSize: 18,
         textAlign: "center"
     },
     navigateView: {

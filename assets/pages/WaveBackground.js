@@ -11,7 +11,7 @@ export default function WaveBackground() {
 	const OUTPUT_RANGE_START = -screen.width;
 	const OUTPUT_RANGE_END = 1;
 	const ANIMATION_TO_VALUE = 1;
-	const ANIMATION_DURATION = 3000;
+	const ANIMATION_DURATION = 5000;
 
 	const initialValue = 0;
 	const translateValue = useRef(new Animated.Value(initialValue)).current;

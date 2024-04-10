@@ -42,23 +42,37 @@ export default function Login() {
 
     return (
         <View style={loginStyle.container}>
-			<View style={loginStyle.viewBottom}>
-				<View style={loginStyle.logoView}>
-					<Image source={require("../images/logo.png")} style={loginStyle.logo}></Image>
-				</View>
-				<View style={loginStyle.titleView}>
-					<Text style={loginStyle.title}>Bem-vindo</Text>
-					<Text style={loginStyle.subtitle}>Faça o login para continuar</Text>
-				</View>
-				<View>
-					<TextInput autoComplete="email" keyboardType="email-address" placeholder="E-mail" placeholderTextColor="#888" value={emailInput} onChangeText={(text) => {textsInputCheck("e-mail", text)}} style={loginStyle.input}></TextInput>
-				</View>
-				<View style={loginStyle.viewRow}>
-					<TextInput autoComplete="password" keyboardType="password" secureTextEntry={!showPassword} value={passwordInput} onChangeText={(text) => {textsInputCheck("password", text)}}  placeholder="Senha"  placeholderTextColor="#888" style={loginStyle.input}></TextInput>
-					<MaterialCommunityIcons style={loginStyle.passwordButton} name={showPassword ? 'eye-off' : 'eye'} size={24} color="#aaa" onPress={toggleShowPassword}/> 
-				</View>
-				<View style={loginStyle.viewStretch}>
-					<TouchableOpacity style={loginStyle.forgot}>Esqueceu a senha?</TouchableOpacity>
+			<View style={loginStyle.main}>
+				<View style={loginStyle.mainArticle}>
+					<View style={loginStyle.mainArticleTextsView}>
+						<Text style={loginStyle.title}>Bem-vindo</Text>
+						<Text style={loginStyle.subtitle}>Faça o login para continuar</Text>
+					</View>
+					<View style={loginStyle.mainArticleFormView}>
+						<View style={loginStyle.mainArticleFormInputView}>
+							<TextInput autoComplete="email" keyboardType="email-address" placeholder="E-mail" placeholderTextColor="#888" value={emailInput} onChangeText={(text) => {textsInputCheck("e-mail", text)}} style={loginStyle.mainArticleFormInput}></TextInput>
+						</View>
+						<View style={loginStyle.mainArticleFormInputView}>
+							<TextInput autoComplete="password" keyboardType="password" secureTextEntry={!showPassword} value={passwordInput} onChangeText={(text) => {textsInputCheck("password", text)}} placeholder="Senha"  placeholderTextColor="#888" style={loginStyle.mainArticleFormInput}></TextInput>
+							<MaterialCommunityIcons style={loginStyle.mainArticleFormPasswordButton} name={showPassword ? 'eye-off' : 'eye'} size={24} color="#aaa" onPress={toggleShowPassword}/> 
+						</View>
+					</View>
+					<View style={loginStyle.mainArticleForgotView}>
+						<TouchableOpacity style={loginStyle.forgot}>Esqueceu a senha?</TouchableOpacity>
+					</View>
+					<View style={loginStyle.mainArticleButtonsView}>
+						<View style={loginStyle.mainArticleButtonsFlex}>
+							<TouchableOpacity style={loginStyle.mainArticleButton}>
+								<Image source={require("../images/google.png")} style={loginStyle.mainArticleButtonImage}></Image>
+							</TouchableOpacity>
+							<TouchableOpacity style={loginStyle.mainArticleButton}>
+								<Image source={require("../images/facebook.png")} style={loginStyle.mainArticleButtonImage}></Image>
+							</TouchableOpacity>
+							<TouchableOpacity style={loginStyle.mainArticleButton}>
+								<Image source={require("../images/twitter.png")} style={loginStyle.mainArticleButtonImage}></Image>
+							</TouchableOpacity>
+						</View>
+					</View>
 				</View>
 			</View>
 			<View style={loginStyle.viewStretch}>
@@ -78,8 +92,8 @@ export default function Login() {
 					<StatusBar style="auto" />
 				</View>
 				<View style={loginStyle.viewBackground}>
-					<ImageBackground source={require("../images/background.png")} resizeMode="cover" style={loginStyle.loginBackground}>
-					</ImageBackground>
+					{/*<ImageBackground source={require("../images/background.png")} resizeMode="cover" style={loginStyle.loginBackground}>
+					</ImageBackground>]*/}
 				</View>
 			</View>
 		</View>
