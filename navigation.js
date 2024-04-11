@@ -3,7 +3,7 @@ import React from "react";
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Main from "./assets/pages/home/main";
 import IceCream from "./assets/pages/home/icecream";
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { MaterialCommunityIcons, AntDesign } from '@expo/vector-icons';
 
 const Tab = createBottomTabNavigator();
 
@@ -28,11 +28,11 @@ export default function Navigation() {
 					return (<MaterialCommunityIcons name="ice-cream" size={24} color={tabInfo.focused ? activeColor : inactiveColor} />); 
 				} 
 			}}/>
-			<Tab.Screen name="Bebida" component={Main} options={{
+			<Tab.Screen name="Carrinho" component={Main} options={{
 				tabBarActiveTintColor: activeColor,
 				tabBarInactiveTintColor: inactiveColor,
 				tabBarIcon: (tabInfo) => { 
-					return (<MaterialCommunityIcons name="cup" size={24} color={tabInfo.focused ? activeColor : inactiveColor} />); 
+					return (<AntDesign name="shoppingcart" size={24} color={tabInfo.focused ? activeColor : inactiveColor} />); 
 				} 
 			}}/>
 		</Tab.Navigator>

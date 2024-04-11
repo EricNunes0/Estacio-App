@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { Text, View, Alert, Button, Image, ImageBackground, TouchableOpacity, ScrollView } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { mainStyle } from "../../styles/main";
-import { Checkbox, RadioButton } from "react-native-paper";
+import { Checkbox, RadioButton, TextInput } from "react-native-paper";
 
 export default function Category() {
-    const [size, setSize] = useState(300);
-    const [calda, setCalda] = useState("Nenhuma");
+    const [size, setSize] = useState(0);
+    const [calda, setCalda] = useState(null);
     const [sabores, setSabores] = useState([
         {label: "Morango", checked: false},
         {label: "Maracujá", checked: false}
@@ -24,6 +25,7 @@ export default function Category() {
         {label: "Leite Condensado (30ml)", subtitle: "+ R$2,00", checked: false},
         {label: "Kitkat em barra", subtitle: "+ R$5,00", checked: false}
     ]);
+    const [observation, setObservation] = useState("");
     
     /* Função para alterar os sabores */
     const changeSabores = (index) => {
@@ -45,6 +47,29 @@ export default function Category() {
         newAdicionais[index].checked = !newAdicionais[index].checked;
         setAdicionais(newAdicionais);
     };
+
+    const observationMax = 140;
+    const changeObservation = (text) => {
+        setObservation(text);
+    }
+
+    const pedido = JSON.stringify({
+        tamanho: size,
+        calda: calda,
+        sabores: sabores,
+        condimentos: condimentos,
+        adicionais: adicionais
+    });
+    /* Função para enviar o pedido */
+    const enviarPedido = async () => {
+        try {
+            console.log(pedido)
+            await AsyncStorage.setItem("Pedido", pedido);
+        } catch(e) {
+            console.error(e);
+        }
+    }
+
     return (
         <ScrollView>
             <View style={mainStyle.container}>
@@ -234,6 +259,26 @@ export default function Category() {
                                 </View>
                             ))}
                         </View>
+                    </View>
+                    <View style={mainStyle.observationMain}>
+                        <View style={mainStyle.observationHeader}>
+                            <View style={mainStyle.observationHeaderFlex}>
+                                <Image source={require("../../images/observacao.png")} style={mainStyle.observationIcon}></Image>
+                                <Text style={mainStyle.observationText}>Observação:</Text>
+                            </View>
+                            <View>
+                                <Text id="observation-text" style={mainStyle.observationSize}>{observation.length}/{observationMax}</Text>
+                            </View>
+                        </View>
+                        <View style={mainStyle.observationArticle}>
+                            <TextInput maxLength={observationMax} multiline={true} numberOfLines={4} placeholder="Obsevações" value={observation} onChangeText={(text) => {changeObservation(text)}} style={mainStyle.observationTextarea}></TextInput>
+                        </View>
+                    </View>
+                    <View style={mainStyle.cartView}>
+                        <TouchableOpacity onPress={() => {enviarPedido()}} style={mainStyle.cartButton}>
+                            <Text style={[mainStyle.cartButtonText]}>Adicionar ao carrinho</Text>
+                            <Text style={[mainStyle.cartButtonText]}>R$ 0,00</Text>
+                        </TouchableOpacity>
                     </View>
                 </View>
             </View>

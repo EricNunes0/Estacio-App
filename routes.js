@@ -15,7 +15,7 @@ const Stack = createStackNavigator();
 
 export default function Routes() {
 	return (
-		<Stack.Navigator initialRouteName="Index"
+		<Stack.Navigator initialRouteName="Root"
 			screenOptions={{
 				animationEnabled: true,
 				animationTypeForReplace: "pop",
