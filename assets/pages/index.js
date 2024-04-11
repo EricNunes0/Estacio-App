@@ -16,7 +16,7 @@ export default function Index() {
                     <Text style={indexStyle.mainTitle2}>Açai Zero Grau</Text>
                     <Text style={indexStyle.mainSubtitle1}>Açaís e sorvetes</Text>
                 </View>
-                <Image source={require("../images/logo.png")} style={indexStyle.mainBackgroundLogo} resizeMode="contain"></Image>
+                <Image source={require("../images/fruta.png")} style={indexStyle.mainBackgroundLogo} resizeMode="contain"></Image>
             </View>
             <View style={indexStyle.mainBackgroundFooter}>
                 <WaveBackground></WaveBackground>

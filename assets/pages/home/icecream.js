@@ -3,12 +3,16 @@ import { Text, View, Alert, Button, Image, ImageBackground, TouchableOpacity, Sc
 import { mainStyle } from "../../styles/main";
 import { Checkbox, RadioButton } from "react-native-paper";
 
-export default function Category() {
+export default function IceCream() {
     const [size, setSize] = useState(300);
     const [calda, setCalda] = useState("Nenhuma");
     const [sabores, setSabores] = useState([
-        {label: "Morango", checked: false},
-        {label: "Maracujá", checked: false}
+        {label: "Flocos", checked: false},
+        {label: "Blue Ice", checked: false},
+        {label: "Ninhotella", checked: false},
+        {label: "Mousse de Maracujá", checked: false},
+        {label: "Iogurte Grego", checked: false},
+        {label: "Passas ao Rum", checked: false}
     ]);
     const [condimentos, setCondimentos] = useState([
         {label: "Paçoca", checked: false},
@@ -19,6 +23,10 @@ export default function Category() {
         {label: "Sucrilhos", checked: false},
         {label: "Flocos de arroz", checked: false}
     ]);
+    const [frutas, setFrutas] = useState([
+        {label: "Manga", subtitle: "+ R$2,00", checked: false},
+        {label: "Abacaxi", subtitle: "+ R$2,00", checked: false}
+    ]);
     const [adicionais, setAdicionais] = useState([
         {label: "Nutella (30ml)", subtitle: "+ R$4,00", checked: false},
         {label: "Leite Condensado (30ml)", subtitle: "+ R$2,00", checked: false},
@@ -28,8 +36,14 @@ export default function Category() {
     /* Função para alterar os sabores */
     const changeSabores = (index) => {
         const newSabores = [...sabores];
-        newSabores[index].checked = !newSabores[index].checked;
-        setSabores(newSabores);
+        const checkedCount = newSabores.filter(cb => cb.checked).length;
+
+        if (checkedCount < 2 || newSabores[index].checked === true) {
+            newSabores[index].checked = !newSabores[index].checked;
+            setSabores(newSabores);
+        } else {
+            Alert.alert('Limite de seleção atingido', 'Você só pode selecionar até 2 sabores.');
+        }
     };
     
     /* Função para alterar os condimentos */
@@ -37,6 +51,13 @@ export default function Category() {
         const newCondimentos = [...condimentos];
         newCondimentos[index].checked = !newCondimentos[index].checked;
         setCondimentos(newCondimentos);
+    };
+    
+    /* Função para alterar as frutas */
+    const changeFrutas = (index) => {
+        const newFrutas = [...frutas];
+        newFrutas[index].checked = !newFrutas[index].checked;
+        setFrutas(newFrutas);
     };
     
     /* Função para alterar os adicionais */
@@ -50,12 +71,12 @@ export default function Category() {
             <View style={mainStyle.container}>
                 <View style={mainStyle.header}>
                     <View style={mainStyle.headerBackgroundView}>
-                        <ImageBackground source={require("../../images/açai_background.png")} style={mainStyle.headerBackground}></ImageBackground>
+                        <ImageBackground source={require("../../images/icecream_background.png")} style={mainStyle.headerBackground}></ImageBackground>
                     </View>
                     <View style={mainStyle.headerContentView}>
-                        <Text style={mainStyle.headerContentTitle}>Açaí</Text>
-                        <Text style={mainStyle.headerContentSubtitle}>O melhor açaí da região</Text>
-                        <Text style={mainStyle.headerContentSubtitle}>A partir de R$14,00</Text>
+                        <Text style={mainStyle.headerContentTitle}>Sorvete</Text>
+                        <Text style={mainStyle.headerContentSubtitle}>O melhor sorvete da região</Text>
+                        <Text style={mainStyle.headerContentSubtitle}>Mais saboroso e mais leve!</Text>
                     </View>
                 </View>
                 <View style={mainStyle.customizeSection}>
@@ -161,7 +182,7 @@ export default function Category() {
                         <View style={mainStyle.headerView}>
                             <View>
                                 <Text style={mainStyle.headerTitle}>Sabores</Text>
-                                <Text style={mainStyle.headerSubtitle}>Escolha os sabores</Text>
+                                <Text style={mainStyle.headerSubtitle}>Escolha até 2 sabores</Text>
                             </View>
                             <View style={mainStyle.headerRequired}>
                                 <Text style={mainStyle.headerRequiredText}>Obrigatório</Text>
@@ -203,6 +224,33 @@ export default function Category() {
                                     key={index}
                                     status={condimento.checked ? "checked" : "unchecked"}
                                     onPress={() => changeCondimentos(index)}
+                                />
+                                </View>
+                            ))}
+                        </View>
+                    </View>
+                    {/* Frutas */}
+                    <View style={mainStyle.headers}>
+                        <View style={mainStyle.headerView}>
+                            <View>
+                                <Text style={mainStyle.headerTitle}>Frutas</Text>
+                                <Text style={mainStyle.headerSubtitle}>Escolha as frutas</Text>
+                            </View>
+                            {/*<View style={mainStyle.headerRequired}>
+                                <Text style={mainStyle.headerRequiredText}>Obrigatório</Text>
+                            </View>*/}
+                        </View>
+                    </View>
+                    <View style={mainStyle.customizeButtonsView}>
+                        <View style={mainStyle.customizeRadioMain}>
+                            {frutas.map((fruta, index) => (
+                                <View style={mainStyle.customizeRadioView}>
+                                <Text style={mainStyle.radioTitle}>{fruta.label}</Text>
+                                <Text style={mainStyle.radioSubtitle}>{fruta.subtitle}</Text>
+                                <Checkbox.Item
+                                    key={index}
+                                    status={fruta.checked ? "checked" : "unchecked"}
+                                    onPress={() => changeFrutas(index)}
                                 />
                                 </View>
                             ))}

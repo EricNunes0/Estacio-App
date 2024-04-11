@@ -42,8 +42,8 @@ export const indexStyle = StyleSheet.create({
         height: 50
     },
     mainBackgroundLogo: {
-        width: screen.width - 50,
-        height: screen.width - 50
+        width: 200,
+        height: 300
     },
     mainTextsView: {
         width: "100%"
