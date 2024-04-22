@@ -15,7 +15,7 @@ const Stack = createStackNavigator();
 
 export default function Routes() {
 	return (
-		<Stack.Navigator initialRouteName="Root"
+		<Stack.Navigator initialRouteName="Index"
 			screenOptions={{
 				animationEnabled: true,
 				animationTypeForReplace: "pop",
@@ -28,12 +28,12 @@ export default function Routes() {
 			<Stack.Screen name="Login" component={Login} options={{
 				headerShown: true,
 				gestureDirection: "vertical",
-				cardStyleInterpolator: screenTopAnimation
+				cardStyleInterpolator: screenRightAnimation
 			}}/>
 			<Stack.Screen name="Cadastro" component={Cadastro} options={{
 				headerShown: true,
 				gestureDirection: "vertical",
-				cardStyleInterpolator: screenBottomAnimation
+				cardStyleInterpolator: screenRightAnimation
 			}}/>
 			<Stack.Screen name="Root" component={Root}></Stack.Screen>
 		</Stack.Navigator>

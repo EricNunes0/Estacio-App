@@ -1,6 +1,7 @@
 import { Dimensions, StyleSheet } from "react-native";
 
 const screen = Dimensions.get("screen");
+const logoCircleDif = 40;
 export const indexStyle = StyleSheet.create({
 	main: {
         position: "relative",
@@ -9,12 +10,12 @@ export const indexStyle = StyleSheet.create({
 		justifyContent: "center",
 		backgroundColor: "#fff"
 	},
-    mainBackgroundHeader: {
+    mainHeader: {
         position: "absolute",
         top: 0,
         left: 0,
         width: "100%",
-        height: "75%",
+        height: "80%",
         flex: 1,
         justifyContent: "flex-start",
         alignItems: "center",
@@ -22,12 +23,27 @@ export const indexStyle = StyleSheet.create({
         backgroundImage: "linear-gradient(180deg, #b040c0, #802060)",
         padding: 40
     },
+    mainHeaderFlex: {
+        position: "absolute",
+        top: 0,
+        height: "100%",
+    },
+    bubble: {
+        display: "block",
+        position: "absolute",
+        top: "100%",
+        width: 20,
+        height: 20,
+        borderRadius: "50%",
+        backgroundColor: "rgba(250, 250, 255, 1)",
+        opacity: 0.2
+    },
     mainBackgroundFooter: {
         position: "absolute",
         bottom: 0,
         left: 0,
         width: "100%",
-        height: "25%",
+        height: "20%",
         flex: 1,
         justifyContent: "flex-start",
         alignItems: "center",
@@ -41,9 +57,51 @@ export const indexStyle = StyleSheet.create({
         width: screen.width * 2,
         height: 50
     },
+    mainBackgroundLogoView: {
+        position: "relative",
+        display: "flex",
+        width: screen.width >= 360 ? 360 - 40 : screen.width - 40,
+        height: screen.width >= 360 ? 360 - 40 : screen.width - 40,
+        justifyContent: "center",
+        alignItems: "center",
+        width: screen.width
+    },
+    mainBackgroundLogoCircle: {
+        position: "absolute",
+        display: "block",
+        borderRadius: "50%"
+
+    },
+    mainBackgroundLogoCircle1: {
+        width: screen.width - (logoCircleDif * 2),
+        height: screen.width - (logoCircleDif * 2),
+        maxWidth: 360,
+        maxHeight: 360,
+        backgroundColor: "#ffffff",
+        borderColor: "#802060",
+        borderStyle: "solid",
+        borderWidth: 6,
+        opacity: 0.4
+    },
+    mainBackgroundLogoCircle2: {
+        width: screen.width - (logoCircleDif * 4),
+        height: screen.width - (logoCircleDif * 4),
+        maxWidth: 360 - (logoCircleDif * 2),
+        maxHeight: 360 - (logoCircleDif * 2),
+        backgroundColor: "#ffffff",
+        opacity: 0.7
+    },
     mainBackgroundLogo: {
-        width: 200,
-        height: 300
+        width: screen.width - (logoCircleDif * 5),
+        height: screen.width - (logoCircleDif * 5),
+        maxWidth: 360 - (logoCircleDif * 3),
+        maxHeight: 360 - (logoCircleDif * 3),
+        shadowOffset: {
+            width: 2,
+            height: 2
+        },
+        shadowOpacity: 0.8,
+        shadowRadius: 2
     },
     mainTextsView: {
         width: "100%"
@@ -51,21 +109,14 @@ export const indexStyle = StyleSheet.create({
     mainTitle1: {
         color: "#fff",
         fontFamily: "Poppins",
-        fontSize: 24,
+        fontSize: 42,
         fontWeight: 100,
-        textAlign: "center"
-    },
-    mainTitle2: {
-        color: "#fff",
-        fontFamily: "Poppins",
-        fontSize: 32,
-        fontWeight: "bold",
         textAlign: "center"
     },
     mainSubtitle1: {
         color: "#f0f0f0",
         fontFamily: "Poppins thin",
-        fontSize: 18,
+        fontSize: 24,
         textAlign: "center"
     },
     navigateView: {
@@ -92,13 +143,15 @@ export const indexStyle = StyleSheet.create({
         fontFamily: "Poppins"
     },
     navigateButton1: {
-        backgroundColor: "#b030ff",
-        color: "#fff"
+        backgroundColor: "#802060",
+        color: "#fff",
+        borderColor: "#802060",
+        borderWidth: 2
     },
     navigateButton2: {
         backgroundColor: "transparent",
-        color: "#b030ff",
-        borderColor: "#b030ff",
-        borderWidth: 1
+        color: "#802060",
+        borderColor: "#802060",
+        borderWidth: 2
     }
 });

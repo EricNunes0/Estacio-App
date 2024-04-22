@@ -5,6 +5,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { loginStyle } from "../styles/login";
 import { useNavigation } from "@react-navigation/native";
 import navigateTo from "../../functions/navigateTo";
+import dbOpen from "../../functions/database/open";
 
 export default function Cadastro() {
     const navigation = useNavigation();
@@ -44,6 +45,13 @@ export default function Cadastro() {
     const toggleShowPassword = () => { 
         setShowPassword(!showPassword); 
     };
+
+	/* Validação de cadastro */
+	const validateRegister = () => {
+		const db = dbOpen();
+		//navigateTo(navigation, "Root");
+	};
+
     return (
         <View style={loginStyle.container}>
 			<View style={loginStyle.main}>
@@ -85,7 +93,7 @@ export default function Cadastro() {
 						<Text style={loginStyle.sub}>Já tem uma conta? <TouchableOpacity style={loginStyle.subButton} onPress={() => {navigateTo(navigation, "Login")}}>Faça o login</TouchableOpacity></Text>
 					</View>
 					<View style={loginStyle.menuButtonView}>
-						<TouchableOpacity onPress={() => {navigateTo(navigation, "Root")}} disabled={buttonDisabled} style={!buttonDisabled ? loginStyle.menuButton : [loginStyle.menuButton, loginStyle.menuButtonDisabled]}>
+						<TouchableOpacity onPress={() => {validateRegister()}} disabled={buttonDisabled} style={!buttonDisabled ? loginStyle.menuButton : [loginStyle.menuButton, loginStyle.menuButtonDisabled]}>
 							<Text style={loginStyle.menuButtonText}>Entrar</Text>
 						</TouchableOpacity>
 					</View>
