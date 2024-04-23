@@ -10,6 +10,7 @@ export default function Pedidos() {
             console.error(e);
         }
     }
+    
     return (
         <View>
             <Text>Pedidos</Text>

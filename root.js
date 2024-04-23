@@ -8,7 +8,7 @@ const Drawer = createDrawerNavigator();
 
 export default function Root() {
 	return (
-		<Drawer.Navigator initialRouteName="Pedidos">
+		<Drawer.Navigator initialRouteName="Fazer pedido">
 			<Drawer.Screen name="Pedidos" component={Pedidos}></Drawer.Screen>
 			<Drawer.Screen name="Fazer pedido" component={Navigation}></Drawer.Screen>
 			{/*<Drawer.Screen name="Contatos" component={Navigation}></Drawer.Screen>
