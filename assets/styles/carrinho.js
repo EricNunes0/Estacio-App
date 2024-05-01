@@ -3,6 +3,9 @@ import { Dimensions, StyleSheet } from "react-native";
 const screen = Dimensions.get("screen");
 const produtoIconSize = 48;
 export const carrinhoStyle = StyleSheet.create({
+    container: {
+        backgroundColor: "#fff"
+    },
 	title: {
         fontFamily: "Poppins",
         fontSize: 16,
@@ -11,17 +14,9 @@ export const carrinhoStyle = StyleSheet.create({
 	},
     pedidoView: {
         display: "flex",
-        justifyContent: "center",
-        borderColor: "#606",
-        borderStyle: "solid",
-        borderTopWidth: 2,
-        borderBottomWidth: 2
+        justifyContent: "center"
     },
     produtoView: {
-        borderColor: "#666",
-        borderStyle: "solid",
-        borderTopWidth: 2,
-        borderBottomWidth: 2,
         margin: 8
     },
     produtoHeader: {
@@ -110,5 +105,54 @@ export const carrinhoStyle = StyleSheet.create({
         fontFamily: "Poppins",
         fontSize: 14,
         fontWeight: "bold"
+    },
+    produtoMain: {
+        width: "100%",
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "flex-start"
+    },
+    produtoArticle: {
+        width: `calc(100% - ${produtoIconSize}px)`,
+        marginLeft: produtoIconSize
+    },
+    produtoDetails: {
+        margin: 8
+    },
+    produtoInfos: {
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "flex-start",
+        alignItems: "center",
+        gap: 8,
+        marginTop: 2,
+        marginBottom: 2
+    },
+    produtoCounterCircle: {
+        backgroundColor: "#ddd",
+        paddingLeft: 7.5,
+        paddingRight: 7.5,
+        borderRadius: 25,
+        minWidth: 28,
+        height: 18,
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center"
+    },
+    produtoCounterIcon: {
+        width: 12,
+        height: 12
+    },
+    produtoCounter: {
+        color: "#444"
+    },
+    produtoTextView: {},
+    produtoText: {
+        color: "#444"
+    },
+    produtoObservation: {
+        marginTop: 6,
+        marginBottom: 2
     }
 })
