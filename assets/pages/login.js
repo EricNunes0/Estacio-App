@@ -44,6 +44,11 @@ export default function Login() {
         <View style={loginStyle.container}>
 			<View style={loginStyle.main}>
 				<View style={loginStyle.mainArticle}>
+					<View style={loginStyle.mainArticleLogoView}>
+						<View style={[loginStyle.mainArticleLogoCircle, loginStyle.mainArticleLogoCircle1]}></View>
+						<View style={[loginStyle.mainArticleLogoCircle, loginStyle.mainArticleLogoCircle2]}></View>
+						<Image source={require("../images/logo.png")} style={loginStyle.mainArticleLogo}></Image>
+					</View>
 					<View style={loginStyle.mainArticleTextsView}>
 						<Text style={loginStyle.title}>Bem-vindo</Text>
 						<Text style={loginStyle.subtitle}>Faça o login para continuar</Text>
@@ -60,19 +65,6 @@ export default function Login() {
 					<View style={loginStyle.mainArticleForgotView}>
 						<TouchableOpacity style={loginStyle.forgot}>Esqueceu a senha?</TouchableOpacity>
 					</View>
-					<View style={loginStyle.mainArticleButtonsView}>
-						<View style={loginStyle.mainArticleButtonsFlex}>
-							<TouchableOpacity style={loginStyle.mainArticleButton}>
-								<Image source={require("../images/google.png")} style={loginStyle.mainArticleButtonImage}></Image>
-							</TouchableOpacity>
-							<TouchableOpacity style={loginStyle.mainArticleButton}>
-								<Image source={require("../images/facebook.png")} style={loginStyle.mainArticleButtonImage}></Image>
-							</TouchableOpacity>
-							<TouchableOpacity style={loginStyle.mainArticleButton}>
-								<Image source={require("../images/twitter.png")} style={loginStyle.mainArticleButtonImage}></Image>
-							</TouchableOpacity>
-						</View>
-					</View>
 				</View>
 			</View>
 			<View style={loginStyle.viewStretch}>
@@ -85,7 +77,7 @@ export default function Login() {
 						</Text>
 					</View>
 					<View style={loginStyle.menuButtonView}>
-						<TouchableOpacity onPress={() => {navigateTo(navigation, "Root")}} disabled={buttonDisabled} style={!buttonDisabled ? loginStyle.menuButton : [loginStyle.menuButton, loginStyle.menuButtonDisabled]}>
+						<TouchableOpacity onPress={() => {navigateTo(navigation, "Main")}} disabled={buttonDisabled} style={!buttonDisabled ? loginStyle.menuButton : [loginStyle.menuButton, loginStyle.menuButtonDisabled]}>
 							<Text style={loginStyle.menuButtonText}>Entrar</Text>
 						</TouchableOpacity>
 					</View>

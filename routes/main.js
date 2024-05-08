@@ -1,12 +1,12 @@
 
 import React from "react";
 import { createDrawerNavigator } from "@react-navigation/drawer";
-import Pedidos from "./assets/pages/home/pedidos";
+import Pedidos from "../assets/pages/home/pedidos";
 import Navigation from "./navigation";
 
 const Drawer = createDrawerNavigator();
 
-export default function Root() {
+export default function Main() {
 	return (
 		<Drawer.Navigator initialRouteName="Fazer pedido">
 			<Drawer.Screen name="Pedidos" component={Pedidos}></Drawer.Screen>

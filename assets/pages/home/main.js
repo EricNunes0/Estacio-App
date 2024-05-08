@@ -8,8 +8,9 @@ export default function Category() {
     const [size, setSize] = useState(0);
     const [calda, setCalda] = useState(null);
     const [sabores, setSabores] = useState([
-        {label: "Morango", checked: false},
-        {label: "Maracujá", checked: false}
+        {label: "Natural", checked: false},
+        {label: "Banana", checked: false},
+        {label: "Morango", checked: false}
     ]);
     const [condimentos, setCondimentos] = useState([
         {label: "Paçoca", checked: false},
@@ -177,6 +178,10 @@ export default function Category() {
                                 <View style={mainStyle.customizeRadioView}>
                                     <Text style={[mainStyle.radioTitle, mainStyle.radioTitleCenter]}>Chocomenta</Text>
                                     <RadioButton.Item value = {"Chocomenta"} style={mainStyle.radioOption}/>
+                                </View>
+                                <View style={mainStyle.customizeRadioView}>
+                                    <Text style={[mainStyle.radioTitle, mainStyle.radioTitleCenter]}>Ovomaltine</Text>
+                                    <RadioButton.Item value = {"Ovomaltine"} style={mainStyle.radioOption}/>
                                 </View>
                             </View>
                         </RadioButton.Group>
