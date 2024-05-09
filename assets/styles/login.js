@@ -75,7 +75,7 @@ export const loginStyle = StyleSheet.create({
 	mainArticleFormErrorView: {
 		position: "absolute",
 		width: "100%",
-		height: 30,
+		height: 36,
 		top: -30,
 		display: "flex",
 		flexDirection: "row",
@@ -92,7 +92,7 @@ export const loginStyle = StyleSheet.create({
 	},
 	mainArticleFormErrorArrow: {
 		position: "absolute",
-		top: 25,
+		top: 30,
 		left: 6,
 		width: 20,
 		height: 16

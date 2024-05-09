@@ -6,6 +6,10 @@ import { useNavigation } from "@react-navigation/native";
 import { loginStyle } from "../styles/login";
 import navigateTo from "../../functions/navigateTo";
 import { storeData } from "../../functions/storeData";
+import { getRegisters } from "../../functions/getRegisters";
+import { clearStorage } from "../../functions/clearStorage";
+import { appendUser } from "../../functions/appendUser";
+import CryptoJS from "crypto-js"
 
 export default function Cadastro() {
     const navigation = useNavigation();
@@ -23,23 +27,64 @@ export default function Cadastro() {
 
 	/* Mensagens de erro */
 	const [nameErrorMessage, setNameErrorMessage] = useState(null);
+	const [emailErrorMessage, setEmailErrorMessage] = useState(null);
+	const [passwordErrorMessage, setPasswordErrorMessage] = useState(null);
+
+	/* Função para validar e-mail */
+	const validateEmail = (text) => {
+		const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+		return emailRegex.test(text);
+	};
+
+	/* Função para validar senha */
+	const validatePassword = (text) => {
+		// Verifica se a senha tem pelo menos 8 caracteres, 1 número e 1 caractere especial
+		const passwordRegex = /^(?=.*\d)(?=.*[a-zA-Z])(?=.*[$*&@#])[0-9a-zA-Z$*&@#]{8,}$/;
+		return passwordRegex.test(text);
+	};
 
 	/* Validação de cadastro */
 	const validateRegister = () => {
+		setNameErrorMessage(null);
+		setEmailErrorMessage(null);
+		setPasswordErrorMessage(null);
+
 		console.log(nameInput, emailInput, passwordInput);
 		if((!nameInput) || nameInput.length === 0) {
-			setNameErrorMessage("Você precisa inserir um nome");
+			setNameErrorMessage("Você precisa inserir seu nome");
+			return;
 		} else if(nameInput.length < 2) {
 			setNameErrorMessage("Seu nome precisa ter pelo menos 2 caracteres");
-		} else {
-			setNameErrorMessage(null)
+			return;
 		};
+		setNameErrorMessage(null);
 
+		if((!emailInput) || emailInput.length === 0) {
+			setEmailErrorMessage("Você precisa inserir seu e-mail");
+			return;
+		} else if(!validateEmail(emailInput)) {
+			setEmailErrorMessage("Por favor, insira um email válido");
+			return;
+		};
+		setEmailErrorMessage(null);
 
-
-		storeData("name", nameInput);
-    	storeData("email", emailInput);
-    	storeData("password", passwordInput);
+		if((!passwordInput) || passwordInput.length === 0) {
+			setPasswordErrorMessage("Você precisa inserir uma senha");
+			return;
+		} else if(passwordInput.length < 8) {
+			setPasswordErrorMessage("Sua senha precisa ter pelo menos 8 caracteres");
+			return;
+		} else if(!validatePassword(passwordInput)) {
+			//setPasswordErrorMessage("Sua senha precisa no mínimo 1 dígito e 1 caractere especial");
+			//return;
+		};
+		setPasswordErrorMessage(null);
+		
+		appendUser({
+			name: nameInput,
+			email: emailInput,
+			password: CryptoJS.AES.encrypt(passwordInput, "password").toString()
+		});
 	};
 
     return (
@@ -61,15 +106,25 @@ export default function Cadastro() {
 							<View style={nameErrorMessage ?  [loginStyle.mainArticleFormErrorView] : {display: "none"}}>
 								<Image source={require("../svgs/error_triangle.svg")} style={loginStyle.mainArticleFormErrorArrow}></Image>
 								<Image source={require("../svgs/error.svg")} style={loginStyle.mainArticleFormErrorIcon}></Image>
-								<Text numberOfLines={1} style={loginStyle.mainArticleFormErrorText}>{nameErrorMessage}</Text>
+								<Text numberOfLines={2} style={loginStyle.mainArticleFormErrorText}>{nameErrorMessage}</Text>
 							</View>
 						</View>
 						<View style={loginStyle.mainArticleFormInputView}>
-							<TextInput autoComplete="email" keyboardType="email-address" placeholder="E-mail" placeholderTextColor="#888" value={emailInput} onChangeText={(text) => {textsInputCheck("e-mail", text)}} style={loginStyle.mainArticleFormInput}></TextInput>
+							<TextInput autoComplete="email" keyboardType="email-address" placeholder="E-mail" placeholderTextColor="#888" value={emailInput} onChangeText={(text) => {setEmailInput(text)}} style={loginStyle.mainArticleFormInput}></TextInput>
+							<View style={emailErrorMessage ?  [loginStyle.mainArticleFormErrorView] : {display: "none"}}>
+								<Image source={require("../svgs/error_triangle.svg")} style={loginStyle.mainArticleFormErrorArrow}></Image>
+								<Image source={require("../svgs/error.svg")} style={loginStyle.mainArticleFormErrorIcon}></Image>
+								<Text numberOfLines={2} style={loginStyle.mainArticleFormErrorText}>{emailErrorMessage}</Text>
+							</View>
 						</View>
 						<View style={loginStyle.mainArticleFormInputView}>
-							<TextInput autoComplete="password" keyboardType="password" secureTextEntry={!showPassword} value={passwordInput} onChangeText={(text) => {textsInputCheck("password", text)}} placeholder="Senha"  placeholderTextColor="#888" style={loginStyle.mainArticleFormInput}></TextInput>
+							<TextInput autoComplete="password" keyboardType="password" secureTextEntry={!showPassword} value={passwordInput} onChangeText={(text) => {setPasswordInput(text)}} placeholder="Senha"  placeholderTextColor="#888" style={loginStyle.mainArticleFormInput}></TextInput>
 							<MaterialCommunityIcons style={loginStyle.mainArticleFormPasswordButton} name={showPassword ? 'eye-off' : 'eye'}  size={24}  color="#aaa" onPress={toggleShowPassword} />
+							<View style={passwordErrorMessage ?  [loginStyle.mainArticleFormErrorView] : {display: "none"}}>
+								<Image source={require("../svgs/error_triangle.svg")} style={loginStyle.mainArticleFormErrorArrow}></Image>
+								<Image source={require("../svgs/error.svg")} style={loginStyle.mainArticleFormErrorIcon}></Image>
+								<Text numberOfLines={2} style={loginStyle.mainArticleFormErrorText}>{passwordErrorMessage}</Text>
+							</View>
 						</View>
 					</View>
 				</View>
@@ -85,6 +140,8 @@ export default function Cadastro() {
 						</TouchableOpacity>
 					</View>
 					<StatusBar style="auto" />
+					<TouchableOpacity onPress={() => {getRegisters()}}><Text>Cadastros</Text></TouchableOpacity>
+					<TouchableOpacity onPress={() => {clearStorage()}}><Text>Limpar tudo</Text></TouchableOpacity>
 				</View>
 				{/*<View style={loginStyle.viewBackground}>
 					<ImageBackground source={require("../images/background.png")} resizeMode="cover" style={loginStyle.loginBackground}>

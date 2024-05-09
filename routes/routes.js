@@ -10,7 +10,6 @@ import { screenTopAnimation } from "../functions/screenTopAnimation";
 import { screenBottomAnimation } from "../functions/screenBottomAnimation";
 import { screenLeftAnimation } from "../functions/screenLeftAnimation";
 import { screenRightAnimation } from "../functions/screenRightAnimation";
-import HeaderLogo from "./headerLogo";
 
 const Stack = createStackNavigator();
 
@@ -30,7 +29,7 @@ export default function Routes() {
 				},
 				headerTintColor: "#000000",
 				headerTitleStyle: {
-					fontWeight: 'bold',
+					fontWeight: "100",
 				},
 				headerShown: false,
 				presentation: "modal"
