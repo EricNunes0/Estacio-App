@@ -38,12 +38,12 @@ export default function Routes(prop) {
 			/* screenOptions={{headerShown: false}}*/>
 			<Stack.Screen name="Index" component={Index}/>
 			<Stack.Screen name="Login" component={Login} options={{
-				headerShown: true,
+				headerShown: false,
 				gestureDirection: "vertical",
 				cardStyleInterpolator: screenRightAnimation
 			}}/>
 			<Stack.Screen name="Cadastro" component={Cadastro} options={{
-				headerShown: true,
+				headerShown: false,
 				gestureDirection: "vertical",
 				cardStyleInterpolator: screenRightAnimation
 			}}/>

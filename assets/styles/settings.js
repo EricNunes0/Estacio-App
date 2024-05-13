@@ -67,7 +67,18 @@ export const settingsStyle = StyleSheet.create({
         fontSize: 16,
         fontWeight: "bold"
     },
+    mainButtonsTitle2: {
+        color: "#222",
+        fontFamily: "Poppins",
+        fontSize: 14,
+        fontWeight: "bold"
+    },
     mainButtonsSubtitle: {
+        color: "#666",
+        fontFamily: "Poppins",
+        fontSize: 14
+    },
+    mainButtonsSubtitle2: {
         color: "#666",
         fontFamily: "Poppins",
         fontSize: 14
@@ -84,5 +95,17 @@ export const settingsStyle = StyleSheet.create({
     mainButtonsArrow: {
         width: 14,
         height: 14
+    },
+    mainInputView: {
+        width: "100%",
+        height: 60,
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center"
+    },
+    mainInput: {
+        width: "90%",
+        maxWidth: 400,
+        height: 50
     }
 });

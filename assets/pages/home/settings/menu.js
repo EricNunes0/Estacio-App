@@ -1,11 +1,11 @@
 import { Button, Image, Text, TouchableOpacity, View } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
-import { settingsStyle } from "../../styles/settings";
+import { settingsStyle } from "../../../styles/settings";
 import { useEffect, useState } from "react";
-import { tokenRemoveFromUser } from "../../../functions/tokenRemoveFromUser";
+import { tokenRemoveFromUser } from "../../../../functions/tokenRemoveFromUser";
 
-export default function Settings() {
+export default function Menu() {
     const navigation = useNavigation();
     const [userName, setUserName] = useState(null);
 
@@ -56,7 +56,7 @@ export default function Settings() {
         <View style = {settingsStyle.container}>
             <View style = {settingsStyle.header}>
                 <View style = {settingsStyle.headerIconView}>
-                    <Image source = {require("../../images/user.png")} style = {settingsStyle.headerIcon}></Image>
+                    <Image source = {require("../../../images/user.png")} style = {settingsStyle.headerIcon}></Image>
                 </View>
                 <View style = {settingsStyle.headerTextView}>
                     <Text style = {settingsStyle.headerText}>{userName}</Text>
@@ -67,7 +67,7 @@ export default function Settings() {
                 <TouchableOpacity style = {settingsStyle.mainButtons}>
                     <View style = {settingsStyle.mainButtonsLeft}>
                         <View style = {settingsStyle.mainButtonsIconView}>
-                            <Image source={require("../../svgs/settings/order.svg")} style = {settingsStyle.mainButtonsIcon}></Image>
+                            <Image source={require("../../../svgs/settings/order.svg")} style = {settingsStyle.mainButtonsIcon}></Image>
                         </View>
                         <View style = {settingsStyle.mainButtonsTextView}>
                             <Text style = {settingsStyle.mainButtonsTitle}>Ver pedidos</Text>
@@ -76,15 +76,15 @@ export default function Settings() {
                     </View>
                     <View style = {settingsStyle.mainButtonsRight}>
                         <View style = {settingsStyle.mainButtonsArrowView}>
-                            <Image source={require("../../svgs/settings/right.svg")} style = {settingsStyle.mainButtonsArrow}></Image>
+                            <Image source={require("../../../svgs/settings/right.svg")} style = {settingsStyle.mainButtonsArrow}></Image>
                         </View>
                     </View>
                 </TouchableOpacity>
                 {/* Dados da conta */}
-                <TouchableOpacity style = {settingsStyle.mainButtons}>
+                <TouchableOpacity onPress={() => {navigation.navigate("Data")}} style = {settingsStyle.mainButtons}>
                     <View style = {settingsStyle.mainButtonsLeft}>
                         <View style = {settingsStyle.mainButtonsIconView}>
-                            <Image source={require("../../svgs/settings/data.svg")} style = {settingsStyle.mainButtonsIcon}></Image>
+                            <Image source={require("../../../svgs/settings/data.svg")} style = {settingsStyle.mainButtonsIcon}></Image>
                         </View>
                         <View style = {settingsStyle.mainButtonsTextView}>
                             <Text style = {settingsStyle.mainButtonsTitle}>Dados da conta</Text>
@@ -93,7 +93,7 @@ export default function Settings() {
                     </View>
                     <View style = {settingsStyle.mainButtonsRight}>
                         <View style = {settingsStyle.mainButtonsArrowView}>
-                            <Image source={require("../../svgs/settings/right.svg")} style = {settingsStyle.mainButtonsArrow}></Image>
+                            <Image source={require("../../../svgs/settings/right.svg")} style = {settingsStyle.mainButtonsArrow}></Image>
                         </View>
                     </View>
                 </TouchableOpacity>
@@ -101,7 +101,7 @@ export default function Settings() {
                 <TouchableOpacity style = {settingsStyle.mainButtons}>
                     <View style = {settingsStyle.mainButtonsLeft}>
                         <View style = {settingsStyle.mainButtonsIconView}>
-                            <Image source={require("../../svgs/settings/address.svg")} style = {settingsStyle.mainButtonsIcon}></Image>
+                            <Image source={require("../../../svgs/settings/address.svg")} style = {settingsStyle.mainButtonsIcon}></Image>
                         </View>
                         <View style = {settingsStyle.mainButtonsTextView}>
                             <Text style = {settingsStyle.mainButtonsTitle}>Endereços</Text>
@@ -110,7 +110,7 @@ export default function Settings() {
                     </View>
                     <View style = {settingsStyle.mainButtonsRight}>
                         <View style = {settingsStyle.mainButtonsArrowView}>
-                            <Image source={require("../../svgs/settings/right.svg")} style = {settingsStyle.mainButtonsArrow}></Image>
+                            <Image source={require("../../../svgs/settings/right.svg")} style = {settingsStyle.mainButtonsArrow}></Image>
                         </View>
                     </View>
                 </TouchableOpacity>
@@ -118,7 +118,7 @@ export default function Settings() {
                 <TouchableOpacity onPress={() => {logout()} } style = {settingsStyle.mainButtons}>
                     <View style = {settingsStyle.mainButtonsLeft}>
                         <View style = {settingsStyle.mainButtonsIconView}>
-                            <Image source={require("../../svgs/settings/logout.svg")} style = {settingsStyle.mainButtonsIcon}></Image>
+                            <Image source={require("../../../svgs/settings/logout.svg")} style = {settingsStyle.mainButtonsIcon}></Image>
                         </View>
                         <View style = {settingsStyle.mainButtonsTextView}>
                             <Text style = {settingsStyle.mainButtonsTitle}>Sair</Text>
@@ -127,7 +127,7 @@ export default function Settings() {
                     </View>
                     <View style = {settingsStyle.mainButtonsRight}>
                         <View style = {settingsStyle.mainButtonsArrowView}>
-                            <Image source={require("../../svgs/settings/right.svg")} style = {settingsStyle.mainButtonsArrow}></Image>
+                            <Image source={require("../../../svgs/settings/right.svg")} style = {settingsStyle.mainButtonsArrow}></Image>
                         </View>
                     </View>
                 </TouchableOpacity>

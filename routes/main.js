@@ -2,7 +2,7 @@
 import React from "react";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import Pedidos from "../assets/pages/home/pedidos";
-import Settings from "../assets/pages/home/settings";
+import Settings from "../assets/pages/home/settings/main";
 import Navigation from "./navigation";
 
 const Drawer = createDrawerNavigator();
