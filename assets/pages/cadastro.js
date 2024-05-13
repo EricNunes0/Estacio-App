@@ -3,13 +3,14 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useState } from "react";
 import { Text, View, Image, TextInput, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { loginStyle } from "../styles/login";
 import navigateTo from "../../functions/navigateTo";
 import { storeData } from "../../functions/storeData";
 import { getRegisters } from "../../functions/getRegisters";
 import { clearStorage } from "../../functions/clearStorage";
-import { appendUser } from "../../functions/appendUser";
-import CryptoJS from "crypto-js"
+import CryptoJS from "crypto-js";
+import uuid from "react-native-uuid";
 
 export default function Cadastro() {
     const navigation = useNavigation();
@@ -38,7 +39,6 @@ export default function Cadastro() {
 
 	/* Função para validar senha */
 	const validatePassword = (text) => {
-		// Verifica se a senha tem pelo menos 8 caracteres, 1 número e 1 caractere especial
 		const passwordRegex = /^(?=.*\d)(?=.*[a-zA-Z])(?=.*[$*&@#])[0-9a-zA-Z$*&@#]{8,}$/;
 		return passwordRegex.test(text);
 	};
@@ -81,10 +81,33 @@ export default function Cadastro() {
 		setPasswordErrorMessage(null);
 		
 		appendUser({
+			id: uuid.v4(),
 			name: nameInput,
 			email: emailInput,
-			password: CryptoJS.AES.encrypt(passwordInput, "password").toString()
+			password: CryptoJS.AES.encrypt(passwordInput, "password").toString(),
+			token: null
 		});
+	};
+
+	/* Função para adicionar cadastro */
+	const appendUser = async (obj) => {
+		const usersString = await AsyncStorage.getItem("users");
+		const usersArray = usersString ? JSON.parse(usersString) : [];
+		let emailExists = false;
+		for(const user of usersArray) {
+			if(user.email === obj.email) {
+				emailExists = true;
+			};
+		};
+		if(!emailExists) {
+			usersArray.push(obj);
+			await AsyncStorage.setItem("users", JSON.stringify(usersArray));
+			let decryptedPassword = CryptoJS.AES.decrypt(obj.password, "password").toString(CryptoJS.enc.Utf8);
+			alert("Um novo usuário foi cadastrado!");
+			navigation.navigate("Main");
+		} else {
+			alert("E-mail já cadastrado!");
+		};
 	};
 
     return (

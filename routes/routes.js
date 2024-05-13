@@ -13,9 +13,10 @@ import { screenRightAnimation } from "../functions/screenRightAnimation";
 
 const Stack = createStackNavigator();
 
-export default function Routes() {
+export default function Routes(prop) {
+
 	return (
-		<Stack.Navigator initialRouteName="Cadastro"
+		<Stack.Navigator initialRouteName={prop.initial}
 			screenOptions={{
 				animationEnabled: true,
 				animationTypeForReplace: "pop",

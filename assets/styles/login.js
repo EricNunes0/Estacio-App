@@ -205,7 +205,7 @@ export const loginStyle = StyleSheet.create({
 		marginBottom: 10
 	},
 	subButton: {
-		color: "#d060f0",
+		color: "#802060",
 		fontFamily: "Poppins",
 		fontSize: 12,
 		fontWeight: "bold",
@@ -218,7 +218,7 @@ export const loginStyle = StyleSheet.create({
 	menuButton: {
 		width: 280,
 		alignItems: "center",
-		backgroundColor: "#d060f0",
+		backgroundColor: "#802060",
 		padding: 10,
 		borderRadius: 10
 	},
@@ -230,5 +230,11 @@ export const loginStyle = StyleSheet.create({
 		fontFamily: "Poppins",
 		fontSize: 14,
 		fontWeight: "100"
+	},
+	testButtons: {
+		width: 100,
+		height: 25,
+		backgroundColor: "#f04040",
+		borderRadius: 5
 	}
 });
