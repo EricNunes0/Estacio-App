@@ -5,12 +5,25 @@ import { mainStyle } from "../../styles/main";
 import { Checkbox, RadioButton, TextInput } from "react-native-paper";
 
 export default function Category() {
+    const [price, setPrice] = useState({
+        size: 0,
+        adicionais: [0, 0, 0],
+        total: 0
+    });
     const [size, setSize] = useState(0);
+    const [sizes, setSizes] = useState([
+        {size: 300, label: "300ml", price: 14.00},
+        {size: 400, label: "400ml", price: 16.00},
+        {size: 500, label: "500ml", price: 18.00},
+        {size: 770, label: "770ml", price: 22.00},
+        {size: 1000, label: "1ml", price: 33.00}
+    ]);
     const [calda, setCalda] = useState(null);
     const [sabores, setSabores] = useState([
         {label: "Natural", checked: false},
         {label: "Banana", checked: false},
-        {label: "Morango", checked: false}
+        {label: "Morango", checked: false},
+        {label: "Cupuaçu", checked: false}
     ]);
     const [condimentos, setCondimentos] = useState([
         {label: "Paçoca", checked: false},
@@ -22,17 +35,50 @@ export default function Category() {
         {label: "Flocos de arroz", checked: false}
     ]);
     const [adicionais, setAdicionais] = useState([
-        {label: "Nutella (30ml)", subtitle: "+ R$4,00", checked: false},
-        {label: "Leite Condensado (30ml)", subtitle: "+ R$2,00", checked: false},
-        {label: "Kitkat em barra", subtitle: "+ R$5,00", checked: false}
+        {label: "Nutella (30ml)", checked: false, price: 4.00},
+        {label: "Leite Condensado (30ml)", checked: false, price: 2.00},
+        {label: "Kitkat em barra", checked: false, price: 5.00}
     ]);
     const [observation, setObservation] = useState("");
-    
+
+    /* Função para calcular preço total */
+    const calculatePrice = () => {
+        let newPrice = price;
+        let newTotal = 0;
+        newTotal += newPrice.size;
+        for(const adicional of newPrice.adicionais) {
+            newTotal += adicional;
+        }
+        newPrice.total = newTotal;
+        setPrice(newPrice);
+    };
+
+    /* Função para alterar o tamanho */
+    const changeSize = (newSize) => {
+        setSize(newSize);
+        let newPrice = price;
+        let oldSizes = sizes;
+        for(const oldSize of oldSizes) {
+            if(oldSize.size === newSize) {
+                newPrice.size = oldSize.price;
+                break;
+            }
+        };
+        setPrice(newPrice);
+        calculatePrice();
+    };
+
     /* Função para alterar os sabores */
     const changeSabores = (index) => {
         const newSabores = [...sabores];
-        newSabores[index].checked = !newSabores[index].checked;
-        setSabores(newSabores);
+        const checkedCount = newSabores.filter(cb => cb.checked).length;
+
+        if (checkedCount < 2 || newSabores[index].checked === true) {
+            newSabores[index].checked = !newSabores[index].checked;
+            setSabores(newSabores);
+        } else {
+            alert("Você só pode selecionar até 2 sabores.");
+        }
     };
     
     /* Função para alterar os condimentos */
@@ -44,9 +90,18 @@ export default function Category() {
     
     /* Função para alterar os adicionais */
     const changeAdicionais = (index) => {
+        let newPrice = price;
         const newAdicionais = [...adicionais];
-        newAdicionais[index].checked = !newAdicionais[index].checked;
+        if(newAdicionais[index].checked) {
+            newAdicionais[index].checked = false;
+            newPrice.adicionais[index] = 0;
+        } else {
+            newAdicionais[index].checked = true;
+            newPrice.adicionais[index] = newAdicionais[index].price;
+        };
         setAdicionais(newAdicionais);
+        setPrice(newPrice);
+        calculatePrice();
     };
 
     const observationMax = 140;
@@ -54,18 +109,31 @@ export default function Category() {
         setObservation(text);
     }
 
-    const pedido = JSON.stringify({
+    const pedido = {
         tamanho: size,
         calda: calda,
-        sabores: sabores,
-        condimentos: condimentos,
+        sabores: sabores.filter((sabor) => sabor.checked).map((sabor) => sabor.label),
+        condimentos: condimentos.filter((condimento) => condimento.checked).map((condimento) => condimento.label),
         adicionais: adicionais
-    });
+    };
     /* Função para enviar o pedido */
     const enviarPedido = async () => {
         try {
             console.log(pedido)
-            await AsyncStorage.setItem("Pedido", pedido);
+            if(pedido.tamanho === 0) {
+                alert("Selecione um tamanho");
+                return;
+            };
+            if(!pedido.calda) {
+                alert("Selecione uma calda");
+                return;
+            };
+            if(pedido.sabores.length === 0) {
+                alert("Selecione ao menos um sabor");
+                return;
+            };
+            /* Agora falta adicionar ao carrinho */
+            await AsyncStorage.removeItem("Pedido");
         } catch(e) {
             console.error(e);
         }
@@ -98,33 +166,15 @@ export default function Category() {
                         </View>
                     </View>
                     <View style={mainStyle.customizeButtonsView}>
-                        <RadioButton.Group value={size} onValueChange={newValue => setSize(newValue)}>
+                        <RadioButton.Group value={size} onValueChange={newSize => changeSize(newSize)}>
                             <View style={mainStyle.customizeRadioMain}>
-                                <View style={mainStyle.customizeRadioView}>
-                                    <Text style={mainStyle.radioTitle}>300ml</Text>
-                                    <Text style={mainStyle.radioSubtitle}>R$14,00</Text>
-                                    <RadioButton.Item /*label = "300ml"*/ value = {300} style={mainStyle.radioOption}/>
-                                </View>
-                                <View style={mainStyle.customizeRadioView}>
-                                    <Text style={mainStyle.radioTitle}>400ml</Text>
-                                    <Text style={mainStyle.radioSubtitle}>R$16,00</Text>
-                                    <RadioButton.Item /*label = "400ml"*/ value = {400} style={mainStyle.radioOption}/>
-                                </View>
-                                <View style={mainStyle.customizeRadioView}>
-                                    <Text style={mainStyle.radioTitle}>500ml</Text>
-                                    <Text style={mainStyle.radioSubtitle}>R$18,00</Text>
-                                    <RadioButton.Item /*label = "500ml"*/ value = {500} style={mainStyle.radioOption}/>
-                                </View>
-                                <View style={mainStyle.customizeRadioView}>
-                                    <Text style={mainStyle.radioTitle}>770ml</Text>
-                                    <Text style={mainStyle.radioSubtitle}>R$22,00</Text>
-                                    <RadioButton.Item /*label = "770ml"*/ value = {770} style={mainStyle.radioOption}/>
-                                </View>
-                                <View style={mainStyle.customizeRadioView}>
-                                    <Text style={mainStyle.radioTitle}>1 Litro</Text>
-                                    <Text style={mainStyle.radioSubtitle}>R$33,00</Text>
-                                    <RadioButton.Item /*label = "1l"*/ value = {1000} style={mainStyle.radioOption}/>
-                                </View>
+                                {sizes.map((size) => 
+                                    <View style={mainStyle.customizeRadioView}>
+                                        <Text style={mainStyle.radioTitle}>{size.label}</Text>
+                                        <Text style={mainStyle.radioSubtitle}>{(size.price).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}</Text>
+                                        <RadioButton.Item value = {size.size} style={mainStyle.radioOption}/>
+                                    </View>
+                                )}
                             </View>
                         </RadioButton.Group>
                     </View>
@@ -245,9 +295,6 @@ export default function Category() {
                                 <Text style={mainStyle.headerTitle}>Adicionais</Text>
                                 <Text style={mainStyle.headerSubtitle}>Escolha os adicionais</Text>
                             </View>
-                            {/*<View style={mainStyle.headerRequired}>
-                                <Text style={mainStyle.headerRequiredText}>Obrigatório</Text>
-                            </View>*/}
                         </View>
                     </View>
                     <View style={mainStyle.customizeButtonsView}>
@@ -255,7 +302,7 @@ export default function Category() {
                             {adicionais.map((adicional, index) => (
                                 <View style={mainStyle.customizeRadioView}>
                                 <Text style={mainStyle.radioTitle}>{adicional.label}</Text>
-                                <Text style={mainStyle.radioSubtitle}>{adicional.subtitle}</Text>
+                                <Text style={mainStyle.radioSubtitle}>+ {(adicional.price).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}</Text>
                                 <Checkbox.Item
                                     key={index}
                                     status={adicional.checked ? "checked" : "unchecked"}
@@ -282,7 +329,7 @@ export default function Category() {
                     <View style={mainStyle.cartView}>
                         <TouchableOpacity onPress={() => {enviarPedido()}} style={mainStyle.cartButton}>
                             <Text style={[mainStyle.cartButtonText]}>Adicionar ao carrinho</Text>
-                            <Text style={[mainStyle.cartButtonText]}>R$ 0,00</Text>
+                            <Text style={[mainStyle.cartButtonText]}>{(price.total).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}</Text>
                         </TouchableOpacity>
                     </View>
                 </View>

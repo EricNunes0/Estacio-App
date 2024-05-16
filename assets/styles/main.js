@@ -186,12 +186,12 @@ export const mainStyle = StyleSheet.create({
         width: "100%",
         marginLeft: "auto",
         marginRight: "auto",
-        backgroundColor: "#d0d0d0",
+        backgroundColor: "#802060" /*"#d0d0d0"*/,
         padding: 8,
         borderRadius: 5
     },
     cartButtonText: {
-        color: "#666",
+        color: "#fff",
         fontFamily: "Poppins",
         fontSize: 14
     }

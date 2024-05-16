@@ -83,8 +83,10 @@ export default function Cadastro() {
 		appendUser({
 			id: uuid.v4(),
 			name: nameInput,
+			createAt: new Date().getTime(),
 			email: emailInput,
 			password: CryptoJS.AES.encrypt(passwordInput, "password").toString(),
+			pedidos: [],
 			token: null
 		});
 	};
