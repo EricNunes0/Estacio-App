@@ -26,7 +26,7 @@ export default function Data() {
                     </View>
                 </TouchableOpacity>
                 {/* Informações de acesso */}
-                <TouchableOpacity style = {settingsStyle.mainButtons}>
+                <TouchableOpacity onPress={() => {navigation.navigate("DataInfo")}} style = {settingsStyle.mainButtons}>
                     <View style = {settingsStyle.mainButtonsLeft}>
                         <View style = {settingsStyle.mainButtonsTextView}>
                             <Text style = {settingsStyle.mainButtonsTitle2}>Informações de acesso</Text>
@@ -38,6 +38,11 @@ export default function Data() {
                             <Image source={require("../../../svgs/settings/right.svg")} style = {settingsStyle.mainButtonsArrow}></Image>
                         </View>
                     </View>
+                </TouchableOpacity>
+            </View>
+            <View style = {settingsStyle.footer}>
+                <TouchableOpacity onPress={() => {navigation.navigate("Menu")}} style = {settingsStyle.footerReturnButton}>
+                    <Text style = {settingsStyle.footerReturnButtonText}>Voltar</Text>
                 </TouchableOpacity>
             </View>
         </View>

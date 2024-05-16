@@ -33,7 +33,8 @@ export const settingsStyle = StyleSheet.create({
         fontWeight: "bold"
     },
     main: {
-        width: "100%"
+        width: "100%",
+        marginTop: 10
     },
     mainButtons: {
         width: "100%",
@@ -96,6 +97,32 @@ export const settingsStyle = StyleSheet.create({
         width: 14,
         height: 14
     },
+    mainInfoView: {},
+    mainInfoTitle: {
+        fontFamily: "Poppins",
+        fontSize: 18,
+        fontWeight: "bold"
+    },
+    mainInfoDescription: {
+        color: "#666",
+        fontFamily: "Poppins",
+        fontSize: 12,
+        textAlign: "left",
+        lineHeight: 16,
+        marginTop: 4
+    },
+    mainInfoLabel: {
+        fontFamily: "Poppins",
+        fontSize: 14,
+        fontWeight: "bold",
+        marginTop: 16
+    },
+    mainInfoItem: {
+        color: "#666",
+        fontFamily: "Poppins",
+        fontSize: 14,
+        textAlign: "left",
+    },
     mainInputView: {
         width: "100%",
         height: 60,
@@ -103,9 +130,60 @@ export const settingsStyle = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center"
     },
+    mainInfoTopView: {
+        padding: 8
+    },
     mainInput: {
         width: "90%",
         maxWidth: 400,
         height: 50
+    },
+    footer: {
+        position: "absolute",
+        bottom: 0,
+        width: "100%"
+    },
+    footerReturnButton: {
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        width: "100%",
+        height: 50,
+        bottom: 0,
+        borderColor: "#802060",
+        borderStyle: "solid",
+        borderWidth: 1
+    },
+    footerReturnButtonText: {
+        color: "#802060",
+        fontFamily: "Poppins",
+        fontSize: 14
+    },
+    footerUpdateButton: {
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        width: "100%",
+        height: 50,
+        bottom: 0,
+        backgroundColor: "#802060"
+    },
+    footerUpdateButtonText: {
+        color: "#fff",
+        fontFamily: "Poppins",
+        fontSize: 14
+    },
+    messagesView: {
+        pointerEvents: "none",
+        position: "absolute",
+        top: 0,
+        left: 0,
+        width: screen.width,
+        height: screen.height,
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "flex-start",
+        alignItems: "flex-start",
+        gap: 8
     }
 });

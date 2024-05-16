@@ -6,7 +6,7 @@ export default function Pedidos() {
     return (
         <View>
             <Text>Pedidos</Text>
-            <Button onPress={getUser}>Ver pedidos</Button>
+            <Button title="Ver pedidos"></Button>
         </View>
     );
 }
