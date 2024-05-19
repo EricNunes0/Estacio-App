@@ -86,7 +86,7 @@ export default function Cadastro() {
 			createAt: new Date().getTime(),
 			email: emailInput,
 			password: CryptoJS.AES.encrypt(passwordInput, "password").toString(),
-			pedidos: [],
+			cart: [],
 			token: null
 		});
 	};

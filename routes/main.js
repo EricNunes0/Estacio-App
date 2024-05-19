@@ -18,9 +18,9 @@ export default function Main() {
 				height: 50
 			}
 		}}>
-			<Drawer.Screen name="Configurações" component={Settings}></Drawer.Screen>
-			<Drawer.Screen name="Pedidos" component={Pedidos}></Drawer.Screen>
 			<Drawer.Screen name="Fazer pedido" component={Navigation}></Drawer.Screen>
+			<Drawer.Screen name="Pedidos" component={Pedidos}></Drawer.Screen>
+			<Drawer.Screen name="Configurações" component={Settings}></Drawer.Screen>
 			{/*<Drawer.Screen name="Contatos" component={Navigation}></Drawer.Screen>
 			*/}
 		</Drawer.Navigator>

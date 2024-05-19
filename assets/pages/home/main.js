@@ -1,10 +1,15 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Text, View, Alert, Button, Image, ImageBackground, TouchableOpacity, ScrollView } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useNavigation } from "@react-navigation/native";
 import { mainStyle } from "../../styles/main";
 import { Checkbox, RadioButton, TextInput } from "react-native-paper";
+import { addPedidoToCart } from "../../../functions/addPedidoToCart";
+import uuid from "react-native-uuid";
 
 export default function Category() {
+    const navigation = useNavigation();
+    const [userId, setUserId] = useState('');
     const [price, setPrice] = useState({
         size: 0,
         adicionais: [0, 0, 0],
@@ -41,6 +46,35 @@ export default function Category() {
     ]);
     const [observation, setObservation] = useState("");
 
+    useEffect(() => {
+        tokenGetUser();
+    }, [])
+    
+    const tokenGetUser = async () => {
+        try {
+            const tokenJSON = await AsyncStorage.getItem("token");
+            if(tokenJSON) {
+                let token = JSON.parse(tokenJSON).token;
+                const usersString = await AsyncStorage.getItem("users");
+                let usersArray = JSON.parse(usersString);
+                let i = 0;
+                for(let registeredUser of usersArray) {
+                    if(registeredUser.token === token) {
+                        break;
+                    } else {
+                        i++;
+                    }
+                };
+                setUserId(usersArray[i].id);
+            } else {
+                alert(`Não existe um token: ${tokenJSON}`);
+                navigation.navigate("Login");
+            }
+        } catch (e) {
+            alert(`Não foi possível obter o token: ${e}`);
+        }
+    };
+
     /* Função para calcular preço total */
     const calculatePrice = () => {
         let newPrice = price;
@@ -51,6 +85,7 @@ export default function Category() {
         }
         newPrice.total = newTotal;
         setPrice(newPrice);
+        return newPrice;
     };
 
     /* Função para alterar o tamanho */
@@ -110,11 +145,17 @@ export default function Category() {
     }
 
     const pedido = {
+        id: uuid.v4(),
+        createAt: new Date().getTime(),
+        type: 0, /* 0 = Açaí, 1 = Sorvete */
+        price: price.total,
+        count: 1,
         tamanho: size,
         calda: calda,
         sabores: sabores.filter((sabor) => sabor.checked).map((sabor) => sabor.label),
         condimentos: condimentos.filter((condimento) => condimento.checked).map((condimento) => condimento.label),
-        adicionais: adicionais
+        adicionais: adicionais.filter((adicional) => adicional.checked).map((adicional) => adicional.label),
+        observation: observation || null
     };
     /* Função para enviar o pedido */
     const enviarPedido = async () => {
@@ -132,8 +173,17 @@ export default function Category() {
                 alert("Selecione ao menos um sabor");
                 return;
             };
-            /* Agora falta adicionar ao carrinho */
-            await AsyncStorage.removeItem("Pedido");
+            
+            /* Adicinando ao carrinho */
+		    const usersString = await AsyncStorage.getItem("users");
+            const usersArray = usersString ? JSON.parse(usersString) : [];
+            for(const user of usersArray) {
+                if(user.id === userId) {
+                    await addPedidoToCart(user, pedido);
+                    break;
+                }
+            };
+            navigation.navigate("Carrinho");
         } catch(e) {
             console.error(e);
         }
@@ -323,7 +373,7 @@ export default function Category() {
                             </View>
                         </View>
                         <View style={mainStyle.observationArticle}>
-                            <TextInput maxLength={observationMax} multiline={true} numberOfLines={4} placeholder="Obsevações" value={observation} onChangeText={(text) => {changeObservation(text)}} style={mainStyle.observationTextarea}></TextInput>
+                            <TextInput maxLength={observationMax} multiline={true} numberOfLines={4} placeholder="Obsevações" value={observation} onChangeText={(text) => {changeObservation(text)}} style={mainStyle.observationTextarea} theme={{fonts: {regular: "Poppins-Regular"}}}></TextInput>
                         </View>
                     </View>
                     <View style={mainStyle.cartView}>

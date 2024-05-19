@@ -4,6 +4,7 @@ const screen = Dimensions.get("screen");
 const produtoIconSize = 48;
 export const carrinhoStyle = StyleSheet.create({
     container: {
+        width: screen.width,
         backgroundColor: "#fff"
     },
 	title: {
@@ -80,7 +81,7 @@ export const carrinhoStyle = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "#ddd",
+        backgroundColor: "#eee",
         borderRadius: 5
     },
     produtoButtonOptions: {
@@ -124,7 +125,7 @@ export const carrinhoStyle = StyleSheet.create({
         display: "flex",
         flexDirection: "row",
         justifyContent: "flex-start",
-        alignItems: "center",
+        alignItems: "flex-start",
         gap: 8,
         marginTop: 2,
         marginBottom: 2
@@ -148,11 +149,85 @@ export const carrinhoStyle = StyleSheet.create({
         color: "#444"
     },
     produtoTextView: {},
+    produtoTextTitle: {
+        color: "#000",
+        fontFamily: "Poppins",
+        fontWeight: "bold"
+    },
     produtoText: {
-        color: "#444"
+        color: "#444",
+        fontFamily: "Poppins"
     },
     produtoObservation: {
         marginTop: 6,
         marginBottom: 2
+    },
+    footer: {
+        pointerEvents: "none",
+        position: "fixed",
+        top: 0,
+        left: 0,
+        width: screen.width,
+        height: screen.height
+    },
+    footerMainView: {
+        pointerEvents: "all",
+        position: "absolute",
+        bottom: (60 * 2) + (8 * 2),
+        width: "100%",
+        height: 60,
+        display: "flex",
+        flexDirection: "row",
+        flexWrap: "nowrap",
+        justifyContent: "space-between",
+        alignItems: "center",
+        backgroundColor: "#fff",
+        borderTopColor: "#ddd",
+        borderTopStyle: "solid",
+        borderTopWidth: 2
+    },
+    footerMainDetailsView: {
+        width: "50%",
+        height: "100%",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "flex-start",
+        padding: 8
+    },
+    footerText1: {
+        color: "#666",
+        fontFamily: "Poppins",
+        fontSize: 12,
+        textAlign: "left",
+        lineHeight: 6
+    },
+    footerConfirmButtonPrice: {
+        color: "#000",
+        fontFamily: "Poppins",
+        fontSize: 16,
+        fontWeight: "bold",
+        lineHeight: 24
+    },
+    footerMainButtonView: {
+        width: "50%",
+        height: "100%",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center"
+    },
+    footerConfirmButton: {
+        width: `calc(100% - ${8}px)`,
+        height: 42,
+        padding: 8,
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "#802060",
+        borderRadius: 5
+    },
+    footerConfirmButtonText: {
+        color: "#fff",
+        fontFamily: "Poppins",
+        fontSize: 14
     }
 })
