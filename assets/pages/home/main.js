@@ -146,7 +146,7 @@ export default function Category() {
 
     const pedido = {
         id: uuid.v4(),
-        createAt: new Date().getTime(),
+        createdAt: new Date().getTime(),
         type: 0, /* 0 = Açaí, 1 = Sorvete */
         price: price.total,
         count: 1,

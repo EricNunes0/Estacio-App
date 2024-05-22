@@ -9,7 +9,7 @@ const Drawer = createDrawerNavigator();
 
 export default function Main() {
 	return (
-		<Drawer.Navigator initialRouteName="Fazer pedido" screenOptions={{
+		<Drawer.Navigator initialRouteName="Pedidos" screenOptions={{
 			headerStyle: {
 				backgroundColor: "#ffffff",
 				borderBottomWidth: 4,

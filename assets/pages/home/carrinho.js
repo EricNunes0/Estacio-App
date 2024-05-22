@@ -150,7 +150,7 @@ export default function Carrinho() {
             let pedidoFinal = {
                 id: uuid.v4(),
                 userId: userId,
-                createAt: new Date().getTime(),
+                createdAt: new Date().getTime(),
                 price: price,
                 pedidos: userCart
             }
