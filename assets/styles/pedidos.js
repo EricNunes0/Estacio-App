@@ -65,5 +65,93 @@ export const pedidosStyle = StyleSheet.create({
         fontFamily: "Poppins",
         fontSize: 14,
         fontWeight: "bold"
+    },
+    modals: {},
+    modalView: {
+        width: "100%",
+        backgroundColor: "#fff",
+        flex: 1,
+        justifyContent: "flex-start",
+        alignItems: "center"
+    },
+    modalHeader: {
+        width: "100%",
+        height: 50,
+        backgroundColor: "#802060",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "flex-start",
+        padding: 8
+    },
+    modalHeaderText: {
+        color: "#fff",
+        fontFamily: "Poppins",
+        fontSize: 18
+    },
+    modalProdutosMain: {
+        width: "100%"
+    },
+    modalProdutosView: {
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "flex-start",
+        alignItems: "flex-start",
+        padding: 8,
+        gap: 8
+    },
+    modalProdutosCountView: {
+        width: 30,
+        height: "100%",
+        display: "flex",
+        justifyContent: "flex-start",
+        alignItems: "center",
+        backgroundColor: "#802060",
+        borderRadius: 5,
+        padding: 4
+    },
+    modalProdutosCount: {
+        color: "#fff",
+        fontFamily: "Poppins",
+        fontSize: 14,
+        fontWeight: "bold"
+    },
+    modalProdutosDetailsMain: {
+        width: `calc(100% - ${30 + 8}px)`,
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "flex-start"
+    },
+    modalProdutosDetailsFlex: {
+        display: "flex"
+    },
+    modalProdutosDetailsView: {
+    },
+    modalProdutoTitle: {
+        color: "#000",
+        fontFamily: "Poppins",
+        fontSize: 16,
+        fontWeight: "bold"
+    },
+    modalProdutoSubtitle: {
+        color: "#000",
+        fontFamily: "Poppins",
+        fontSize: 14,
+        fontWeight: "bold"
+    },
+    modalProdutoContent: {
+        color: "#666",
+        fontFamily: "Poppins",
+        fontSize: 12
+    },
+    modalProdutoPriceView: {
+        height: "100%",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        paddingLeft: 8,
+        borderLeftColor: "#666",
+        borderLeftStyle: "solid",
+        borderLeftWidth: 1
     }
 })

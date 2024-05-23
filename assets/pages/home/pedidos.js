@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
-import { Button, Text, TouchableOpacity, View } from "react-native";
+import { Button, Modal, Pressable, Text, TouchableOpacity, View } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { pedidosStyle } from "../../styles/pedidos";
 
 export default function Pedidos() {
     const [userId, setUserId] = useState('');
     const [userPedidos, setUserPedidos] = useState([]);
+    const [modalVisible, setModalVisible] = useState(false);
 
     useEffect(() => {
         tokenGetUser();
@@ -62,7 +63,7 @@ export default function Pedidos() {
             {userPedidos.length !== 0 ? (
                 <View style = {pedidosStyle.pedidosMain}>
                     {userPedidos.map((pedido) => (
-                        <TouchableOpacity style = {pedidosStyle.pedidosViews}>
+                        <TouchableOpacity onPress={() => {setModalVisible(!modalVisible)}} style = {pedidosStyle.pedidosViews}>
                             <View style = {pedidosStyle.pedidosDateView}>
                                 <View style = {pedidosStyle.pedidosDateSquare}>
                                     <Text style = {pedidosStyle.pedidosDateDay}>{new Date(pedido.createdAt).getDate()}</Text>
@@ -79,6 +80,53 @@ export default function Pedidos() {
                                 </View>
                                 <View style = {pedidosStyle.pedidosPriceView}>
                                     <Text style = {pedidosStyle.pedidosPrice}>{pedido.price.toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'})}</Text>
+                                </View>
+                                <View style = {pedidosStyle.modalMain}>
+                                    <Modal animationType="slide" transparent={true} visible={modalVisible} onRequestClose={() => {setModalVisible(!modalVisible); }} style = {pedidosStyle.modals}>
+                                        <View style={pedidosStyle.modalView}>
+                                            <View style={pedidosStyle.modalView}>
+                                                <View style = {pedidosStyle.modalHeader}>
+                                                    <Text style={pedidosStyle.modalHeaderText}>Pedido Nº {1}</Text>
+                                                </View>
+                                                <View style = {pedidosStyle.modalProdutosMain}>
+                                                    {pedido.pedidos.map((produto) => (
+                                                        <View style = {pedidosStyle.modalProdutosView}>
+                                                            <View style = {pedidosStyle.modalProdutosCountView}>
+                                                                <Text style = {pedidosStyle.modalProdutosCount}>{produto.count}x</Text>
+                                                            </View>
+                                                            <View style = {pedidosStyle.modalProdutosDetailsMain}>
+                                                                <View style = {pedidosStyle.modalProdutosDetailsFlex}>
+                                                                    <Text style = {pedidosStyle.modalProdutoTitle}>{getType(produto.type)} {produto.tamanho}ml</Text>
+                                                                    <View style = {pedidosStyle.modalProdutosDetailsView}>
+                                                                        <Text style = {pedidosStyle.modalProdutoSubtitle}>Calda</Text>
+                                                                        <Text style = {pedidosStyle.modalProdutoContent}>{produto.calda}</Text>
+                                                                    </View>
+                                                                    <View style = {pedidosStyle.modalProdutosDetailsView}>
+                                                                        <Text style = {pedidosStyle.modalProdutoSubtitle}>Sabores</Text>
+                                                                        <Text style = {pedidosStyle.modalProdutoContent}>{produto.sabores.join("\n")}</Text>
+                                                                    </View>
+                                                                    <View style = {pedidosStyle.modalProdutosDetailsView}>
+                                                                        <Text style = {pedidosStyle.modalProdutoSubtitle}>Condimentos</Text>
+                                                                        <Text style = {pedidosStyle.modalProdutoContent}>{produto.condimentos.join("\n")}</Text>
+                                                                    </View>
+                                                                    <View style = {pedidosStyle.modalProdutosDetailsView}>
+                                                                        <Text style = {pedidosStyle.modalProdutoSubtitle}>Adicionais</Text>
+                                                                        <Text style = {pedidosStyle.modalProdutoContent}>{produto.adicionais.join("\n")}</Text>
+                                                                    </View>
+                                                                </View>
+                                                                <View style = {pedidosStyle.modalProdutoPriceView}>
+                                                                    <Text>{produto.price.toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'})}</Text>
+                                                                </View>
+                                                            </View>
+                                                        </View>
+                                                    ))}
+                                                </View>
+                                                <Pressable style={[pedidosStyle.button, pedidosStyle.buttonClose]} onPress={() => setModalVisible(!modalVisible)}>
+                                                <Text style={pedidosStyle.textStyle}>Fechar</Text>
+                                                </Pressable>
+                                            </View>
+                                        </View>
+                                    </Modal>
                                 </View>
                             </View>
                         </TouchableOpacity>
