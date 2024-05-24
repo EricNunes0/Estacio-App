@@ -10,6 +10,7 @@ export const pedidosStyle = StyleSheet.create({
     pedidosMain: {
         width: screen.width,
         display: "flex",
+        flexDirection: "column-reverse",
         justifyContent: "center",
         alignItems: "center"
     },
@@ -31,7 +32,7 @@ export const pedidosStyle = StyleSheet.create({
     },
     pedidosDateSquare: {
         height: 80,
-        backgroundColor: "#ddd",
+        backgroundColor: "#eee",
         borderRadius: 5,
         display: "flex",
         justifyContent: "center",
@@ -65,6 +66,10 @@ export const pedidosStyle = StyleSheet.create({
         fontFamily: "Poppins",
         fontSize: 14,
         fontWeight: "bold"
+    },
+    pedidosArrow: {
+        width: 18,
+        height: 18
     },
     modals: {},
     modalView: {
@@ -153,5 +158,34 @@ export const pedidosStyle = StyleSheet.create({
         borderLeftColor: "#666",
         borderLeftStyle: "solid",
         borderLeftWidth: 1
+    },
+    modalProdutoPrice: {
+        fontFamily: "Poppins",
+        fontSize: 14,
+        fontWeight: "bold"
+    },
+    modalCloseButtonView: {
+        pointerEvents: "none",
+        position: "absolute",
+        bottom: 0,
+        width: "100%",
+        height: "100%",
+        display: "flex",
+        justifyContent: "flex-end",
+        alignItems: "center"
+    },
+    modalCloseButton: {
+        pointerEvents: "all",
+        width: "100%",
+        height: 50,
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "#802060"
+    },
+    modalCloseButtonText: {
+        color: "#fff",
+        fontFamily: "Poppins",
+        fontSize: 14
     }
 })

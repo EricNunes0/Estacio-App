@@ -1,6 +1,6 @@
 {
   "name": "main",
-  "version": "0.1.8",
+  "version": "0.1.10",
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
     "start": "expo start",

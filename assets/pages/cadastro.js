@@ -9,6 +9,7 @@ import navigateTo from "../../functions/navigateTo";
 import { storeData } from "../../functions/storeData";
 import { getRegisters } from "../../functions/getRegisters";
 import { clearStorage } from "../../functions/clearStorage";
+import { tokenAddToUser } from "../../functions/tokenAddToUser";
 import CryptoJS from "crypto-js";
 import uuid from "react-native-uuid";
 
@@ -84,10 +85,14 @@ export default function Cadastro() {
 			id: uuid.v4(),
 			name: nameInput,
 			createAt: new Date().getTime(),
+			admin: true,
+			addresses: [],
 			email: emailInput,
 			password: CryptoJS.AES.encrypt(passwordInput, "password").toString(),
+			phone: null,
 			cart: [],
-			token: null
+			token: null,
+			icon: null
 		});
 	};
 
@@ -104,8 +109,12 @@ export default function Cadastro() {
 		if(!emailExists) {
 			usersArray.push(obj);
 			await AsyncStorage.setItem("users", JSON.stringify(usersArray));
-			let decryptedPassword = CryptoJS.AES.decrypt(obj.password, "password").toString(CryptoJS.enc.Utf8);
-			alert("Um novo usuário foi cadastrado!");
+			//let decryptedPassword = CryptoJS.AES.decrypt(obj.password, "password").toString(CryptoJS.enc.Utf8);
+			const token = uuid.v4();
+			const tokenServer = {token: token};
+			const tokenJSON = JSON.stringify(tokenServer);
+			await AsyncStorage.setItem("token", tokenJSON);
+			await tokenAddToUser(obj, token);
 			navigation.navigate("Main");
 		} else {
 			alert("E-mail já cadastrado!");
