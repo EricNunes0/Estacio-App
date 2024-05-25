@@ -8,6 +8,7 @@ import { tokenRemoveFromUser } from "../../../../functions/tokenRemoveFromUser";
 export default function Menu() {
     const navigation = useNavigation();
     const [userName, setUserName] = useState(null);
+    const [userAdmin, setUserAdmin] = useState(false);
 
     useEffect(() => {
         tokenGetUser();
@@ -29,6 +30,7 @@ export default function Menu() {
                     }
                 };
                 setUserName(usersArray[i].name);
+                setUserAdmin(usersArray[i].admin);
             } else {
                 alert(`Não existe um token: ${tokenJSON}`);
                 navigation.navigate("Login");
@@ -63,8 +65,30 @@ export default function Menu() {
                 </View>
             </View>
             <View style = {settingsStyle.main}>
+                {/* Editar recursos */}
+                    {userAdmin ? (
+                        <TouchableOpacity onPress={() => {navigation.navigate("Resources")}} style = {settingsStyle.mainButtons}>
+                            <View style = {settingsStyle.mainButtonsLeft}>
+                                <View style = {settingsStyle.mainButtonsIconView}>
+                                    <Image source={require("../../../svgs/settings/admin.svg")} style = {settingsStyle.mainButtonsIcon}></Image>
+                                </View>
+                                <View style = {settingsStyle.mainButtonsTextView}>
+                                    <Text style = {settingsStyle.mainButtonsTitle}>Editar recursos</Text>
+                                    <Text style = {settingsStyle.mainButtonsSubtitle}>Definir recursos disponíveis em estoque</Text>
+                                </View>
+                            </View>
+                            <View style = {settingsStyle.mainButtonsRight}>
+                                <View style = {settingsStyle.mainButtonsArrowView}>
+                                    <Image source={require("../../../svgs/settings/right.svg")} style = {settingsStyle.mainButtonsArrow}></Image>
+                                </View>
+                            </View>
+                        </TouchableOpacity>
+                    ) : (
+                        <></>
+                    )
+                }
                 {/* Ver pedidos */}
-                <TouchableOpacity style = {settingsStyle.mainButtons}>
+                <TouchableOpacity onPress={() => {navigation.navigate("Pedidos")}} style = {settingsStyle.mainButtons}>
                     <View style = {settingsStyle.mainButtonsLeft}>
                         <View style = {settingsStyle.mainButtonsIconView}>
                             <Image source={require("../../../svgs/settings/order.svg")} style = {settingsStyle.mainButtonsIcon}></Image>

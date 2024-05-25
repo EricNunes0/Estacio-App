@@ -2,8 +2,6 @@ import { Button, Image, Text, TouchableOpacity, View } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import { settingsStyle } from "../../../styles/settings";
-import { useEffect, useState } from "react";
-import { tokenRemoveFromUser } from "../../../../functions/tokenRemoveFromUser";
 
 export default function Data() {
     const navigation = useNavigation();

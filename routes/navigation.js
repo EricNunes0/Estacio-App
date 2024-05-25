@@ -1,7 +1,7 @@
 
 import React from "react";
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Main from "../assets/pages/home/main";
+import Acai from "../assets/pages/home/acai";
 import IceCream from "../assets/pages/home/icecream";
 import Carrinho from "../assets/pages/home/carrinho";
 import { MaterialCommunityIcons, AntDesign } from '@expo/vector-icons';
@@ -14,7 +14,7 @@ export default function Navigation() {
 
 	return (
 		<Tab.Navigator initialRouteName="Açaí" screenOptions={{headerShown: false}}>
-			<Tab.Screen name="Açaí" component={Main} options={{
+			<Tab.Screen name="Açaí" component={Acai} options={{
 				tabBarActiveTintColor: activeColor,
 				tabBarInactiveTintColor: inactiveColor,
 				tabBarIcon: (tabInfo) => { 

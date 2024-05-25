@@ -71,6 +71,9 @@ export const pedidosStyle = StyleSheet.create({
         width: 18,
         height: 18
     },
+    modalMain: {
+        backgroundColor: "#fff"
+    },
     modals: {},
     modalView: {
         width: "100%",
@@ -94,9 +97,12 @@ export const pedidosStyle = StyleSheet.create({
         fontSize: 18
     },
     modalProdutosMain: {
-        width: "100%"
+        width: "100%",
+        height: screen.height,
+        backgroundColor: "#eee",
     },
     modalProdutosView: {
+        backgroundColor: "#fff",
         display: "flex",
         flexDirection: "row",
         justifyContent: "flex-start",
