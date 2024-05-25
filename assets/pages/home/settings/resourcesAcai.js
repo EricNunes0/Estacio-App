@@ -41,7 +41,7 @@ export default function ResourcesAcai() {
                 } else {
                     setUserId(usersArray[i].id);
                     setUserAdmin(usersArray[i].admin);
-                    setStandardResources() // Remover depois
+                    //setStandardResources() // Remover depois
                 }
             } else {
                 alert(`Não existe um token: ${tokenJSON}`);
@@ -54,6 +54,26 @@ export default function ResourcesAcai() {
 
     const editItem = async (item) => {
         console.log(item)
+        // Programar para editar itens dos recursos
+    };
+
+    const deleteItem = async (resource, item) => {
+        const resourcesString = await AsyncStorage.getItem("resources");
+        let resourcesObject = JSON.parse(resourcesString);
+        for(const key of Object.keys(resourcesObject.acai)) {
+            if(resource === key) {
+                let i = 0;
+                for(const resourceItem of resourcesObject.acai[key].items) {
+                    if(resourceItem.value === item.value) {
+                        resourcesObject.acai[key].items.splice(i, 1);
+                    } else {
+                        i++;
+                    }
+                }
+            }
+        };
+        setResources(resourcesObject.acai);
+        await AsyncStorage.setItem("resources", JSON.stringify(resourcesObject));
     };
     
     return (
@@ -61,7 +81,7 @@ export default function ResourcesAcai() {
             <View style = {settingsStyle.container}>
                 <View style = {settingsStyle.main}>
                     {Object.keys(resources).map((resource) => (
-                        <View>
+                        <View key={resource}>
                             <View style = {settingsStyle.mainHeader}>
                                 <Text style = {settingsStyle.mainTitle}>{resources[resource].title}</Text>
                             </View>
@@ -82,10 +102,10 @@ export default function ResourcesAcai() {
                                         </View>
                                         <View style = {settingsStyle.mainEditButtonsRight}>
                                             <View style = {settingsStyle.mainButtonsRightOptionsView}>
-                                                <TouchableOpacity onPress={() => {editItem(item)}} style = {settingsStyle.mainButtonsRightOptions}>
+                                                <TouchableOpacity onPress={() => {editItem(resource, item)}} style = {settingsStyle.mainButtonsRightOptions}>
                                                     <Image source={require("../../../svgs/settings/edit.svg")} style = {settingsStyle.mainButtonsRightOptionsIcons}></Image>
                                                 </TouchableOpacity>
-                                                <TouchableOpacity style = {settingsStyle.mainButtonsRightOptions}>
+                                                <TouchableOpacity onPress={() => {deleteItem(resource, item)}} style = {settingsStyle.mainButtonsRightOptions}>
                                                     <Image source={require("../../../svgs/settings/delete.svg")} style = {settingsStyle.mainButtonsRightOptionsIcons}></Image>
                                                 </TouchableOpacity>
                                             </View>
