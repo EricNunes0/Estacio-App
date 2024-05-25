@@ -33,8 +33,25 @@ export const settingsStyle = StyleSheet.create({
         fontWeight: "bold"
     },
     main: {
+        width: "100%"
+    },
+    mainHeader: {
         width: "100%",
-        marginTop: 10
+        height: 60,
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "flex-start",
+        backgroundColor: "#eee",
+        padding: 8
+    },
+    mainTitle: {
+        color: "#000",
+        fontFamily: "Poppins",
+        fontSize: 16,
+        fontWeight: "bold"
+    },
+    mainArticle: {
+        width: "100%"
     },
     mainButtons: {
         width: "100%",
@@ -44,10 +61,20 @@ export const settingsStyle = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         borderBottomColor: "#ddd",
-        borderBottomWidth: 1
+        borderBottomWidth: 2
     },
     mainButtonsLeft: {
         width: `calc(100% - ${32}px)`,
+        height: "100%",
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "flex-start",
+        alignItems: "center",
+        gap: 16,
+        padding: 8
+    },
+    mainEditButtonsLeft: {
+        width: `calc(100% - ${100}px)`,
         height: "100%",
         display: "flex",
         flexDirection: "row",
@@ -91,6 +118,31 @@ export const settingsStyle = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "center",
         alignItems: "center",
+    },
+    mainEditButtonsRight: {
+        width: 100,
+        height: "100%",
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    mainButtonsRightOptionsView: {
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "center",
+        alignItems: "center"
+    },
+    mainButtonsRightOptions: {
+        width: 50,
+        height: 50,
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center"
+    },
+    mainButtonsRightOptionsIcons: {
+        width: 20,
+        height: 24
     },
     mainButtonsArrowView: {},
     mainButtonsArrow: {

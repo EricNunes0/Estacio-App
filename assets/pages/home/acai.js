@@ -40,7 +40,6 @@ export default function Acai() {
         try {
             const resourcesString = await AsyncStorage.getItem("resources");
             let resourcesObject = JSON.parse(resourcesString);
-            console.log(resourcesObject.acai)
             setResources(resourcesObject.acai);
 
             /* Configurando seleções */
@@ -53,7 +52,11 @@ export default function Acai() {
             /* Configurando preços */
             let newPrices = {}
             for(const key of Object.keys(resourcesObject.acai)) {
-                newPrices[key] = 0;
+                if(resourcesObject.acai[key].type === "radio") {
+                    newPrices[key] = 0;
+                } else if(resourcesObject.acai[key].type === "checkbox") {
+                    newPrices[key] = {};
+                }
             }
             setPrices(newPrices);
             
@@ -114,7 +117,13 @@ export default function Acai() {
         let newPrices = prices;
         let newTotal = 0;
         for(const key of Object.keys(prices)) {
-            newTotal += parseFloat(prices[key]);
+            if(resources[key].type === "radio") {
+                newTotal += parseFloat(prices[key]);
+            } else if(resources[key].type === "checkbox") {
+                for(const priceKey of Object.keys(prices[key])) {
+                    newTotal += parseFloat(prices[key][priceKey]);
+                };
+            }
         };
         setFinalPrice(newTotal);
         return newTotal;
@@ -125,12 +134,11 @@ export default function Acai() {
         /* Alterando o valor em resources */
         let newResources = resources;
 
-        let itemFound;
+        let itemFound, itemAction;
         const checkedCount = selects[resource].length;
-        console.log(checkedCount)
-
         for(const item of newResources[resource].items) {
             if(item.value === value) {
+                itemFound = item;
                 if(item.checked === false) {
                     if(newResources[resource].max) {
                         if(checkedCount >= newResources[resource].max) {
@@ -138,9 +146,10 @@ export default function Acai() {
                         }
                     }
                     item.checked = true;
-                    itemFound = item;
+                    itemAction = 1;
                 } else {
                     item.checked = false;
+                    itemAction = 0;
                 }
             }
             
@@ -159,35 +168,21 @@ export default function Acai() {
             [resource]: newSelect
         }));
 
-        return; // Continuar aqui!!!!!!!!!!!!!!!
-
         /* Alterando o preço total */
         let newPrices = prices;
-        newPrices[resource] = parseFloat(itemFound.price);
+        switch(itemAction) {
+            case 0:
+                newPrices[resource][value] = parseFloat(itemFound.price);
+                break;
+            case 1:
+                if(newPrices[resource][value]) {
+                    newPrices[resource][value] = 0;
+                };
+                break;
+            default:
+                break;
+        }
         setPrices(newPrices);
-        calculateFinalPrice();
-    };
-    
-    /* Função para alterar os condimentos */
-    const changeCondimentos = (index) => {
-        const newCondimentos = [...condimentos];
-        newCondimentos[index].checked = !newCondimentos[index].checked;
-        setCondimentos(newCondimentos);
-    };
-    
-    /* Função para alterar os adicionais */
-    const changeAdicionais = (index) => {
-        let newPrice = price;
-        const newAdicionais = [...adicionais];
-        if(newAdicionais[index].checked) {
-            newAdicionais[index].checked = false;
-            newPrice.adicionais[index] = 0;
-        } else {
-            newAdicionais[index].checked = true;
-            newPrice.adicionais[index] = newAdicionais[index].price;
-        };
-        setAdicionais(newAdicionais);
-        setPrice(newPrice);
         calculateFinalPrice();
     };
 
@@ -200,32 +195,35 @@ export default function Acai() {
         id: uuid.v4(),
         createdAt: new Date().getTime(),
         type: 0, /* 0 = Açaí, 1 = Sorvete */
-        /*price: price.total,*/
+        price: finalPrice,
         count: 1,
-        /*tamanho: size,*/
-        /*calda: calda,*/
-        /*sabores: sabores.filter((sabor) => sabor.checked).map((sabor) => sabor.label),*/
-        condimentos: condimentos.filter((condimento) => condimento.checked).map((condimento) => condimento.label),
-        adicionais: adicionais.filter((adicional) => adicional.checked).map((adicional) => adicional.label),
         observation: observation || null
     };
+
     /* Função para enviar o pedido */
     const enviarPedido = async () => {
         try {
-            console.log(pedido)
-            if(pedido.tamanho === 0) {
-                alert("Selecione um tamanho");
-                return;
+            for(const key of Object.keys(resources)) {
+                if(resources[key].required === true) {
+                    if(resources[key].type === "radio") {
+                        if(selects[key] === 0 || selects[key] === null) {
+                            alert(`Você precisa selecionar: ${resources[key].title}`);
+                            return;
+                        } else {
+                            pedido[key] = selects[key];
+                        };
+                    } else if(resources[key].type === "checkbox") {
+                        if(selects[key].length === 0) {
+                            alert(`Você precisa selecionar: ${resources[key].title}`);
+                            return;
+                        } else {
+                            pedido[key] = selects[key];
+                        };
+                    }
+                } else {
+                    pedido[key] = selects[key];
+                }
             };
-            if(!pedido.calda) {
-                alert("Selecione uma calda");
-                return;
-            };
-            if(pedido.sabores.length === 0) {
-                alert("Selecione ao menos um sabor");
-                return;
-            };
-            
             /* Adicinando ao carrinho */
 		    const usersString = await AsyncStorage.getItem("users");
             const usersArray = usersString ? JSON.parse(usersString) : [];
@@ -298,12 +296,21 @@ export default function Acai() {
                                     <View style={mainStyle.customizeRadioMain}>
                                         {resources[resource].items.map((item) => (
                                             <View style={mainStyle.customizeRadioView}>
-                                            <Text style={[mainStyle.radioTitle, mainStyle.radioTitleCenter]}>{item.label}</Text>
-                                            <Checkbox.Item
-                                                key={item.label}
-                                                status={selects[resource].includes(item.value) ? "checked" : "unchecked"}
-                                                onPress={() => changeCheckboxResource(resource, item.value)}
-                                            />
+                                                {item.price !== 0 ? (
+                                                    <>
+                                                        <Text style={mainStyle.radioTitle}>{item.label}</Text>
+                                                        <Text style={mainStyle.radioSubtitle}>+ {(item.price).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}</Text>
+                                                    </>
+                                                ) : (
+                                                    <>
+                                                        <Text style={[mainStyle.radioTitle, mainStyle.radioTitleCenter]}>{item.label}</Text>
+                                                    </>
+                                                )}
+                                                <Checkbox.Item
+                                                    key={item.label}
+                                                    status={selects[resource].includes(item.value) ? "checked" : "unchecked"}
+                                                    onPress={() => changeCheckboxResource(resource, item.value)}
+                                                />
                                             </View>
                                         ))}
                                     </View>
@@ -311,53 +318,6 @@ export default function Acai() {
                             </View>
                         </>
                     ))}
-                    {/* Condimentos */}
-                    {/*<View style={mainStyle.headers}>
-                        <View style={mainStyle.headerView}>
-                            <View>
-                                <Text style={mainStyle.headerTitle}>Condimentos</Text>
-                                <Text style={mainStyle.headerSubtitle}>Escolha os condimentos</Text>
-                            </View>
-                        </View>
-                    </View>
-                    <View style={mainStyle.customizeButtonsView}>
-                        <View style={mainStyle.customizeRadioMain}>
-                            {condimentos.map((condimento, index) => (
-                                <View style={mainStyle.customizeRadioView}>
-                                <Text style={[mainStyle.radioTitle, mainStyle.radioTitleCenter]}>{condimento.label}</Text>
-                                <Checkbox.Item
-                                    key={index}
-                                    status={condimento.checked ? "checked" : "unchecked"}
-                                    onPress={() => changeCondimentos(index)}
-                                />
-                                </View>
-                            ))}
-                        </View>
-                    </View>*/}
-                    {/* Adicionais */}
-                    {/*<View style={mainStyle.headers}>
-                        <View style={mainStyle.headerView}>
-                            <View>
-                                <Text style={mainStyle.headerTitle}>Adicionais</Text>
-                                <Text style={mainStyle.headerSubtitle}>Escolha os adicionais</Text>
-                            </View>
-                        </View>
-                    </View>
-                    <View style={mainStyle.customizeButtonsView}>
-                        <View style={mainStyle.customizeRadioMain}>
-                            {adicionais.map((adicional, index) => (
-                                <View style={mainStyle.customizeRadioView}>
-                                <Text style={mainStyle.radioTitle}>{adicional.label}</Text>
-                                <Text style={mainStyle.radioSubtitle}>+ {(adicional.price).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}</Text>
-                                <Checkbox.Item
-                                    key={index}
-                                    status={adicional.checked ? "checked" : "unchecked"}
-                                    onPress={() => changeAdicionais(index)}
-                                />
-                                </View>
-                            ))}
-                        </View>
-                    </View>*/}
                     <View style={mainStyle.observationMain}>
                         <View style={mainStyle.observationHeader}>
                             <View style={mainStyle.observationHeaderFlex}>

@@ -33,6 +33,7 @@ export default function Carrinho() {
                     }
                 };
                 setUserId(usersArray[i].id);
+                console.log(usersArray[i].cart)
                 setUserCart(usersArray[i].cart);
                 calculatePrice(usersArray[i].cart);
             } else {
@@ -108,6 +109,35 @@ export default function Carrinho() {
         } catch(e) {
             console.error(e);
         }
+    }
+
+    /* Função para remover um pedido do carrinho do usuário */
+    const removePedidoFromCart = async (produtoId) => {
+        const usersString = await AsyncStorage.getItem("users");
+        let usersArray = JSON.parse(usersString);
+        let i = 0;
+        for(let registeredUser of usersArray) {
+            if(userId === registeredUser.id) {
+                let newUserCart = usersArray[i].cart || [];
+                let j = 0;
+                for(let pedido of newUserCart) {
+                    if(pedido.id === produtoId) {
+                        newUserCart.splice(j, 1)
+                        //newUserCart[j].count -= 1;
+                        break;
+                    } else {
+                        j++;
+                    };
+                };
+                usersArray[i].cart = newUserCart;
+                break;
+            } else {
+                i++;
+            }
+        };
+        setUserCart(usersArray[i].cart);
+        await AsyncStorage.setItem("users", JSON.stringify(usersArray));
+        calculatePrice(usersArray[i].cart);
     }
 
     /* Função para remover um pedido ao contador */
@@ -192,7 +222,7 @@ export default function Carrinho() {
                                         <View style={carrinhoStyle.produtoButtonView}>
                                             <View style={carrinhoStyle.produtoButtonBox}>
                                                 {produto.count === 1 ?
-                                                    (<TouchableOpacity style={[carrinhoStyle.produtoButtonOptions]}>
+                                                    (<TouchableOpacity onPress={() => {removePedidoFromCart(produto.id)}} style={[carrinhoStyle.produtoButtonOptions]}>
                                                         <Image style={[carrinhoStyle.produtoButtonOptionsIcons]} source={require(`../../../assets/svgs/red_trash.svg`)}></Image>
                                                     </TouchableOpacity>) : 
                                                     (<TouchableOpacity onPress={() => {removeCount(produto.id)}} style={[carrinhoStyle.produtoButtonOptions]}>
