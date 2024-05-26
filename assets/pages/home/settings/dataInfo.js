@@ -4,7 +4,6 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import { messageStyle } from "../../../styles/message";
 import { settingsStyle } from "../../../styles/settings";
-import { TextInput } from "react-native-paper";
 
 export default function DataInfo() {
     const navigation = useNavigation();

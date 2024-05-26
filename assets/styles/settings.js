@@ -39,8 +39,9 @@ export const settingsStyle = StyleSheet.create({
         width: "100%",
         height: 60,
         display: "flex",
-        justifyContent: "center",
-        alignItems: "flex-start",
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
         backgroundColor: "#eee",
         padding: 8
     },
@@ -49,6 +50,22 @@ export const settingsStyle = StyleSheet.create({
         fontFamily: "Poppins",
         fontSize: 16,
         fontWeight: "bold"
+    },
+    mainHeaderAddView: {
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center"
+    },
+    mainHeaderAddButton: {
+        width: 50,
+        height: 50,
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center"
+    },
+    mainHeaderAddIcon: {
+        width: 24,
+        height: 24
     },
     mainArticle: {
         width: "100%"
@@ -237,5 +254,68 @@ export const settingsStyle = StyleSheet.create({
         justifyContent: "flex-start",
         alignItems: "flex-start",
         gap: 8
+    },
+    editMain: {
+        width: "100%"
+    },
+    editFieldset: {
+        width: "100%",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center"
+    },
+    editView: {
+        width: `calc(100% - ${8 * 2}px)`
+    },
+    editTitle: {
+        fontFamily: "Poppins",
+        fontSize: 16,
+        fontWeight: "bold"
+    },
+    editTextInput: {
+        width: "100%",
+        maxWidth: 400,
+        height: 50
+    },
+    editFooter: {
+        width: "100%",
+        display: "flex",
+        justifyContent: "flex-end",
+        alignItems: "center"
+    },
+    editFooterMain: {
+        width: "100%",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        gap: 8,
+        marginTop: 16
+    },
+    editFooterButton: {
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        width: `calc(100% - ${8 * 2}px)`,
+        height: 50,
+        borderRadius: 5
+    },
+    editFooterButton1: {
+        borderColor: "#802060",
+        borderStyle: "solid",
+        borderWidth: 1,
+    },
+    editFooterButton2: {
+        backgroundColor: "#802060"
+    },
+    editFooterButtonText: {
+        fontFamily: "Poppins",
+        fontSize: 14
+    },
+    editFooterButtonText1: {
+        color: "#802060"
+    },
+    editFooterButtonText2: {
+        color: "#fff"
     }
 });

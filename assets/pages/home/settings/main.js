@@ -7,6 +7,8 @@ import Menu from "./menu";
 import { screenRightAnimation } from "../../../../functions/screenRightAnimation";
 import Resources from "./resources";
 import ResourcesAcai from "./resourcesAcai";
+import ResourcesAcaiAdd from "./resourcesAcaiAdd";
+import ResourcesAcaiEdit from "./resourcesAcaiEdit";
 
 const Stack = createStackNavigator();
 
@@ -21,6 +23,16 @@ export default function Settings() {
 				cardStyleInterpolator: screenRightAnimation
 			}}></Stack.Screen>
 			<Stack.Screen name="ResourcesAcai" component={ResourcesAcai} options={{
+				headerShown: false,
+				gestureDirection: "vertical",
+				cardStyleInterpolator: screenRightAnimation
+			}}></Stack.Screen>
+			<Stack.Screen name="ResourcesAcaiAdd" component={ResourcesAcaiAdd} options={{
+				headerShown: false,
+				gestureDirection: "vertical",
+				cardStyleInterpolator: screenRightAnimation
+			}}></Stack.Screen>
+			<Stack.Screen name="ResourcesAcaiEdit" component={ResourcesAcaiEdit} options={{
 				headerShown: false,
 				gestureDirection: "vertical",
 				cardStyleInterpolator: screenRightAnimation

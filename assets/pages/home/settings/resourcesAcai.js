@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Button, Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import { settingsStyle } from "../../../styles/settings";
 import { setStandardResources } from "../../../../functions/setStandardResources";
 
@@ -13,7 +13,16 @@ export default function ResourcesAcai() {
 
     useEffect(() => {
         getData();
-    }, [])
+    }, []);
+
+    useFocusEffect(
+        useCallback(() => {
+            getData();
+            return () => {
+                // Esta função será executada quando a tela perder o foco (opcional)
+            };
+        }, [])
+      );
     
     const getData = async () => {
         try {
@@ -52,9 +61,20 @@ export default function ResourcesAcai() {
         }
     };
 
-    const editItem = async (item) => {
+    /* Adicionar item */
+    const addItem = async (resource) => {
+        navigation.navigate("ResourcesAcaiAdd", {
+            resource: resource
+        });
+    };
+
+    /* Editar item */
+    const editItem = async (resource, item) => {
         console.log(item)
-        // Programar para editar itens dos recursos
+        navigation.navigate("ResourcesAcaiEdit", {
+            resource: resource,
+            item: item
+        });
     };
 
     const deleteItem = async (resource, item) => {
@@ -84,6 +104,11 @@ export default function ResourcesAcai() {
                         <View key={resource}>
                             <View style = {settingsStyle.mainHeader}>
                                 <Text style = {settingsStyle.mainTitle}>{resources[resource].title}</Text>
+                                <View style = {settingsStyle.mainHeaderAddView}>
+                                    <TouchableOpacity onPress={() => {addItem(resource)}} style = {settingsStyle.mainHeaderAddButton}>
+                                        <Image source={require("../../../svgs/settings/add.svg")} style = {settingsStyle.mainHeaderAddIcon}></Image>
+                                    </TouchableOpacity>
+                                </View>
                             </View>
                             <View style = {settingsStyle.mainArticle}>
                                 {resources[resource].items.map((item) => (
