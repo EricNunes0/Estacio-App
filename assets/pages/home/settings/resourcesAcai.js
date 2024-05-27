@@ -3,7 +3,6 @@ import { Button, Image, ScrollView, Text, TouchableOpacity, View } from "react-n
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import { settingsStyle } from "../../../styles/settings";
-import { setStandardResources } from "../../../../functions/setStandardResources";
 
 export default function ResourcesAcai() {
     const navigation = useNavigation();
@@ -29,7 +28,6 @@ export default function ResourcesAcai() {
             const resourcesString = await AsyncStorage.getItem("resources");
             let resourcesObject = JSON.parse(resourcesString);
             setResources(resourcesObject.acai);
-            console.log(resources)
 
             const tokenJSON = await AsyncStorage.getItem("token");
             if(tokenJSON) {
@@ -45,12 +43,10 @@ export default function ResourcesAcai() {
                     }
                 };
                 if(usersArray[i].admin === false) {
-                    console.log(JSON.parse(await AsyncStorage.getItem("resources")));
                     navigation.navigate("Menu");
                 } else {
                     setUserId(usersArray[i].id);
                     setUserAdmin(usersArray[i].admin);
-                    //setStandardResources() // Remover depois
                 }
             } else {
                 alert(`Não existe um token: ${tokenJSON}`);
@@ -84,7 +80,7 @@ export default function ResourcesAcai() {
             if(resource === key) {
                 let i = 0;
                 for(const resourceItem of resourcesObject.acai[key].items) {
-                    if(resourceItem.value === item.value) {
+                    if(resourceItem.id === item.id) {
                         resourcesObject.acai[key].items.splice(i, 1);
                     } else {
                         i++;
@@ -141,10 +137,12 @@ export default function ResourcesAcai() {
                         </View>
                     ))}
                 </View>
-                <View style = {settingsStyle.footer}>
-                    <TouchableOpacity onPress={() => {navigation.navigate("Resources")}} style = {settingsStyle.footerReturnButton}>
-                        <Text style = {settingsStyle.footerReturnButtonText}>Voltar</Text>
-                    </TouchableOpacity>
+                <View style = {settingsStyle.editFooter}>
+                    <View style = {settingsStyle.editFooterMain}>
+                        <TouchableOpacity onPress={() => {navigation.navigate("Resources")}} style = {[settingsStyle.editFooterButton, settingsStyle.editFooterButton1]}>
+                            <Text style = {[settingsStyle.editFooterButtonText, settingsStyle.editFooterButtonText1]}>Voltar</Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
             </View>
         </ScrollView>

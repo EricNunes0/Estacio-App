@@ -12,6 +12,7 @@ import { clearStorage } from "../../functions/clearStorage";
 import { tokenAddToUser } from "../../functions/tokenAddToUser";
 import CryptoJS from "crypto-js";
 import uuid from "react-native-uuid";
+import { clearRegisters } from "../../functions/clearRegisters";
 
 export default function Cadastro() {
     const navigation = useNavigation();
@@ -174,8 +175,9 @@ export default function Cadastro() {
 						</TouchableOpacity>
 					</View>
 					<StatusBar style="auto" />
-					<TouchableOpacity onPress={() => {getRegisters()}}><Text>Cadastros</Text></TouchableOpacity>
-					<TouchableOpacity onPress={() => {clearStorage()}}><Text>Limpar tudo</Text></TouchableOpacity>
+					<TouchableOpacity onPress={() => {getRegisters()}} style={loginStyle.testButtons}><Text>Cadastros</Text></TouchableOpacity>
+					<TouchableOpacity onPress={() => {clearRegisters()}} style={loginStyle.testButtons}><Text>Limpar cadastros</Text></TouchableOpacity>
+					<TouchableOpacity onPress={() => {clearStorage()}} style={loginStyle.testButtons}><Text>Limpar tudo</Text></TouchableOpacity>
 				</View>
 				{/*<View style={loginStyle.viewBackground}>
 					<ImageBackground source={require("../images/background.png")} resizeMode="cover" style={loginStyle.loginBackground}>

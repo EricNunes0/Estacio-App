@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { Text, View, Alert, Button, Image, ImageBackground, TouchableOpacity } from "react-native";
+import { Text, View, Alert, Image, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { indexStyle } from "../styles/index";
 import navigateTo from "../../functions/navigateTo";
@@ -8,7 +7,6 @@ import WaveBackground from "./WaveBackground";
 
 export default function Index() {
     const navigation = useNavigation();
-
 
     /* Bolhas */
     let bubbles = [];

@@ -4,6 +4,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useFonts } from "expo-font";
 import Routes from "./routes/routes.js";
 import Splash from "./assets/pages/splash.js";
+import { checkIfResourcesExists } from "./functions/checkIfResourcesExists.js";
 
 export default function App() {
 	const [fontsLoaded] = useFonts({
@@ -26,13 +27,12 @@ export default function App() {
 				setIsLoggedIn(true);
 				const tokenObject = JSON.parse(tokenJSON);
 				setToken(tokenObject);
-				//alert(`Você está logado: ${tokenJSON}`);
 				disableLoading();
 		  	} else {
 				setIsLoggedIn(false);
-				//alert("Você não está logado!");
 				disableLoading();
 		  	}
+			checkIfResourcesExists();
 		} catch (e) {
 		  	console.error("Erro ao verificar o status do login:", e);
 		  	alert("Ocorreu um erro ao verificar o status do login");

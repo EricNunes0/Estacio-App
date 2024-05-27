@@ -4,6 +4,9 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { settingsStyle } from "../../../styles/settings";
 import { TextInput } from "react-native-paper";
+import uuid from "react-native-uuid";
+import { getResourceName } from "../../../../functions/getResourceName";
+import { sizeConvert } from "../../../../functions/sizeConvert";
 
 export default function ResourcesAcaiAdd() {
     const route = useRoute();
@@ -50,6 +53,11 @@ export default function ResourcesAcaiAdd() {
         }
     };
 
+    /* Obter id */
+    const getId = () => {
+        return uuid.v4();
+    }
+
     /* Converter float em moeda */
     const formatCurrency = (value) => {
         const numericValue = value.replace(/[^0-9]/g, '');
@@ -64,19 +72,6 @@ export default function ResourcesAcaiAdd() {
         return parseFloat(cleanValue);
     };
 
-    /* Mililitros/Litros do tamanho */
-    const sizeConvert = (value) => {
-        let finalValue = 0;
-        if(isNaN(value)) {
-            alert("Insira apenas texto")
-        } else if(value < 1000) {
-            finalValue = `${parseInt(value)}ml`;
-        } else if(value >= 1000) {
-            finalValue = `${parseFloat(value / 1000)}l`;
-        };
-        return finalValue;
-    };
-
     const changeItemPrice = async (text) => {
         let newText = formatCurrency(text);
         setItemPrice(newText);
@@ -85,19 +80,26 @@ export default function ResourcesAcaiAdd() {
     const addItem = async () => {
         const resourcesString = await AsyncStorage.getItem("resources");
         let resourcesObject = JSON.parse(resourcesString);
+        let newId = getId();
+        let newValue;
+        let newLabel;
+        let newPrice = getPrice();
         if(resource == "tamanho") {
-            let newSizeLabel = sizeConvert(itemValue);
-            let newPrice = getPrice();
-            resourcesObject.acai[resource].items.push({
-                value: parseFloat(itemValue),
-                label: newSizeLabel,
-                price: newPrice,
-                checked: false
-            });
+            newValue = parseFloat(itemValue);
+            newLabel = sizeConvert(itemValue);
+        } else if(resource == "calda" || resource == "sabores" || resource == "condimentos" || resource == "adicionais") {
+            newValue = itemValue;
+            newLabel = itemValue;
         };
+        resourcesObject.acai[resource].items.push({
+            id: newId,
+            value: newValue,
+            label: newLabel,
+            price: newPrice,
+            checked: false
+        });
         setResources(resourcesObject.acai);
         await AsyncStorage.setItem("resources", JSON.stringify(resourcesObject));
-        alert("Adicionado!");
         navigation.goBack();
     };
     
@@ -107,8 +109,8 @@ export default function ResourcesAcaiAdd() {
                 <View style = {settingsStyle.editMain}>
                     <View style = {settingsStyle.editFieldset}>
                         <View style = {settingsStyle.editView}>
-                            <Text style = {settingsStyle.editTitle}>Nome</Text>
-                            <TextInput mode="outlined" value={itemValue} onChangeText={(text) => {setItemValue(text)}} label={"Nome"} style = {settingsStyle.editTextInput}></TextInput>
+                            <Text style = {settingsStyle.editTitle}>{getResourceName(resource)}</Text>
+                            <TextInput mode="outlined" value={itemValue} onChangeText={(text) => {setItemValue(text)}} label={getResourceName(resource)} style = {settingsStyle.editTextInput}></TextInput>
                         </View>
                         <View style = {settingsStyle.editView}>
                             <Text style = {settingsStyle.editTitle}>Preço</Text>

@@ -40,6 +40,7 @@ export default function Acai() {
         try {
             const resourcesString = await AsyncStorage.getItem("resources");
             let resourcesObject = JSON.parse(resourcesString);
+            console.log("res")
             setResources(resourcesObject.acai);
 
             /* Configurando seleções */
@@ -79,7 +80,8 @@ export default function Acai() {
                 navigation.navigate("Login");
             }
         } catch (e) {
-            alert(`Não foi possível obter o token: ${e}`);
+            console.log(e)
+            alert(`Houve um erro: ${e}`);
         }
     };
 

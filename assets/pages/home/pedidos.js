@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
 import { Button, Image, Modal, Pressable, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import { pedidosStyle } from "../../styles/pedidos";
 
 export default function Pedidos() {
+    const navigation = useNavigation();
     const [userId, setUserId] = useState('');
     const [userPedidos, setUserPedidos] = useState([]);
     const [modalVisible, setModalVisible] = useState(false);
@@ -158,8 +160,15 @@ export default function Pedidos() {
                         </View>
                     </View>
                 ) : (
-                    <View>
-                        <Text>Não há pedidos</Text>
+                    <View style = {pedidosStyle.emptyContainer}>
+                        <View style = {pedidosStyle.emptyIconView}>
+                            <Image source={require("../../svgs/pedidos/empty.svg")} style = {pedidosStyle.emptyIcon}></Image>
+                        </View>
+                        <View style = {pedidosStyle.emptyTextsView}>
+                            <Text style = {pedidosStyle.emptyTitle}>Nenhum</Text>
+                            <Text style = {pedidosStyle.emptySubtitle}>Você ainda não fez nenhum pedido</Text>
+                        </View>
+                        <TouchableOpacity onPress={() => {navigation.navigate("Fazer pedido")}} style = {pedidosStyle.emptyButton}>Fazer pedido</TouchableOpacity>
                     </View>
                 )}
             </View>

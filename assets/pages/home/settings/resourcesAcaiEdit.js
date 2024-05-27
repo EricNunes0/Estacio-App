@@ -2,8 +2,10 @@ import { useEffect, useState } from "react";
 import { Button, Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { settingsStyle } from "../../../styles/settings";
 import { TextInput } from "react-native-paper";
+import { settingsStyle } from "../../../styles/settings";
+import { getResourceName } from "../../../../functions/getResourceName";
+import { sizeConvert } from "../../../../functions/sizeConvert";
 
 export default function ResourcesAcaiEdit() {
     const route = useRoute();
@@ -13,8 +15,6 @@ export default function ResourcesAcaiEdit() {
     const [resources, setResources] = useState(params.resource);
     const [itemValue, setItemValue] = useState(params.item.value);
     const [itemPrice, setItemPrice] = useState((params.item.price).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}));
-    const [userId, setUserId] = useState(null);
-    const [userAdmin, setUserAdmin] = useState(false);
 
     useEffect(() => {
         getData();
@@ -37,10 +37,7 @@ export default function ResourcesAcaiEdit() {
                 };
                 if(usersArray[i].admin === false) {
                     navigation.navigate("Menu");
-                } else {
-                    setUserId(usersArray[i].id);
-                    setUserAdmin(usersArray[i].admin);
-                }
+                };
             } else {
                 alert(`Não existe um token: ${tokenJSON}`);
                 navigation.navigate("Login");
@@ -69,24 +66,27 @@ export default function ResourcesAcaiEdit() {
         setItemPrice(newText);
     };
 
-    const updateItem = async (value) => {
+    const updateItem = async (id) => {
         const resourcesString = await AsyncStorage.getItem("resources");
         let resourcesObject = JSON.parse(resourcesString);
         let i = 0;
         for(const resourceItem of resourcesObject.acai[resource].items) {
-            if(resourceItem.value === value) {
+            if(resourceItem.id === id) {
                 if(resource == "tamanho") {
-                    resourcesObject.acai[resource].items[i].label = itemValue + "ml";
+                    let newSizeLabel = sizeConvert(itemValue);
                     resourcesObject.acai[resource].items[i].value = parseFloat(itemValue);
-                    resourcesObject.acai[resource].items[i].price = getPrice();
+                    resourcesObject.acai[resource].items[i].label = newSizeLabel;
+                } else if(resource == "calda" || resource == "sabores" || resource == "condimentos" || resource == "adicionais") {
+                    resourcesObject.acai[resource].items[i].value = itemValue;
+                    resourcesObject.acai[resource].items[i].label = itemValue;
                 };
+                resourcesObject.acai[resource].items[i].price = getPrice();
             } else {
                 i++;
             }
         };
         setResources(resourcesObject.acai);
         await AsyncStorage.setItem("resources", JSON.stringify(resourcesObject));
-        alert("Alterado!");
         navigation.goBack();
     };
     
@@ -96,8 +96,8 @@ export default function ResourcesAcaiEdit() {
                 <View style = {settingsStyle.editMain}>
                     <View style = {settingsStyle.editFieldset}>
                         <View style = {settingsStyle.editView}>
-                            <Text style = {settingsStyle.editTitle}>Nome</Text>
-                            <TextInput mode="outlined" value={itemValue} onChangeText={(text) => {setItemValue(text)}} label={"Nome"} style = {settingsStyle.editTextInput}></TextInput>
+                            <Text style = {settingsStyle.editTitle}>{getResourceName(resource)}</Text>
+                            <TextInput mode="outlined" value={itemValue} onChangeText={(text) => {setItemValue(text)}} label={getResourceName(resource)} style = {settingsStyle.editTextInput}></TextInput>
                         </View>
                         <View style = {settingsStyle.editView}>
                             <Text style = {settingsStyle.editTitle}>Preço</Text>
@@ -110,7 +110,7 @@ export default function ResourcesAcaiEdit() {
                         <TouchableOpacity onPress={() => {navigation.goBack()}} style = {[settingsStyle.editFooterButton, settingsStyle.editFooterButton1]}>
                             <Text style = {[settingsStyle.editFooterButtonText, settingsStyle.editFooterButtonText1]}>Voltar</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={() => {updateItem(params.item.value)}} style = {[settingsStyle.editFooterButton, settingsStyle.editFooterButton2]}>
+                        <TouchableOpacity onPress={() => {updateItem(params.item.id)}} style = {[settingsStyle.editFooterButton, settingsStyle.editFooterButton2]}>
                             <Text style = {[settingsStyle.editFooterButtonText, settingsStyle.editFooterButtonText2]}>Atualizar</Text>
                         </TouchableOpacity>
                     </View>

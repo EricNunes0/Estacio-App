@@ -5,6 +5,7 @@ const produtoIconSize = 48;
 export const pedidosStyle = StyleSheet.create({
     container: {
         width: screen.width,
+        flex: 1,
         backgroundColor: "#fff"
     },
     pedidosMain: {
@@ -193,5 +194,55 @@ export const pedidosStyle = StyleSheet.create({
         color: "#fff",
         fontFamily: "Poppins",
         fontSize: 14
+    },
+    emptyContainer: {
+        position: "absolute",
+        width: screen.width,
+        height: screen.height,
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        top: 0,
+        bottom: 0,
+        left: 0,
+        right: 0
+    },
+    emptyIconView: {
+        backgroundColor: "#ddd",
+        borderRadius: "50%",
+        padding: 20
+    },
+    emptyIcon: {
+        width: 100,
+        height: 100
+    },
+    emptyTextsView: {
+        marginTop: 8,
+        marginBottom: 8
+    },
+    emptyTitle: {
+        fontFamily: "Poppins",
+        fontSize: 24,
+        fontWeight: "bold",
+        textAlign: "center"
+    },
+    emptySubtitle: {
+        fontFamily: "Poppins",
+        fontSize: 14,
+        textAlign: "center"
+    },
+    emptyButton: {
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "#802060",
+        color: "#fff",
+        fontFamily: "Poppins",
+        fontSize: 14,
+        paddingTop: 8,
+        paddingBottom: 8,
+        paddingLeft: 16,
+        paddingRight: 16,
+        borderRadius: 50
     }
 })

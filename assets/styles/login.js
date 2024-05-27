@@ -232,9 +232,12 @@ export const loginStyle = StyleSheet.create({
 		fontWeight: "100"
 	},
 	testButtons: {
-		width: 100,
-		height: 25,
-		backgroundColor: "#f04040",
-		borderRadius: 5
+		width: 120,
+		height: 35,
+		backgroundColor: "#4040f0",
+		borderRadius: 5,
+		display: "flex",
+		justifyContent: "center",
+		alignItems: "center"
 	}
 });

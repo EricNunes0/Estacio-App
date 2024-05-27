@@ -145,9 +145,6 @@ export default function Login() {
 						</TouchableOpacity>
 					</View>
 					<StatusBar style="auto" />
-					<TouchableOpacity onPress={() => {getRegisters()}} style={loginStyle.testButtons}><Text>Usuários</Text></TouchableOpacity>
-					<TouchableOpacity onPress={() => {tokenGet()}} style={loginStyle.testButtons}><Text>Ver token</Text></TouchableOpacity>
-					<TouchableOpacity onPress={() => {tokenDelete()}} style={loginStyle.testButtons}><Text>Deletar token</Text></TouchableOpacity>
 				</View>
 				<View style={loginStyle.viewBackground}>
 					{/*<ImageBackground source={require("../images/background.png")} resizeMode="cover" style={loginStyle.loginBackground}>

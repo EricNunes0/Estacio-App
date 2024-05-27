@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Button, Text, View, Image, TouchableOpacity, ScrollView } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import { carrinhoStyle } from "../../styles/carrinho";
 import { removePedidosFromCart } from "../../../functions/removePedidosFromCart";
 import uuid from "react-native-uuid";
@@ -15,7 +15,16 @@ export default function Carrinho() {
 
     useEffect(() => {
         tokenGetUser();
-    }, [])
+    }, []);
+
+    useFocusEffect(
+        useCallback(() => {
+            tokenGetUser();
+            return () => {
+                // Esta função será executada quando a tela perder o foco (opcional)
+            };
+        }, [])
+      );
     
     const tokenGetUser = async () => {
         try {
