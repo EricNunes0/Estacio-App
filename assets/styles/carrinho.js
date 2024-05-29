@@ -4,8 +4,7 @@ const screen = Dimensions.get("screen");
 const produtoIconSize = 48;
 export const carrinhoStyle = StyleSheet.create({
     container: {
-        width: screen.width,
-        backgroundColor: "#fff"
+        width: "100%"
     },
 	title: {
         fontFamily: "Poppins",
@@ -18,9 +17,13 @@ export const carrinhoStyle = StyleSheet.create({
         justifyContent: "center"
     },
     produtoView: {
-        margin: 8
+        margin: 8,
+        borderColor: "rgba(0, 0, 0, 0.3)",
+        borderStyle: "solid",
+        borderBottomWidth: 2
     },
     produtoHeader: {
+        width: "100%",
         display: "flex",
         flexDirection: "row",
         justifyContent: "space-between",
@@ -81,7 +84,7 @@ export const carrinhoStyle = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "#eee",
+        backgroundColor: "rgba(0, 0, 0, 0.1)",
         borderRadius: 5
     },
     produtoButtonOptions: {
@@ -148,7 +151,9 @@ export const carrinhoStyle = StyleSheet.create({
     produtoCounter: {
         color: "#444"
     },
-    produtoTextView: {},
+    produtoTextView: {
+        maxWidth: "100%"
+    },
     produtoTextTitle: {
         color: "#000",
         fontFamily: "Poppins",
@@ -162,18 +167,35 @@ export const carrinhoStyle = StyleSheet.create({
         marginTop: 6,
         marginBottom: 2
     },
+    noProductsView: {
+        width: "100%",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center"
+    },
+    noProductsIconView: {
+        width: 120,
+        height: 120,
+        backgroundColor: "rgba(0, 0, 0, 0.1)",
+        borderRadius: "50%",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center"
+    },
+    noProductsIcon: {
+        width: "60%",
+        height: "60%"
+    },
+    noProductsText: {
+        color: "#000",
+        fontFamily: "Poppins",
+        fontSize: 14,
+        marginTop: 8
+    },
     footer: {
-        pointerEvents: "none",
-        position: "fixed",
-        top: 0,
-        left: 0,
-        width: screen.width,
-        height: screen.height
+        width: "100%"
     },
     footerMainView: {
-        pointerEvents: "all",
-        position: "absolute",
-        bottom: (60 * 2) + (8 * 2),
         width: "100%",
         height: 60,
         display: "flex",

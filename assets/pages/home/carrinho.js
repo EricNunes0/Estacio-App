@@ -131,8 +131,7 @@ export default function Carrinho() {
                 let j = 0;
                 for(let pedido of newUserCart) {
                     if(pedido.id === produtoId) {
-                        newUserCart.splice(j, 1)
-                        //newUserCart[j].count -= 1;
+                        newUserCart.splice(j, 1);
                         break;
                     } else {
                         j++;
@@ -217,93 +216,105 @@ export default function Carrinho() {
                 <View style={carrinhoStyle.container}>
                     <Text style={carrinhoStyle.title}>Itens adicionados</Text>
                     <View style={carrinhoStyle.pedidoView}>
-                        {userCart.map((produto) => (
-                            <View style={carrinhoStyle.produtoView} key={produto.id}>
-                                <View style={carrinhoStyle.produtoHeader}>
-                                    <View style={carrinhoStyle.produtoIconView}>
-                                        <Image source={produto.type === 0 ? require(`../../../assets/images/acai_cart.png`) : require(`../../../assets/images/icecream_cart.png`)} style={carrinhoStyle.produtoIcon}></Image>
-                                    </View>
-                                    <View style={carrinhoStyle.produtoTitleView}>
-                                        <View style={carrinhoStyle.produtoPriceView}>
-                                            <Text style={carrinhoStyle.produtoName}>{getType(produto.type)}</Text>
-                                            <Text style={carrinhoStyle.produtoPrice}>{produto.price.toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'})}</Text>
+                        {userCart.length !== 0 ? (
+                            <>
+                                {userCart.map((produto) => (
+                                    <View style={carrinhoStyle.produtoView} key={produto.id}>
+                                        <View style={carrinhoStyle.produtoHeader}>
+                                            <View style={carrinhoStyle.produtoIconView}>
+                                                <Image source={produto.type === 0 ? require(`../../../assets/images/acai_cart.png`) : require(`../../../assets/images/icecream_cart.png`)} style={carrinhoStyle.produtoIcon}></Image>
+                                            </View>
+                                            <View style={carrinhoStyle.produtoTitleView}>
+                                                <View style={carrinhoStyle.produtoPriceView}>
+                                                    <Text style={carrinhoStyle.produtoName}>{getType(produto.type)}</Text>
+                                                    <Text style={carrinhoStyle.produtoPrice}>{produto.price.toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'})}</Text>
+                                                </View>
+                                                <View style={carrinhoStyle.produtoButtonView}>
+                                                    <View style={carrinhoStyle.produtoButtonBox}>
+                                                        {produto.count === 1 ?
+                                                            (<TouchableOpacity onPress={() => {removePedidoFromCart(produto.id)}} style={[carrinhoStyle.produtoButtonOptions]}>
+                                                                <Image style={[carrinhoStyle.produtoButtonOptionsIcons]} source={require(`../../../assets/svgs/red_trash.svg`)}></Image>
+                                                            </TouchableOpacity>) : 
+                                                            (<TouchableOpacity onPress={() => {removeCount(produto.id)}} style={[carrinhoStyle.produtoButtonOptions]}>
+                                                                <Image style={[carrinhoStyle.produtoButtonOptionsIcons]} source={require(`../../../assets/svgs/red_minus.svg`)}></Image>
+                                                            </TouchableOpacity>)
+                                                        }
+                                                        <Text style={carrinhoStyle.produtoButtonCounter}>{produto.count}</Text>
+                                                        <TouchableOpacity onPress={() => {addCount(produto.id)}} style={[carrinhoStyle.produtoButtonOptions]}>
+                                                            <Image style={[carrinhoStyle.produtoButtonOptionsIcons]} source={require(`../../../assets/svgs/red_plus.svg`)}></Image>
+                                                        </TouchableOpacity>
+                                                    </View>
+                                                </View>
+                                            </View>
                                         </View>
-                                        <View style={carrinhoStyle.produtoButtonView}>
-                                            <View style={carrinhoStyle.produtoButtonBox}>
-                                                {produto.count === 1 ?
-                                                    (<TouchableOpacity onPress={() => {removePedidoFromCart(produto.id)}} style={[carrinhoStyle.produtoButtonOptions]}>
-                                                        <Image style={[carrinhoStyle.produtoButtonOptionsIcons]} source={require(`../../../assets/svgs/red_trash.svg`)}></Image>
-                                                    </TouchableOpacity>) : 
-                                                    (<TouchableOpacity onPress={() => {removeCount(produto.id)}} style={[carrinhoStyle.produtoButtonOptions]}>
-                                                        <Image style={[carrinhoStyle.produtoButtonOptionsIcons]} source={require(`../../../assets/svgs/red_minus.svg`)}></Image>
-                                                    </TouchableOpacity>)
-                                                }
-                                                <Text style={carrinhoStyle.produtoButtonCounter}>{produto.count}</Text>
-                                                <TouchableOpacity onPress={() => {addCount(produto.id)}} style={[carrinhoStyle.produtoButtonOptions]}>
-                                                    <Image style={[carrinhoStyle.produtoButtonOptionsIcons]} source={require(`../../../assets/svgs/red_plus.svg`)}></Image>
-                                                </TouchableOpacity>
+                                        <View style={carrinhoStyle.produtoMain}>
+                                            <View style={carrinhoStyle.produtoArticle}>
+                                                <View style={carrinhoStyle.produtoDetails}>
+                                                    <View style={carrinhoStyle.produtoInfos}>
+                                                        <View style={carrinhoStyle.produtoCounterCircle}>
+                                                            <Image source={require(`../../../assets/svgs/cart/size.svg`)} style={carrinhoStyle.produtoCounterIcon}/>
+                                                        </View>
+                                                        <View style={carrinhoStyle.produtoTextView}>
+                                                            <Text style = {carrinhoStyle.produtoTextTitle}>Tamanho:</Text>
+                                                            <Text style={carrinhoStyle.produtoText}>{produto.tamanho}ml</Text>
+                                                        </View>
+                                                    </View>
+                                                    <View style={carrinhoStyle.produtoInfos}>
+                                                        <View style={carrinhoStyle.produtoCounterCircle}>
+                                                            <Image source={require(`../../../assets/svgs/cart/syrup.svg`)} style={carrinhoStyle.produtoCounterIcon}/>
+                                                        </View>
+                                                        <View style={carrinhoStyle.produtoTextView}>
+                                                            <Text style = {carrinhoStyle.produtoTextTitle}>Calda:</Text>
+                                                            <Text style={carrinhoStyle.produtoText}>{produto.calda || "Sem calda"}</Text>
+                                                        </View>
+                                                    </View>
+                                                    <View style={carrinhoStyle.produtoInfos}>
+                                                        <View style={carrinhoStyle.produtoCounterCircle}>
+                                                            <Image source={require(`../../../assets/svgs/cart/flavor.svg`)} style={carrinhoStyle.produtoCounterIcon}/>
+                                                        </View>
+                                                        <View style={carrinhoStyle.produtoTextView}>
+                                                            <Text style = {carrinhoStyle.produtoTextTitle}>Sabores:</Text>
+                                                            <Text style={carrinhoStyle.produtoText}>{produto.sabores.join("\n")}</Text>
+                                                        </View>
+                                                    </View>
+                                                    <View style={carrinhoStyle.produtoInfos}>
+                                                        <View style={carrinhoStyle.produtoCounterCircle}>
+                                                            <Image source={require(`../../../assets/svgs/cart/condimento.svg`)} style={carrinhoStyle.produtoCounterIcon}/>
+                                                        </View>
+                                                        <View style={carrinhoStyle.produtoTextView}>
+                                                            <Text style = {carrinhoStyle.produtoTextTitle}>Condimentos:</Text>
+                                                            <Text style={carrinhoStyle.produtoText}>{produto.condimentos.join("\n") || "Sem condimentos"}</Text>
+                                                        </View>
+                                                    </View>
+                                                    <View style={carrinhoStyle.produtoInfos}>
+                                                        <View style={carrinhoStyle.produtoCounterCircle}>
+                                                            <Image source={require(`../../../assets/svgs/cart/extra.svg`)} style={carrinhoStyle.produtoCounterIcon}/>
+                                                        </View>
+                                                        <View style={carrinhoStyle.produtoTextView}>
+                                                            <Text style = {carrinhoStyle.produtoTextTitle}>Adicionais:</Text>
+                                                            <Text style={carrinhoStyle.produtoText}>{produto.adicionais.join("\n") || "Sem adicionais"}</Text>
+                                                        </View>
+                                                    </View>
+                                                    <View style={carrinhoStyle.produtoInfos}>
+                                                        <View style={carrinhoStyle.produtoTextView}>
+                                                            <Text style={[carrinhoStyle.produtoText, carrinhoStyle.produtoObservation]}>{produto.observation || "Nenhuma observação"}</Text>
+                                                        </View>
+                                                    </View>
+                                                </View>
                                             </View>
                                         </View>
                                     </View>
+                                ))}
+                            </>
+                        ) : (
+                            <View style = {carrinhoStyle.noProductsView}>
+                                <View style = {carrinhoStyle.noProductsIconView}>
+                                    <Image source={require("../../svgs/cart/carrinho.svg")} style = {carrinhoStyle.noProductsIcon}></Image>
                                 </View>
-                                <View style={carrinhoStyle.produtoMain}>
-                                    <View style={carrinhoStyle.produtoArticle}>
-                                        <View style={carrinhoStyle.produtoDetails}>
-                                            <View style={carrinhoStyle.produtoInfos}>
-                                                <View style={carrinhoStyle.produtoCounterCircle}>
-                                                    <Image source={require(`../../../assets/svgs/cart/size.svg`)} style={carrinhoStyle.produtoCounterIcon}/>
-                                                </View>
-                                                <View style={carrinhoStyle.produtoTextView}>
-                                                    <Text style = {carrinhoStyle.produtoTextTitle}>Tamanho:</Text>
-                                                    <Text style={carrinhoStyle.produtoText}>{produto.tamanho}ml</Text>
-                                                </View>
-                                            </View>
-                                            <View style={carrinhoStyle.produtoInfos}>
-                                                <View style={carrinhoStyle.produtoCounterCircle}>
-                                                    <Image source={require(`../../../assets/svgs/cart/syrup.svg`)} style={carrinhoStyle.produtoCounterIcon}/>
-                                                </View>
-                                                <View style={carrinhoStyle.produtoTextView}>
-                                                    <Text style = {carrinhoStyle.produtoTextTitle}>Calda:</Text>
-                                                    <Text style={carrinhoStyle.produtoText}>{produto.calda || "Sem calda"}</Text>
-                                                </View>
-                                            </View>
-                                            <View style={carrinhoStyle.produtoInfos}>
-                                                <View style={carrinhoStyle.produtoCounterCircle}>
-                                                    <Image source={require(`../../../assets/svgs/cart/flavor.svg`)} style={carrinhoStyle.produtoCounterIcon}/>
-                                                </View>
-                                                <View style={carrinhoStyle.produtoTextView}>
-                                                    <Text style = {carrinhoStyle.produtoTextTitle}>Sabores:</Text>
-                                                    <Text style={carrinhoStyle.produtoText}>{produto.sabores.join("\n")}</Text>
-                                                </View>
-                                            </View>
-                                            <View style={carrinhoStyle.produtoInfos}>
-                                                <View style={carrinhoStyle.produtoCounterCircle}>
-                                                    <Image source={require(`../../../assets/svgs/cart/condimento.svg`)} style={carrinhoStyle.produtoCounterIcon}/>
-                                                </View>
-                                                <View style={carrinhoStyle.produtoTextView}>
-                                                    <Text style = {carrinhoStyle.produtoTextTitle}>Condimentos:</Text>
-                                                    <Text style={carrinhoStyle.produtoText}>{produto.condimentos.join("\n") || "Sem condimentos"}</Text>
-                                                </View>
-                                            </View>
-                                            <View style={carrinhoStyle.produtoInfos}>
-                                                <View style={carrinhoStyle.produtoCounterCircle}>
-                                                    <Image source={require(`../../../assets/svgs/cart/extra.svg`)} style={carrinhoStyle.produtoCounterIcon}/>
-                                                </View>
-                                                <View style={carrinhoStyle.produtoTextView}>
-                                                    <Text style = {carrinhoStyle.produtoTextTitle}>Adicionais:</Text>
-                                                    <Text style={carrinhoStyle.produtoText}>{produto.adicionais.join("\n") || "Sem adicionais"}</Text>
-                                                </View>
-                                            </View>
-                                            <View style={carrinhoStyle.produtoInfos}>
-                                                <View style={carrinhoStyle.produtoTextView}>
-                                                    <Text style={[carrinhoStyle.produtoText, carrinhoStyle.produtoObservation]}>{produto.observation || "Nenhuma observação"}</Text>
-                                                </View>
-                                            </View>
-                                        </View>
-                                    </View>
-                                </View>
+                                <Text style = {carrinhoStyle.noProductsText}>Seu carrinho está vazio</Text>
                             </View>
-                        ))}
+                        )
+                        }
                     </View>
                 </View>
             </ScrollView>

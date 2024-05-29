@@ -11,14 +11,14 @@ export const mainStyle = StyleSheet.create({
     },
     header: {
         display: "flex",
-        width: screen.width
+        width: "100%"
     },
     headerBackgroundView: {
-        width: screen.width,
+        width: "100%",
         height: headerBackgroundHeight
     },
     headerBackground: {
-        width: screen.width,
+        width: "100%",
         height: headerBackgroundHeight
     },
     headerContentView: {

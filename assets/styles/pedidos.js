@@ -4,12 +4,12 @@ const screen = Dimensions.get("screen");
 const produtoIconSize = 48;
 export const pedidosStyle = StyleSheet.create({
     container: {
-        width: screen.width,
+        width: "100%",
         flex: 1,
         backgroundColor: "#fff"
     },
     pedidosMain: {
-        width: screen.width,
+        width: "100%",
         display: "flex",
         flexDirection: "column-reverse",
         justifyContent: "center",
@@ -197,15 +197,15 @@ export const pedidosStyle = StyleSheet.create({
     },
     emptyContainer: {
         position: "absolute",
-        width: screen.width,
-        height: screen.height,
+        width: "100%",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
         top: 0,
         bottom: 0,
         left: 0,
-        right: 0
+        right: 0,
+        marginTop: 200
     },
     emptyIconView: {
         backgroundColor: "#ddd",

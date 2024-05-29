@@ -194,7 +194,7 @@ export default function Acai() {
     }
 
     const pedido = {
-        id: uuid.v4(),
+        id: null,
         createdAt: new Date().getTime(),
         type: 0, /* 0 = Açaí, 1 = Sorvete */
         price: finalPrice,
@@ -205,6 +205,7 @@ export default function Acai() {
     /* Função para enviar o pedido */
     const enviarPedido = async () => {
         try {
+            pedido.id = uuid.v4();
             for(const key of Object.keys(resources)) {
                 if(resources[key].required === true) {
                     if(resources[key].type === "radio") {
