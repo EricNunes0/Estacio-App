@@ -4,7 +4,7 @@ import { indexStyle } from "../styles/index";
 import image from "../svgs/index_wave.svg"
 
 export default function WaveBackground() {
-	const screen = Dimensions.get("screen");
+	const screen = Dimensions.get("window");
 
 	const INPUT_RANGE_START = 0;
 	const INPUT_RANGE_END = 1;

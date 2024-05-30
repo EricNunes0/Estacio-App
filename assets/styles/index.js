@@ -1,6 +1,6 @@
 import { Dimensions, StyleSheet } from "react-native";
 
-const screen = Dimensions.get("screen");
+const screen = Dimensions.get("window");
 const logoCircleDif = 40;
 export const indexStyle = StyleSheet.create({
 	main: {
@@ -27,6 +27,9 @@ export const indexStyle = StyleSheet.create({
         position: "absolute",
         top: 0,
         height: "100%",
+    },
+    bubblesView: {
+        width: "100%"
     },
     bubble: {
         display: "block",

@@ -1,71 +1,231 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Text, View, Alert, Button, Image, ImageBackground, TouchableOpacity, ScrollView } from "react-native";
+import { Checkbox, RadioButton, TextInput } from "react-native-paper";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useNavigation } from "@react-navigation/native";
 import { mainStyle } from "../../styles/main";
-import { Checkbox, RadioButton } from "react-native-paper";
+import { addPedidoToCart } from "../../../functions/addPedidoToCart";
+import uuid from "react-native-uuid";
 
 export default function IceCream() {
-    const [size, setSize] = useState(300);
-    const [calda, setCalda] = useState("Nenhuma");
-    const [sabores, setSabores] = useState([
-        {label: "Flocos", checked: false},
-        {label: "Blue Ice", checked: false},
-        {label: "Ninhotella", checked: false},
-        {label: "Mousse de Maracujá", checked: false},
-        {label: "Iogurte Grego", checked: false},
-        {label: "Passas ao Rum", checked: false}
-    ]);
-    const [condimentos, setCondimentos] = useState([
-        {label: "Paçoca", checked: false},
-        {label: "Amendoim", checked: false},
-        {label: "Granola", checked: false},
-        {label: "Leite em pó", checked: false},
-        {label: "Aveia", checked: false},
-        {label: "Sucrilhos", checked: false},
-        {label: "Flocos de arroz", checked: false}
-    ]);
-    const [frutas, setFrutas] = useState([
-        {label: "Manga", subtitle: "+ R$2,00", checked: false},
-        {label: "Abacaxi", subtitle: "+ R$2,00", checked: false}
-    ]);
-    const [adicionais, setAdicionais] = useState([
-        {label: "Nutella (30ml)", subtitle: "+ R$4,00", checked: false},
-        {label: "Leite Condensado (30ml)", subtitle: "+ R$2,00", checked: false},
-        {label: "Kitkat em barra", subtitle: "+ R$5,00", checked: false}
-    ]);
-    
-    /* Função para alterar os sabores */
-    const changeSabores = (index) => {
-        const newSabores = [...sabores];
-        const checkedCount = newSabores.filter(cb => cb.checked).length;
+    const navigation = useNavigation();
+    const [userId, setUserId] = useState('');
+    const [resources, setResources] = useState({});
+    const [selects, setSelects] = useState({});
+    const [prices, setPrices] = useState({});
+    const [finalPrice, setFinalPrice] = useState(0);
+    const [observation, setObservation] = useState("");
 
-        if (checkedCount < 2 || newSabores[index].checked === true) {
-            newSabores[index].checked = !newSabores[index].checked;
-            setSabores(newSabores);
-        } else {
-            Alert.alert('Limite de seleção atingido', 'Você só pode selecionar até 2 sabores.');
+    useEffect(() => {
+        getAsyncResources();
+    }, [])
+
+    const getAsyncResources = async () => {
+        try {
+            //await setStandardResources();
+            const resourcesString = await AsyncStorage.getItem("resources");
+            let resourcesObject = JSON.parse(resourcesString);
+            setResources(resourcesObject.sorvete);
+
+            /* Configurando seleções */
+            let newSelects = {}
+            for(const key of Object.keys(resourcesObject.sorvete)) {
+                newSelects[key] = resourcesObject.sorvete[key].default;
+            }
+            setSelects(newSelects);
+
+            /* Configurando preços */
+            let newPrices = {}
+            for(const key of Object.keys(resourcesObject.sorvete)) {
+                if(resourcesObject.sorvete[key].type === "radio") {
+                    newPrices[key] = 0;
+                } else if(resourcesObject.sorvete[key].type === "checkbox") {
+                    newPrices[key] = {};
+                }
+            }
+            setPrices(newPrices);
+            
+            const tokenJSON = await AsyncStorage.getItem("token");
+            if(tokenJSON) {
+                let token = JSON.parse(tokenJSON).token;
+                const usersString = await AsyncStorage.getItem("users");
+                let usersArray = JSON.parse(usersString);
+                let i = 0;
+                for(let registeredUser of usersArray) {
+                    if(registeredUser.token === token) {
+                        break;
+                    } else {
+                        i++;
+                    }
+                };
+                setUserId(usersArray[i].id);
+            } else {
+                alert(`Não existe um token: ${tokenJSON}`);
+                navigation.navigate("Login");
+            }
+        } catch (e) {
+            console.log(e)
+            alert(`Houve um erro: ${e}`);
         }
     };
     
-    /* Função para alterar os condimentos */
-    const changeCondimentos = (index) => {
-        const newCondimentos = [...condimentos];
-        newCondimentos[index].checked = !newCondimentos[index].checked;
-        setCondimentos(newCondimentos);
+    /* Função para alterar opções radio */
+    const changeRadioResource = (resource, value) => {
+        /* Alterando o valor em resources */
+        let newResources = resources;
+        newResources[resource].selected = value;
+        let itemFound;
+        for(const item of newResources[resource].items) {
+            if(item.value === value) {
+                item.checked = true;
+                itemFound = item;
+            } else {
+                item.checked = false;
+            }
+        }
+        setResources(newResources);
+
+        /* Alterando o valor em selects */
+        setSelects((prevState) => ({
+            ...prevState,
+            [resource]: value
+        }));
+
+        /* Alterando o preço total */
+        let newPrices = prices;
+        newPrices[resource] = parseFloat(itemFound.price);
+        setPrices(newPrices);
+        calculateFinalPrice();
     };
-    
-    /* Função para alterar as frutas */
-    const changeFrutas = (index) => {
-        const newFrutas = [...frutas];
-        newFrutas[index].checked = !newFrutas[index].checked;
-        setFrutas(newFrutas);
+
+    /* Função para calcular preço total */
+    const calculateFinalPrice = () => {
+        let newPrices = prices;
+        let newTotal = 0;
+        for(const key of Object.keys(prices)) {
+            if(resources[key].type === "radio") {
+                newTotal += parseFloat(prices[key]);
+            } else if(resources[key].type === "checkbox") {
+                for(const priceKey of Object.keys(prices[key])) {
+                    newTotal += parseFloat(prices[key][priceKey]);
+                };
+            }
+        };
+        setFinalPrice(newTotal);
+        return newTotal;
     };
-    
-    /* Função para alterar os adicionais */
-    const changeAdicionais = (index) => {
-        const newAdicionais = [...adicionais];
-        newAdicionais[index].checked = !newAdicionais[index].checked;
-        setAdicionais(newAdicionais);
+
+    /* Função para alterar opções checkbox */
+    const changeCheckboxResource = (resource, value) => {
+        /* Alterando o valor em resources */
+        let newResources = resources;
+
+        let itemFound, itemAction;
+        const checkedCount = selects[resource].length;
+        for(const item of newResources[resource].items) {
+            if(item.value === value) {
+                itemFound = item;
+                if(item.checked === false) {
+                    if(newResources[resource].max) {
+                        if(checkedCount >= newResources[resource].max) {
+                            return;
+                        }
+                    }
+                    item.checked = true;
+                    itemAction = 1;
+                } else {
+                    item.checked = false;
+                    itemAction = 0;
+                }
+            }
+            
+        }
+        setResources(newResources);
+
+        /* Alterando o valor em selects */
+        let newSelect = selects[resource];
+        if(!newSelect.includes(value)) {
+            newSelect.push(value);
+        } else {
+            newSelect = newSelect.filter((e) => e !== value);
+        };
+        setSelects((prevState) => ({
+            ...prevState,
+            [resource]: newSelect
+        }));
+
+        /* Alterando o preço total */
+        let newPrices = prices;
+        switch(itemAction) {
+            case 0:
+                newPrices[resource][value] = parseFloat(itemFound.price);
+                break;
+            case 1:
+                if(newPrices[resource][value]) {
+                    newPrices[resource][value] = 0;
+                };
+                break;
+            default:
+                break;
+        }
+        setPrices(newPrices);
+        calculateFinalPrice();
     };
+
+    const observationMax = 140;
+    const changeObservation = (text) => {
+        setObservation(text);
+    }
+
+    const pedido = {
+        id: null,
+        createdAt: new Date().getTime(),
+        type: 1, /* 0 = Açaí, 1 = Sorvete */
+        price: finalPrice,
+        count: 1,
+        observation: observation || null
+    };
+
+    /* Função para enviar o pedido */
+    const enviarPedido = async () => {
+        try {
+            pedido.id = uuid.v4();
+            for(const key of Object.keys(resources)) {
+                if(resources[key].required === true) {
+                    if(resources[key].type === "radio") {
+                        if(selects[key] === 0 || selects[key] === null) {
+                            alert(`Você precisa selecionar: ${resources[key].title}`);
+                            return;
+                        } else {
+                            pedido[key] = selects[key];
+                        };
+                    } else if(resources[key].type === "checkbox") {
+                        if(selects[key].length === 0) {
+                            alert(`Você precisa selecionar: ${resources[key].title}`);
+                            return;
+                        } else {
+                            pedido[key] = selects[key];
+                        };
+                    }
+                } else {
+                    pedido[key] = selects[key];
+                }
+            };
+            /* Adicinando ao carrinho */
+		    const usersString = await AsyncStorage.getItem("users");
+            const usersArray = usersString ? JSON.parse(usersString) : [];
+            for(const user of usersArray) {
+                if(user.id === userId) {
+                    await addPedidoToCart(user, pedido);
+                    break;
+                }
+            };
+            navigation.navigate("Carrinho");
+        } catch(e) {
+            console.error(e);
+        }
+    }
+
     return (
         <ScrollView>
             <View style={mainStyle.container}>
@@ -80,208 +240,90 @@ export default function IceCream() {
                     </View>
                 </View>
                 <View style={mainStyle.customizeSection}>
-                    {/* Tamanho do açaí */}
-                    <View style={mainStyle.headers}>
-                        <View style={mainStyle.headerView}>
+                {Object.keys(resources).map((resource) => (
+                        <>
+                            <View style={mainStyle.headers}>
+                                <View style={mainStyle.headerView}>
+                                    <View>
+                                        <Text style={mainStyle.headerTitle}>{resources[resource].title}</Text>
+                                        <Text style={mainStyle.headerSubtitle}>{resources[resource].description}</Text>
+                                    </View>
+                                    {resources[resource].required === true ? (
+                                        <View style={mainStyle.headerRequired}>
+                                            <Text style={mainStyle.headerRequiredText}>Obrigatório</Text>
+                                        </View>
+                                        ) : (
+                                            <></>
+                                        )
+                                    }
+                                </View>
+                            </View>
+                            <View style={mainStyle.customizeButtonsView}>
+                                {resources[resource].type === "radio" ? (
+                                    <RadioButton.Group value={selects[resource]} onValueChange={(value) => {changeRadioResource(resource, value)}}>
+                                        <View style={mainStyle.customizeRadioMain}>
+                                            {resources[resource].items.map((item) => (
+                                                <View style={mainStyle.customizeRadioView}>
+                                                    {item.price !== 0 ? (
+                                                        <>
+                                                            <Text style={mainStyle.radioTitle}>{item.label}</Text>
+                                                            <Text style={mainStyle.radioSubtitle}>{(item.price).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}</Text>
+                                                        </>
+                                                    ) : (
+                                                        <>
+                                                            <Text style={[mainStyle.radioTitle, mainStyle.radioTitleCenter]}>{item.label}</Text>
+                                                        </>
+                                                    )}
+                                                    <RadioButton.Item value = {item.value} style={mainStyle.radioOption}/>
+                                                </View>
+                                            ))}
+                                        </View>
+                                    </RadioButton.Group>
+                                ) : (
+                                    <View style={mainStyle.customizeRadioMain}>
+                                        {resources[resource].items.map((item) => (
+                                            <View style={mainStyle.customizeRadioView}>
+                                                {item.price !== 0 ? (
+                                                    <>
+                                                        <Text style={mainStyle.radioTitle}>{item.label}</Text>
+                                                        <Text style={mainStyle.radioSubtitle}>+ {(item.price).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}</Text>
+                                                    </>
+                                                ) : (
+                                                    <>
+                                                        <Text style={[mainStyle.radioTitle, mainStyle.radioTitleCenter]}>{item.label}</Text>
+                                                    </>
+                                                )}
+                                                <Checkbox.Item
+                                                    key={item.label}
+                                                    status={selects[resource].includes(item.value) ? "checked" : "unchecked"}
+                                                    onPress={() => changeCheckboxResource(resource, item.value)}
+                                                />
+                                            </View>
+                                        ))}
+                                    </View>
+                                )}
+                            </View>
+                        </>
+                    ))}
+                    <View style={mainStyle.observationMain}>
+                        <View style={mainStyle.observationHeader}>
+                            <View style={mainStyle.observationHeaderFlex}>
+                                <Image source={require("../../images/observacao.png")} style={mainStyle.observationIcon}></Image>
+                                <Text style={mainStyle.observationText}>Observação:</Text>
+                            </View>
                             <View>
-                                <Text style={mainStyle.headerTitle}>Tamanhos</Text>
-                                <Text style={mainStyle.headerSubtitle}>Escolha o tamanho do açaí</Text>
-                            </View>
-                            <View style={mainStyle.headerRequired}>
-                                <Text style={mainStyle.headerRequiredText}>Obrigatório</Text>
+                                <Text id="observation-text" style={mainStyle.observationSize}>{observation.length}/{observationMax}</Text>
                             </View>
                         </View>
-                    </View>
-                    <View style={mainStyle.customizeButtonsView}>
-                        <RadioButton.Group value={size} onValueChange={newValue => setSize(newValue)}>
-                            <View style={mainStyle.customizeRadioMain}>
-                                <View style={mainStyle.customizeRadioView}>
-                                    <Text style={mainStyle.radioTitle}>300ml</Text>
-                                    <Text style={mainStyle.radioSubtitle}>R$14,00</Text>
-                                    <RadioButton.Item /*label = "300ml"*/ value = {300} style={mainStyle.radioOption}/>
-                                </View>
-                                <View style={mainStyle.customizeRadioView}>
-                                    <Text style={mainStyle.radioTitle}>400ml</Text>
-                                    <Text style={mainStyle.radioSubtitle}>R$16,00</Text>
-                                    <RadioButton.Item /*label = "400ml"*/ value = {400} style={mainStyle.radioOption}/>
-                                </View>
-                                <View style={mainStyle.customizeRadioView}>
-                                    <Text style={mainStyle.radioTitle}>500ml</Text>
-                                    <Text style={mainStyle.radioSubtitle}>R$18,00</Text>
-                                    <RadioButton.Item /*label = "500ml"*/ value = {500} style={mainStyle.radioOption}/>
-                                </View>
-                                <View style={mainStyle.customizeRadioView}>
-                                    <Text style={mainStyle.radioTitle}>770ml</Text>
-                                    <Text style={mainStyle.radioSubtitle}>R$22,00</Text>
-                                    <RadioButton.Item /*label = "770ml"*/ value = {770} style={mainStyle.radioOption}/>
-                                </View>
-                                <View style={mainStyle.customizeRadioView}>
-                                    <Text style={mainStyle.radioTitle}>1 Litro</Text>
-                                    <Text style={mainStyle.radioSubtitle}>R$33,00</Text>
-                                    <RadioButton.Item /*label = "1l"*/ value = {1000} style={mainStyle.radioOption}/>
-                                </View>
-                            </View>
-                        </RadioButton.Group>
-                    </View>
-                    {/* Calda do açaí */}
-                    <View style={mainStyle.headers}>
-                        <View style={mainStyle.headerView}>
-                            <View>
-                                <Text style={mainStyle.headerTitle}>Calda</Text>
-                                <Text style={mainStyle.headerSubtitle}>Escolha 1 calda</Text>
-                            </View>
-                            <View style={mainStyle.headerRequired}>
-                                <Text style={mainStyle.headerRequiredText}>Obrigatório</Text>
-                            </View>
+                        <View style={mainStyle.observationArticle}>
+                            <TextInput maxLength={observationMax} multiline={true} numberOfLines={4} placeholder="Obsevações" value={observation} onChangeText={(text) => {changeObservation(text)}} style={mainStyle.observationTextarea} theme={{fonts: {regular: "Poppins-Regular"}}}></TextInput>
                         </View>
                     </View>
-                    <View style={mainStyle.customizeButtonsView}>
-                        <RadioButton.Group value={calda} onValueChange={newValue => setCalda(newValue)}>
-                            <View style={mainStyle.customizeRadioMain}>
-                                <View style={mainStyle.customizeRadioView}>
-                                    <Text style={[mainStyle.radioTitle, mainStyle.radioTitleCenter]}>Sem calda</Text>
-                                    <RadioButton.Item value = {"Nenhuma"} style={mainStyle.radioOption}/>
-                                </View>
-                                <View style={mainStyle.customizeRadioView}>
-                                    <Text style={[mainStyle.radioTitle, mainStyle.radioTitleCenter]}>Morango</Text>
-                                    <RadioButton.Item value = {"Morango"} style={mainStyle.radioOption}/>
-                                </View>
-                                <View style={mainStyle.customizeRadioView}>
-                                    <Text style={[mainStyle.radioTitle, mainStyle.radioTitleCenter]}>Chocolate Suiço</Text>
-                                    <RadioButton.Item value = {"Chocolate Suiço"} style={mainStyle.radioOption}/>
-                                </View>
-                                <View style={mainStyle.customizeRadioView}>
-                                    <Text style={[mainStyle.radioTitle, mainStyle.radioTitleCenter]}>Leite Condensado</Text>
-                                    <RadioButton.Item value = {"Leite Condensado"} style={mainStyle.radioOption}/>
-                                </View>
-                                <View style={mainStyle.customizeRadioView}>
-                                    <Text style={[mainStyle.radioTitle, mainStyle.radioTitleCenter]}>Uva</Text>
-                                    <RadioButton.Item value = {"Uva"} style={mainStyle.radioOption}/>
-                                </View>
-                                <View style={mainStyle.customizeRadioView}>
-                                    <Text style={[mainStyle.radioTitle, mainStyle.radioTitleCenter]}>Menta</Text>
-                                    <RadioButton.Item value = {"Menta"} style={mainStyle.radioOption}/>
-                                </View>
-                                <View style={mainStyle.customizeRadioView}>
-                                    <Text style={[mainStyle.radioTitle, mainStyle.radioTitleCenter]}>Caramelo</Text>
-                                    <RadioButton.Item value = {"Caramelo"} style={mainStyle.radioOption}/>
-                                </View>
-                                <View style={mainStyle.customizeRadioView}>
-                                    <Text style={[mainStyle.radioTitle, mainStyle.radioTitleCenter]}>Tutti-frutti</Text>
-                                    <RadioButton.Item value = {"Tutti-frutti"} style={mainStyle.radioOption}/>
-                                </View>
-                                <View style={mainStyle.customizeRadioView}>
-                                    <Text style={[mainStyle.radioTitle, mainStyle.radioTitleCenter]}>Chocomenta</Text>
-                                    <RadioButton.Item value = {"Chocomenta"} style={mainStyle.radioOption}/>
-                                </View>
-                            </View>
-                        </RadioButton.Group>
-                    </View>
-                    {/* Sabores */}
-                    <View style={mainStyle.headers}>
-                        <View style={mainStyle.headerView}>
-                            <View>
-                                <Text style={mainStyle.headerTitle}>Sabores</Text>
-                                <Text style={mainStyle.headerSubtitle}>Escolha até 2 sabores</Text>
-                            </View>
-                            <View style={mainStyle.headerRequired}>
-                                <Text style={mainStyle.headerRequiredText}>Obrigatório</Text>
-                            </View>
-                        </View>
-                    </View>
-                    <View style={mainStyle.customizeButtonsView}>
-                        <View style={mainStyle.customizeRadioMain}>
-                            {sabores.map((sabor, index) => (
-                                <View style={mainStyle.customizeRadioView}>
-                                <Text style={[mainStyle.radioTitle, mainStyle.radioTitleCenter]}>{sabor.label}</Text>
-                                <Checkbox.Item
-                                    key={index}
-                                    status={sabor.checked ? "checked" : "unchecked"}
-                                    onPress={() => changeSabores(index)}
-                                />
-                                </View>
-                            ))}
-                        </View>
-                    </View>
-                    {/* Condimentos */}
-                    <View style={mainStyle.headers}>
-                        <View style={mainStyle.headerView}>
-                            <View>
-                                <Text style={mainStyle.headerTitle}>Condimentos</Text>
-                                <Text style={mainStyle.headerSubtitle}>Escolha os condimentos</Text>
-                            </View>
-                            {/*<View style={mainStyle.headerRequired}>
-                                <Text style={mainStyle.headerRequiredText}>Obrigatório</Text>
-                            </View>*/}
-                        </View>
-                    </View>
-                    <View style={mainStyle.customizeButtonsView}>
-                        <View style={mainStyle.customizeRadioMain}>
-                            {condimentos.map((condimento, index) => (
-                                <View style={mainStyle.customizeRadioView}>
-                                <Text style={[mainStyle.radioTitle, mainStyle.radioTitleCenter]}>{condimento.label}</Text>
-                                <Checkbox.Item
-                                    key={index}
-                                    status={condimento.checked ? "checked" : "unchecked"}
-                                    onPress={() => changeCondimentos(index)}
-                                />
-                                </View>
-                            ))}
-                        </View>
-                    </View>
-                    {/* Frutas */}
-                    <View style={mainStyle.headers}>
-                        <View style={mainStyle.headerView}>
-                            <View>
-                                <Text style={mainStyle.headerTitle}>Frutas</Text>
-                                <Text style={mainStyle.headerSubtitle}>Escolha as frutas</Text>
-                            </View>
-                            {/*<View style={mainStyle.headerRequired}>
-                                <Text style={mainStyle.headerRequiredText}>Obrigatório</Text>
-                            </View>*/}
-                        </View>
-                    </View>
-                    <View style={mainStyle.customizeButtonsView}>
-                        <View style={mainStyle.customizeRadioMain}>
-                            {frutas.map((fruta, index) => (
-                                <View style={mainStyle.customizeRadioView}>
-                                <Text style={mainStyle.radioTitle}>{fruta.label}</Text>
-                                <Text style={mainStyle.radioSubtitle}>{fruta.subtitle}</Text>
-                                <Checkbox.Item
-                                    key={index}
-                                    status={fruta.checked ? "checked" : "unchecked"}
-                                    onPress={() => changeFrutas(index)}
-                                />
-                                </View>
-                            ))}
-                        </View>
-                    </View>
-                    {/* Adicionais */}
-                    <View style={mainStyle.headers}>
-                        <View style={mainStyle.headerView}>
-                            <View>
-                                <Text style={mainStyle.headerTitle}>Adicionais</Text>
-                                <Text style={mainStyle.headerSubtitle}>Escolha os adicionais</Text>
-                            </View>
-                            {/*<View style={mainStyle.headerRequired}>
-                                <Text style={mainStyle.headerRequiredText}>Obrigatório</Text>
-                            </View>*/}
-                        </View>
-                    </View>
-                    <View style={mainStyle.customizeButtonsView}>
-                        <View style={mainStyle.customizeRadioMain}>
-                            {adicionais.map((adicional, index) => (
-                                <View style={mainStyle.customizeRadioView}>
-                                <Text style={mainStyle.radioTitle}>{adicional.label}</Text>
-                                <Text style={mainStyle.radioSubtitle}>{adicional.subtitle}</Text>
-                                <Checkbox.Item
-                                    key={index}
-                                    status={adicional.checked ? "checked" : "unchecked"}
-                                    onPress={() => changeAdicionais(index)}
-                                />
-                                </View>
-                            ))}
-                        </View>
+                    <View style={mainStyle.cartView}>
+                        <TouchableOpacity onPress={() => {enviarPedido()}} style={mainStyle.cartButton}>
+                            <Text style={[mainStyle.cartButtonText]}>Adicionar ao carrinho</Text>
+                            <Text style={[mainStyle.cartButtonText]}>{(finalPrice).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}</Text>
+                        </TouchableOpacity>
                     </View>
                 </View>
             </View>

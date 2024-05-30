@@ -62,6 +62,9 @@ export const pedidosStyle = StyleSheet.create({
         alignItems: "flex-start"
     },
     pedidosProductsView: {},
+    pedidosProductsText: {
+        fontFamily: "Poppins"
+    },
     pedidosPriceView: {},
     pedidosPrice: {
         fontFamily: "Poppins",

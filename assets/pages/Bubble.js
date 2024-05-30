@@ -3,10 +3,11 @@ import { Animated, Dimensions, Easing, View } from 'react-native';
 import { indexStyle } from "../styles/index";
 
 export default function Bubble() {
-	const screen = Dimensions.get("screen");
-
+	const screen = Dimensions.get("window");
+	console.log(screen)
 	const bubbleSize = 20;
 	const bubbleLeft = Math.floor(Math.random() * screen.width);
+	console.log(bubbleLeft)
 
 	/* Animação vertical da bolha */
 	const initialValue = 0;

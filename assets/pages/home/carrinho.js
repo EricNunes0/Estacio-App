@@ -204,7 +204,9 @@ export default function Carrinho() {
                     break;
                 }
             };
-            alert(`Pedido adicionado: ${JSON.stringify(await AsyncStorage.getItem("pedidos"))}`);
+            setUserCart([]);
+            calculatePrice(userCart);
+            navigation.navigate("Pedidos");
         } catch(e) {
             console.error(e);
         }
@@ -324,11 +326,16 @@ export default function Carrinho() {
                         <Text style = {carrinhoStyle.footerText1}>Total</Text>
                         <Text style = {carrinhoStyle.footerConfirmButtonPrice}>{price.toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'})} <Text style = {carrinhoStyle.footerText1}>/ {itemCount} {itemCount === 1 ? "item" : "itens"}</Text></Text>
                     </View>
-                    <View style = {carrinhoStyle.footerMainButtonView}>
-                        <TouchableOpacity onPress={() => {confirmarPedido()}} style = {carrinhoStyle.footerConfirmButton}>
-                            <Text style = {carrinhoStyle.footerConfirmButtonText}>Finalizar pedido</Text>
-                        </TouchableOpacity>
-                    </View>
+                    {userCart.length !== 0 ? (
+                        <View style = {carrinhoStyle.footerMainButtonView}>
+                            <TouchableOpacity onPress={() => {confirmarPedido()}} style = {carrinhoStyle.footerConfirmButton}>
+                                <Text style = {carrinhoStyle.footerConfirmButtonText}>Finalizar pedido</Text>
+                            </TouchableOpacity>
+                        </View>
+                        ) : (
+                            <></>
+                        )
+                    }
                 </View>
             </View>
         </>

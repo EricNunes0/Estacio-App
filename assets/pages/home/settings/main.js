@@ -9,6 +9,9 @@ import Resources from "./resources";
 import ResourcesAcai from "./resourcesAcai";
 import ResourcesAcaiAdd from "./resourcesAcaiAdd";
 import ResourcesAcaiEdit from "./resourcesAcaiEdit";
+import ResourcesIceCream from "./resourcesIceCream";
+import ResourcesIceCreamAdd from "./resourcesIceCreamAdd";
+import ResourcesIceCreamEdit from "./resourcesIceCreamEdit";
 
 const Stack = createStackNavigator();
 
@@ -33,6 +36,21 @@ export default function Settings() {
 				cardStyleInterpolator: screenRightAnimation
 			}}></Stack.Screen>
 			<Stack.Screen name="ResourcesAcaiEdit" component={ResourcesAcaiEdit} options={{
+				headerShown: false,
+				gestureDirection: "vertical",
+				cardStyleInterpolator: screenRightAnimation
+			}}></Stack.Screen>
+			<Stack.Screen name="ResourcesIceCream" component={ResourcesIceCream} options={{
+				headerShown: false,
+				gestureDirection: "vertical",
+				cardStyleInterpolator: screenRightAnimation
+			}}></Stack.Screen>
+			<Stack.Screen name="ResourcesIceCreamAdd" component={ResourcesIceCreamAdd} options={{
+				headerShown: false,
+				gestureDirection: "vertical",
+				cardStyleInterpolator: screenRightAnimation
+			}}></Stack.Screen>
+			<Stack.Screen name="ResourcesIceCreamEdit" component={ResourcesIceCreamEdit} options={{
 				headerShown: false,
 				gestureDirection: "vertical",
 				cardStyleInterpolator: screenRightAnimation

@@ -17,9 +17,11 @@ export default function Index() {
     return (
         <View style={indexStyle.main}>
             <View style={indexStyle.mainHeader}>
-                {bubbles}
+                <View style = {indexStyle.bubblesView}>
+                    {bubbles}
+                </View>
                 <View style={indexStyle.mainHeaderFlex}>
-                    <View style={indexStyle.mainBackgroundLogoView}>
+                    <View style={indexStyle.mainBackgroundLogoView} id="AQUIIIIIIIIIIIII">
                         <View style={[indexStyle.mainBackgroundLogoCircle, indexStyle.mainBackgroundLogoCircle1]}></View>
                         <View style={[indexStyle.mainBackgroundLogoCircle, indexStyle.mainBackgroundLogoCircle2]}></View>
                         <Image source={require("../images/fruta.png")} style={indexStyle.mainBackgroundLogo} resizeMode="contain"></Image>

@@ -1,9 +1,9 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Text, View, Alert, Button, Image, ImageBackground, TouchableOpacity, ScrollView } from "react-native";
+import { Checkbox, RadioButton, TextInput } from "react-native-paper";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import { mainStyle } from "../../styles/main";
-import { Checkbox, RadioButton, TextInput } from "react-native-paper";
 import { addPedidoToCart } from "../../../functions/addPedidoToCart";
 import uuid from "react-native-uuid";
 
@@ -14,22 +14,6 @@ export default function Acai() {
     const [selects, setSelects] = useState({});
     const [prices, setPrices] = useState({});
     const [finalPrice, setFinalPrice] = useState(0);
-    
-    
-    const [condimentos, setCondimentos] = useState([
-        {label: "Paçoca", checked: false},
-        {label: "Amendoim", checked: false},
-        {label: "Granola", checked: false},
-        {label: "Leite em pó", checked: false},
-        {label: "Aveia", checked: false},
-        {label: "Sucrilhos", checked: false},
-        {label: "Flocos de arroz", checked: false}
-    ]);
-    const [adicionais, setAdicionais] = useState([
-        {label: "Nutella (30ml)", checked: false, price: 4.00},
-        {label: "Leite Condensado (30ml)", checked: false, price: 2.00},
-        {label: "Kitkat em barra", checked: false, price: 5.00}
-    ]);
     const [observation, setObservation] = useState("");
 
     useEffect(() => {
@@ -40,7 +24,6 @@ export default function Acai() {
         try {
             const resourcesString = await AsyncStorage.getItem("resources");
             let resourcesObject = JSON.parse(resourcesString);
-            console.log("res")
             setResources(resourcesObject.acai);
 
             /* Configurando seleções */

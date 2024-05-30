@@ -96,7 +96,7 @@ export default function Pedidos() {
                                     <View style = {pedidosStyle.pedidosProductsView}>
                                         {pedido.pedidos.map((produto) => (
                                             <View>
-                                                <Text>{produto.count}x - {getType(produto.type)} {produto.tamanho}ml ({produto.price.toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'})})</Text>
+                                                <Text style = {pedidosStyle.pedidosProductsText}>{produto.count}x - {getType(produto.type)} {produto.tamanho}ml ({produto.price.toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'})})</Text>
                                             </View>
                                         ))}
                                     </View>
@@ -142,7 +142,7 @@ export default function Pedidos() {
                                                                 </View>
                                                             </View>
                                                             <View style = {pedidosStyle.modalProdutoPriceView}>
-                                                                <Text style = {pedidosStyle.modalProdutoPrice}>{produto.price.toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'})}</Text>
+                                                                <Text style = {pedidosStyle.modalProdutoPrice}>{(produto.price * produto.count).toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'})}</Text>
                                                             </View>
                                                         </View>
                                                     </View>

@@ -189,8 +189,9 @@ export const carrinhoStyle = StyleSheet.create({
     noProductsText: {
         color: "#000",
         fontFamily: "Poppins",
-        fontSize: 14,
-        marginTop: 8
+        fontSize: 16,
+        fontWeight: "bold",
+        marginTop: 16
     },
     footer: {
         width: "100%"
