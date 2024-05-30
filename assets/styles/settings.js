@@ -20,9 +20,14 @@ export const settingsStyle = StyleSheet.create({
         gap: 10
     },
     headerIconView: {},
-    headerIcon: {
+    headerIconButton: {
         width: 48,
         height: 48,
+        borderRadius: "50%"
+    },
+    headerIcon: {
+        width: "100%",
+        height: "100%",
         borderRadius: "50%"
     },
     headerTextView: {},
