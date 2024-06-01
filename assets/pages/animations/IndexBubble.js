@@ -1,13 +1,11 @@
 import React, { useEffect, useRef } from 'react';
 import { Animated, Dimensions, Easing, View } from 'react-native';
-import { indexStyle } from "../styles/index";
+import { indexStyle } from "../../styles/index";
 
-export default function Bubble() {
+export default function IndexBubble() {
 	const screen = Dimensions.get("window");
-	console.log(screen)
 	const bubbleSize = 20;
 	const bubbleLeft = Math.floor(Math.random() * screen.width);
-	console.log(bubbleLeft)
 
 	/* Animação vertical da bolha */
 	const initialValue = 0;
@@ -29,13 +27,14 @@ export default function Bubble() {
 
 	const bubbleTopAnimation = bubbleTopValue.interpolate({
 		inputRange: [0, 1],
-		outputRange: [screen.height, -bubbleSize],
+		outputRange: [screen.height, -bubbleSize]
 	});
 
 	/* Animação horizontal da bolha */
 	const bubbleLeftInitialValue = 0;
 	const bubbleLeftValue = useRef(new Animated.Value(bubbleLeftInitialValue)).current;
 	const bubbleLeftDelay = Math.floor(Math.random() * 5) * 1000;
+
 	useEffect(() => {
 		const bubbleLeftTranslate = () => {
 			bubbleLeftValue.setValue(bubbleLeftInitialValue);
@@ -61,7 +60,7 @@ export default function Bubble() {
 
 	const bubbleLeftAnimation = bubbleLeftValue.interpolate({
 		inputRange: [0, 1],
-		outputRange: [bubbleLeft, bubbleLeft + (bubbleSize * 2)],
+		outputRange: [bubbleLeft, bubbleLeft + (bubbleSize * 2)]
 	});
 
 	const Bubble = Animated.createAnimatedComponent(View);

@@ -1,28 +1,24 @@
-import { StatusBar } from "expo-status-bar";
-import { MaterialCommunityIcons } from '@expo/vector-icons'; 
 import { useState } from "react";
 import { Text, View, Image, TextInput, TouchableOpacity } from "react-native";
+import uuid from "react-native-uuid";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { StatusBar } from "expo-status-bar";
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import CryptoJS from "crypto-js";
 import { loginStyle } from "../styles/login";
-import navigateTo from "../../functions/navigateTo";
-import { storeData } from "../../functions/storeData";
 import { getRegisters } from "../../functions/getRegisters";
 import { clearStorage } from "../../functions/clearStorage";
 import { tokenAddToUser } from "../../functions/tokenAddToUser";
-import CryptoJS from "crypto-js";
-import uuid from "react-native-uuid";
 import { clearRegisters } from "../../functions/clearRegisters";
 
 export default function Cadastro() {
     const navigation = useNavigation();
-	
     const [nameInput, setNameInput] = useState('');
     const [emailInput, setEmailInput] = useState('');
     const [passwordInput, setPasswordInput] = useState('');
 
     /* Botão de visualizar senha */
-	const [password, setPassword] = useState('');
 	const [showPassword, setShowPassword] = useState(false);
     const toggleShowPassword = () => { 
         setShowPassword(!showPassword); 
@@ -51,7 +47,6 @@ export default function Cadastro() {
 		setEmailErrorMessage(null);
 		setPasswordErrorMessage(null);
 
-		console.log(nameInput, emailInput, passwordInput);
 		if((!nameInput) || nameInput.length === 0) {
 			setNameErrorMessage("Você precisa inserir seu nome");
 			return;
@@ -86,7 +81,7 @@ export default function Cadastro() {
 			id: uuid.v4(),
 			name: nameInput,
 			createAt: new Date().getTime(),
-			admin: true,
+			admin: false,
 			addresses: [],
 			email: emailInput,
 			password: CryptoJS.AES.encrypt(passwordInput, "password").toString(),
@@ -167,7 +162,7 @@ export default function Cadastro() {
 			<View style={loginStyle.viewStretch}>
 				<View style={loginStyle.viewBottomMargin}>
 					<View style={loginStyle.viewStretch}>
-						<Text style={loginStyle.sub}>Já tem uma conta? <TouchableOpacity style={loginStyle.subButton} onPress={() => {navigateTo(navigation, "Login")}}>Faça o login</TouchableOpacity></Text>
+						<Text style={loginStyle.sub}>Já tem uma conta? <TouchableOpacity style={loginStyle.subButton} onPress={() => {navigation.navigate("Login")}}>Faça o login</TouchableOpacity></Text>
 					</View>
 					<View style={loginStyle.menuButtonView}>
 						<TouchableOpacity onPress={() => {validateRegister()}} style={[loginStyle.menuButton]}>
@@ -175,14 +170,10 @@ export default function Cadastro() {
 						</TouchableOpacity>
 					</View>
 					<StatusBar style="auto" />
-					<TouchableOpacity onPress={() => {getRegisters()}} style={loginStyle.testButtons}><Text>Cadastros</Text></TouchableOpacity>
+					{/*<TouchableOpacity onPress={() => {getRegisters()}} style={loginStyle.testButtons}><Text>Cadastros</Text></TouchableOpacity>
 					<TouchableOpacity onPress={() => {clearRegisters()}} style={loginStyle.testButtons}><Text>Limpar cadastros</Text></TouchableOpacity>
-					<TouchableOpacity onPress={() => {clearStorage()}} style={loginStyle.testButtons}><Text>Limpar tudo</Text></TouchableOpacity>
+					<TouchableOpacity onPress={() => {clearStorage()}} style={loginStyle.testButtons}><Text>Limpar tudo</Text></TouchableOpacity>*/}
 				</View>
-				{/*<View style={loginStyle.viewBackground}>
-					<ImageBackground source={require("../images/background.png")} resizeMode="cover" style={loginStyle.loginBackground}>
-					</ImageBackground>
-				</View>*/}
 			</View>
 		</View>
     );

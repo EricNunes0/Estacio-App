@@ -64,7 +64,7 @@ export const loginStyle = StyleSheet.create({
 	mainArticleFormInput: {
 		width: formWidth,
 		height: 40,
-		backgroundColor: "#f2f2f2",
+		backgroundColor: "#e0e0e0",
 		borderRadius: 10,
 		fontFamily: "Poppins",
 		fontSize: 14,

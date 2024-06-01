@@ -1,17 +1,13 @@
-import { StatusBar } from "expo-status-bar";
 import { useState } from "react";
-import { Text, View, Image, ImageBackground, TextInput, TouchableOpacity } from "react-native";
+import { Text, View, Image, TextInput, TouchableOpacity } from "react-native";
+import uuid from "react-native-uuid";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { StatusBar } from "expo-status-bar";
+import CryptoJS from "crypto-js";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { loginStyle } from "../styles/login";
-import navigateTo from "../../functions/navigateTo";
-import { getRegisters } from "../../functions/getRegisters";
 import { tokenAddToUser } from "../../functions/tokenAddToUser";
-import { tokenGet } from "../../functions/tokenGet";
-import { tokenDelete } from "../../functions/tokenDelete";
-import CryptoJS from "crypto-js";
-import uuid from "react-native-uuid";
 
 export default function Login() {
     const navigation = useNavigation();
@@ -36,18 +32,10 @@ export default function Login() {
 		return emailRegex.test(text);
 	};
 
-	/* Função para validar senha */
-	const validatePassword = (text) => {
-		const passwordRegex = /^(?=.*\d)(?=.*[a-zA-Z])(?=.*[$*&@#])[0-9a-zA-Z$*&@#]{8,}$/;
-		return passwordRegex.test(text);
-	};
-
 	/* Validação de login */
 	const validateLogin = () => {
 		setEmailErrorMessage(null);
 		setPasswordErrorMessage(null);
-
-		console.log(emailInput, passwordInput);
 
 		if((!emailInput) || emailInput.length === 0) {
 			setEmailErrorMessage("Você precisa inserir seu e-mail");
@@ -134,7 +122,7 @@ export default function Login() {
 				<View style={loginStyle.viewBottomMargin}>
 					<View style={loginStyle.viewStretch}>
 						<Text style={loginStyle.sub}>Não tem uma conta? 
-							<TouchableOpacity style={loginStyle.subButton} onPress={() => {navigateTo(navigation, "Cadastro")}}>
+							<TouchableOpacity style={loginStyle.subButton} onPress={() => {navigation.navigate("Cadastro")}}>
 								<Text> Cadastre-se</Text>
 							</TouchableOpacity>
 						</Text>
@@ -145,10 +133,6 @@ export default function Login() {
 						</TouchableOpacity>
 					</View>
 					<StatusBar style="auto" />
-				</View>
-				<View style={loginStyle.viewBackground}>
-					{/*<ImageBackground source={require("../images/background.png")} resizeMode="cover" style={loginStyle.loginBackground}>
-					</ImageBackground>]*/}
 				</View>
 			</View>
 		</View>

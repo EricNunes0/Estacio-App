@@ -322,5 +322,34 @@ export const settingsStyle = StyleSheet.create({
     },
     editFooterButtonText2: {
         color: "#fff"
+    },
+    adminsUsersView: {
+        width: "100%",
+        height: 60,
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+        padding: 8,
+        borderBottomColor: "rgba(0, 0, 0, 0.2)",
+        borderBottomStyle: "solid",
+        borderBottomWidth: 1
+    },
+    adminsUserName: {
+        color: "#000",
+        fontFamily: "Poppins",
+        fontSize: 16,
+        fontWeight: "bold"
+    },
+    adminsButton: {
+        width: 50,
+        height: 50,
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center"
+    },
+    adminsButtonIcon: {
+        width: "80%",
+        height: "80%"
     }
 });

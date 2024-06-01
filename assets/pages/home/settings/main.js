@@ -5,6 +5,7 @@ import DataName from "./dataName";
 import DataInfo from "./dataInfo";
 import Menu from "./menu";
 import { screenRightAnimation } from "../../../../functions/screenRightAnimation";
+import Admins from "./admins";
 import Resources from "./resources";
 import ResourcesAcai from "./resourcesAcai";
 import ResourcesAcaiAdd from "./resourcesAcaiAdd";
@@ -20,6 +21,11 @@ export default function Settings() {
     return (
         <Stack.Navigator initialRouteName="Menu" screenOptions={{headerShown: false}}>
             <Stack.Screen name="Menu" component={Menu}></Stack.Screen>
+			<Stack.Screen name="Admins" component={Admins} options={{
+				headerShown: false,
+				gestureDirection: "vertical",
+				cardStyleInterpolator: screenRightAnimation
+			}}></Stack.Screen>
 			<Stack.Screen name="Resources" component={Resources} options={{
 				headerShown: false,
 				gestureDirection: "vertical",

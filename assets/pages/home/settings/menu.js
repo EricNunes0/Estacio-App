@@ -1,10 +1,10 @@
 import { Button, Image, Text, TouchableOpacity, View } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import * as ImageManipulator from "expo-image-manipulator";
 import * as ImagePicker from "expo-image-picker";
 import { settingsStyle } from "../../../styles/settings";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { tokenRemoveFromUser } from "../../../../functions/tokenRemoveFromUser";
 
 export default function Menu() {
@@ -16,7 +16,15 @@ export default function Menu() {
 
     useEffect(() => {
         tokenGetUser();
-    }, [])
+    }, []);
+
+    useFocusEffect(
+        useCallback(() => {
+            tokenGetUser();
+            return () => {
+            };
+        }, [])
+    );
     
     const tokenGetUser = async () => {
         try {
@@ -122,9 +130,26 @@ export default function Menu() {
                 </View>
             </View>
             <View style = {settingsStyle.main}>
-                {/* Editar recursos */}
+                {/* Funções de administrador */}
                     {userAdmin ? (
-                        <TouchableOpacity onPress={() => {navigation.navigate("Resources")}} style = {settingsStyle.mainButtons}>
+                        <>
+                            <TouchableOpacity onPress={() => {navigation.navigate("Admins")}} style = {settingsStyle.mainButtons}>
+                                <View style = {settingsStyle.mainButtonsLeft}>
+                                    <View style = {settingsStyle.mainButtonsIconView}>
+                                        <Image source={require("../../../svgs/settings/admin_add.svg")} style = {settingsStyle.mainButtonsIcon}></Image>
+                                    </View>
+                                    <View style = {settingsStyle.mainButtonsTextView}>
+                                        <Text style = {settingsStyle.mainButtonsTitle}>Gerenciar administradores</Text>
+                                        <Text style = {settingsStyle.mainButtonsSubtitle}>Adicionar ou remover administradores</Text>
+                                    </View>
+                                </View>
+                                <View style = {settingsStyle.mainButtonsRight}>
+                                    <View style = {settingsStyle.mainButtonsArrowView}>
+                                        <Image source={require("../../../svgs/settings/right.svg")} style = {settingsStyle.mainButtonsArrow}></Image>
+                                    </View>
+                                </View>
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={() => {navigation.navigate("Resources")}} style = {settingsStyle.mainButtons}>
                             <View style = {settingsStyle.mainButtonsLeft}>
                                 <View style = {settingsStyle.mainButtonsIconView}>
                                     <Image source={require("../../../svgs/settings/admin.svg")} style = {settingsStyle.mainButtonsIcon}></Image>
@@ -139,7 +164,8 @@ export default function Menu() {
                                     <Image source={require("../../../svgs/settings/right.svg")} style = {settingsStyle.mainButtonsArrow}></Image>
                                 </View>
                             </View>
-                        </TouchableOpacity>
+                            </TouchableOpacity>
+                        </>
                     ) : (
                         <></>
                     )

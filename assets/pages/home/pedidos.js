@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Button, Image, Modal, Pressable, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
@@ -13,7 +13,15 @@ export default function Pedidos() {
 
     useEffect(() => {
         tokenGetUser();
-    }, [])
+    }, []);
+
+    useFocusEffect(
+        useCallback(() => {
+            tokenGetUser();
+            return () => {
+            };
+        }, [])
+    );
     
     const tokenGetUser = async () => {
         try {
