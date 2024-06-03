@@ -18,10 +18,9 @@ export default function ResourcesAcai() {
         useCallback(() => {
             getData();
             return () => {
-                // Esta função será executada quando a tela perder o foco (opcional)
             };
         }, [])
-      );
+    );
     
     const getData = async () => {
         try {

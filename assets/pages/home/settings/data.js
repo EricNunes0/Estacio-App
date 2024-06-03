@@ -37,6 +37,20 @@ export default function Data() {
                         </View>
                     </View>
                 </TouchableOpacity>
+                {/* Endereços */}
+                <TouchableOpacity onPress={() => {navigation.navigate("DataAddress")}} style = {settingsStyle.mainButtons}>
+                    <View style = {settingsStyle.mainButtonsLeft}>
+                        <View style = {settingsStyle.mainButtonsTextView}>
+                            <Text style = {settingsStyle.mainButtonsTitle2}>Endereços</Text>
+                            <Text style = {settingsStyle.mainButtonsSubtitle2}>Gerenciar endereços</Text>
+                        </View>
+                    </View>
+                    <View style = {settingsStyle.mainButtonsRight}>
+                        <View style = {settingsStyle.mainButtonsArrowView}>
+                            <Image source={require("../../../svgs/settings/right.svg")} style = {settingsStyle.mainButtonsArrow}></Image>
+                        </View>
+                    </View>
+                </TouchableOpacity>
             </View>
             <View style = {settingsStyle.footer}>
                 <TouchableOpacity onPress={() => {navigation.navigate("Menu")}} style = {settingsStyle.footerReturnButton}>

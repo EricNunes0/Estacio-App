@@ -3,10 +3,11 @@ import { useNavigation } from "@react-navigation/native";
 import { indexStyle } from "../styles/index";
 import IndexBubble from "./animations/IndexBubble";
 import IndexWaveBackground from "./animations/IndexWaveBackground";
+import { clearStorage } from "../../functions/clearStorage";
 
 export default function Index() {
     const navigation = useNavigation();
-
+    
     /* Gerando bolhas */
     let bubbles = [];
     for(let i = 1; i <= 20; i++) {

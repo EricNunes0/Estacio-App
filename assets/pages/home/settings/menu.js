@@ -204,23 +204,6 @@ export default function Menu() {
                         </View>
                     </View>
                 </TouchableOpacity>
-                {/* Endereços */}
-                <TouchableOpacity style = {settingsStyle.mainButtons}>
-                    <View style = {settingsStyle.mainButtonsLeft}>
-                        <View style = {settingsStyle.mainButtonsIconView}>
-                            <Image source={require("../../../svgs/settings/address.svg")} style = {settingsStyle.mainButtonsIcon}></Image>
-                        </View>
-                        <View style = {settingsStyle.mainButtonsTextView}>
-                            <Text style = {settingsStyle.mainButtonsTitle}>Endereços</Text>
-                            <Text style = {settingsStyle.mainButtonsSubtitle}>Meus endereços de entrega</Text>
-                        </View>
-                    </View>
-                    <View style = {settingsStyle.mainButtonsRight}>
-                        <View style = {settingsStyle.mainButtonsArrowView}>
-                            <Image source={require("../../../svgs/settings/right.svg")} style = {settingsStyle.mainButtonsArrow}></Image>
-                        </View>
-                    </View>
-                </TouchableOpacity>
                 {/* Sair */}
                 <TouchableOpacity onPress={() => {logout()} } style = {settingsStyle.mainButtons}>
                     <View style = {settingsStyle.mainButtonsLeft}>

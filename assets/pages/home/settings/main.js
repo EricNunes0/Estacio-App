@@ -13,6 +13,8 @@ import ResourcesAcaiEdit from "./resourcesAcaiEdit";
 import ResourcesIceCream from "./resourcesIceCream";
 import ResourcesIceCreamAdd from "./resourcesIceCreamAdd";
 import ResourcesIceCreamEdit from "./resourcesIceCreamEdit";
+import DataAddress from "./dataAddress";
+import DataAddressAdd from "./dataAddressAdd";
 
 const Stack = createStackNavigator();
 
@@ -72,6 +74,16 @@ export default function Settings() {
 				cardStyleInterpolator: screenRightAnimation
 			}}></Stack.Screen>
 			<Stack.Screen name="DataInfo" component={DataInfo} options={{
+				headerShown: false,
+				gestureDirection: "vertical",
+				cardStyleInterpolator: screenRightAnimation
+			}}></Stack.Screen>
+			<Stack.Screen name="DataAddress" component={DataAddress} options={{
+				headerShown: false,
+				gestureDirection: "vertical",
+				cardStyleInterpolator: screenRightAnimation
+			}}></Stack.Screen>
+			<Stack.Screen name="DataAddressAdd" component={DataAddressAdd} options={{
 				headerShown: false,
 				gestureDirection: "vertical",
 				cardStyleInterpolator: screenRightAnimation

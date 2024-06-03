@@ -1,6 +1,6 @@
 import { Dimensions, StyleSheet } from "react-native";
 
-const screen = Dimensions.get("screen");
+const screen = Dimensions.get("window");
 const formWidth = 280 > screen.width ? screen.width : 280; /* Largura do formulário */
 export const settingsStyle = StyleSheet.create({
 	container: {
@@ -204,6 +204,25 @@ export const settingsStyle = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center"
     },
+    mainAddressView: {
+        width: "100%",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center"
+    },
+    mainAddressBlocks: {
+        width: "100%",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        marginTop: 8
+    },
+    mainAddressLabel: {
+        fontFamily: "Poppins",
+        fontSize: 16,
+        fontWeight: "bold",
+        textAlign: "left"
+    },
     mainInfoTopView: {
         padding: 8
     },
@@ -351,5 +370,104 @@ export const settingsStyle = StyleSheet.create({
     adminsButtonIcon: {
         width: "80%",
         height: "80%"
+    },
+    addressesView: {
+        width: "100%",
+        display: "flex",
+        padding: 8
+    },
+    addressView: {
+        width: "100%",
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "center",
+        alignItems: "flex-start",
+        borderBottomColor: "rgba(0, 0, 0, 0.2)",
+        borderBottomStyle: "solid",
+        borderBottomWidth: 1,
+    },
+    addressInfoView: {
+        width: "90%",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "flex-start",
+        gap: 8
+    },
+    addressDataView: {
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "flex-start"
+    },
+    addressTopView: {
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "center",
+        alignItems: "flex-start",
+        gap: 8
+    },
+    addressIconView: {},
+    addressIcon: {
+        width: 20,
+        height: 20
+    },
+    addressTitleView: {},
+    addressTitle: {
+        color: "#000",
+        fontFamily: "Poppins",
+        fontSize: 16,
+        fontWeight: "bold"
+    },
+    addressBottomView: {
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "flex-start",
+        gap: 8
+    },
+    addressTextView: {},
+    addressText: {
+        color: "#444",
+        fontFamily: "Poppins",
+        fontSize: 14
+    },
+    addressDeleteView: {
+        width: "10%"
+    },
+    addressDeleteButton: {
+        width: 30,
+        height: 30,
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center"
+    },
+    addressDeleteIcon: {
+        width: "80%",
+        height: "80%"
+    },
+    noAddressesView: {
+        width: "100%",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center"
+    },
+    noAddressesIconView: {
+        width: 120,
+        height: 120,
+        backgroundColor: "rgba(0, 0, 0, 0.1)",
+        borderRadius: "50%",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center"
+    },
+    noAddressesIcon: {
+        width: "60%",
+        height: "60%"
+    },
+    noAddressesText: {
+        color: "#000",
+        fontFamily: "Poppins",
+        fontSize: 16,
+        fontWeight: "bold",
+        marginTop: 16
     }
 });

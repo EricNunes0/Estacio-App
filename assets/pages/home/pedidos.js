@@ -3,57 +3,63 @@ import { Button, Image, Modal, Pressable, ScrollView, Text, TouchableOpacity, Vi
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import { pedidosStyle } from "../../styles/pedidos";
+import { clearPedidos } from "../../../functions/clearPedidos";
+import { getUserById } from "../../../functions/getUserById";
+import { getUserByToken } from "../../../functions/getUserByToken";
 
 export default function Pedidos() {
     const navigation = useNavigation();
     const [userId, setUserId] = useState('');
+    const [userAdmin, setUserAdmin] = useState(false);
     const [userPedidos, setUserPedidos] = useState([]);
     const [modalVisible, setModalVisible] = useState(false);
     const [currentPedido, setCurrentPedido] = useState(0);
+    const [currentUser, setCurrentUser] = useState({});
 
     useEffect(() => {
-        tokenGetUser();
+        getPedidos();
     }, []);
 
     useFocusEffect(
         useCallback(() => {
-            tokenGetUser();
+            getPedidos();
             return () => {
             };
         }, [])
     );
     
-    const tokenGetUser = async () => {
+    const getPedidos = async () => {
         try {
-            const tokenJSON = await AsyncStorage.getItem("token");
-            if(tokenJSON) {
-                let token = JSON.parse(tokenJSON).token;
-                const usersString = await AsyncStorage.getItem("users");
-                let usersArray = JSON.parse(usersString);
-                let i = 0;
-                for(let registeredUser of usersArray) {
-                    if(registeredUser.token === token) {
-                        break;
-                    } else {
-                        i++;
-                    }
-                };
-                setUserId(usersArray[i].id);
+            const tokenString = await AsyncStorage.getItem("token");
+            if(tokenString) {
+                let user = await getUserByToken(tokenString);
+                setUserId(user.id);
+                setUserAdmin(user.admin);
+
                 let newPedidos = [];
                 let newModals = [];
+
                 const pedidos = JSON.parse(await AsyncStorage.getItem("pedidos"));
                 if(pedidos) {
-                    for(const pedido of pedidos) {
-                        if(pedido.userId === usersArray[i].id) {
+                    
+                    if(user.admin === true) {
+                        for(const pedido of pedidos) {
                             newPedidos.push(pedido);
-                            newModals.push({id: pedido.id, visible: false})
-                        }
+                            newModals.push({id: pedido.id, visible: false});
+                        };
+                    } else {
+                        for(const pedido of pedidos) {
+                            if(pedido.userId === user.id) {
+                                newPedidos.push(pedido);
+                                newModals.push({id: pedido.id, visible: false})
+                            }
+                        };
                     };
                 };
                 setUserPedidos(newPedidos);
-                setCurrentPedido(i);
+                setCurrentPedido(0);
             } else {
-                alert(`Não existe um token: ${tokenJSON}`);
+                alert(`Não existe um token: ${tokenString}`);
             }
         } catch (e) {
             console.log(e)
@@ -74,7 +80,7 @@ export default function Pedidos() {
         return name;
     };
 
-    const selectPedido = (id) => {
+    const selectPedido = async (id) => {
         setModalVisible(!modalVisible);
         let i = 0;
         for(const pedido of userPedidos) {
@@ -85,6 +91,7 @@ export default function Pedidos() {
             }
         }
         setCurrentPedido(i);
+        setCurrentUser(await getUserById(userPedidos[i].userId));
     };
 
     return (
@@ -121,7 +128,11 @@ export default function Pedidos() {
                                     <View style={pedidosStyle.modalView}>
                                         <View style={pedidosStyle.modalView}>
                                             <View style = {pedidosStyle.modalHeader}>
-                                                <Text style={pedidosStyle.modalHeaderText}>Pedido Nº {currentPedido + 1}</Text>
+                                                {userAdmin === true ? (
+                                                    <Text style={pedidosStyle.modalHeaderText}>Pedido por {currentUser.name}</Text>
+                                                ): (
+                                                    <Text style={pedidosStyle.modalHeaderText}>Pedido Nº {currentPedido + 1}</Text>
+                                                )}
                                             </View>
                                             <View style = {pedidosStyle.modalProdutosMain}>
                                                 {userPedidos[currentPedido].pedidos.map((produto) => (

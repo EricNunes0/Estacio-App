@@ -72,8 +72,10 @@ export default function Login() {
 					await AsyncStorage.setItem("token", tokenJSON);
 					await tokenAddToUser(user, token);
 					navigation.navigate("Main");
+					return;
 				} else {
 					setPasswordErrorMessage("Senha incorreta!");
+					return;
 				}
 			} else {
 				setEmailErrorMessage("Não há um usuário cadastrado com este e-mail!");
