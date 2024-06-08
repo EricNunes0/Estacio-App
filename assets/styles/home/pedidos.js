@@ -81,10 +81,10 @@ export const pedidosStyle = StyleSheet.create({
     modals: {},
     modalView: {
         width: "100%",
-        backgroundColor: "#fff",
         flex: 1,
         justifyContent: "flex-start",
-        alignItems: "center"
+        alignItems: "center",
+        backgroundColor: "#fff"
     },
     modalHeader: {
         width: "100%",

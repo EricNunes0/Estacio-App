@@ -1,10 +1,11 @@
 import { useCallback, useEffect, useState } from "react";
-import { Button, Text, View, Image, TouchableOpacity, ScrollView } from "react-native";
+import { Button, Image, Modal, Text, TouchableOpacity, View, ScrollView } from "react-native";
+import uuid from "react-native-uuid";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
-import { carrinhoStyle } from "../../styles/carrinho";
+import { carrinhoStyle } from "../../styles/home/carrinho";
+import { getUserByToken } from "../../../functions/getUserByToken";
 import { removePedidosFromCart } from "../../../functions/removePedidosFromCart";
-import uuid from "react-native-uuid";
 
 export default function Carrinho() {
     const navigation = useNavigation();
@@ -12,41 +13,37 @@ export default function Carrinho() {
     const [userCart, setUserCart] = useState([]);
     const [price, setPrice] = useState(0);
     const [itemCount, setItemCount] = useState(0);
+    const [payment, setPayment] = useState(undefined);
+    const [modalVisible, setModalVisible] = useState(false);
+
+    const paymentMethods = [
+        {value: "credit", label: "Crédito", icon: require(`../../svgs/payment/credit.svg`)},
+        {value: "debit", label: "Débito", icon: require(`../../svgs/payment/debit.svg`)},
+        {value: "pix", label: "Pix", icon: require(`../../svgs/payment/pix.svg`)},
+        {value: "cash", label: "Dinheiro", icon: require(`../../svgs/payment/cash.svg`)}
+    ];
 
     useEffect(() => {
-        tokenGetUser();
+        getUserData();
     }, []);
 
     useFocusEffect(
         useCallback(() => {
-            tokenGetUser();
+            getUserData();
             return () => {
-                // Esta função será executada quando a tela perder o foco (opcional)
             };
         }, [])
       );
     
-    const tokenGetUser = async () => {
+    const getUserData = async () => {
         try {
-            const tokenJSON = await AsyncStorage.getItem("token");
-            if(tokenJSON) {
-                let token = JSON.parse(tokenJSON).token;
-                const usersString = await AsyncStorage.getItem("users");
-                let usersArray = JSON.parse(usersString);
-                let i = 0;
-                for(let registeredUser of usersArray) {
-                    if(registeredUser.token === token) {
-                        break;
-                    } else {
-                        i++;
-                    }
-                };
-                setUserId(usersArray[i].id);
-                console.log(usersArray[i].cart)
-                setUserCart(usersArray[i].cart);
-                calculatePrice(usersArray[i].cart);
+            const tokenString = await AsyncStorage.getItem("token");
+            if(tokenString) {
+                let user = await getUserByToken(tokenString);
+                setUserId(user.id);
+                setUserCart(user.cart);
+                calculatePrice(user.cart);
             } else {
-                alert(`Não existe um token: ${tokenJSON}`);
                 navigation.navigate("Login");
             }
         } catch (e) {
@@ -180,8 +177,28 @@ export default function Carrinho() {
         }
     };
 
+    /* Editar forma de pagamento */
+    const paymentModalToggle = async () => {
+        setModalVisible(!modalVisible);
+    };
+
+    /* Ao selecionar forma de pagamento */
+    const paymentMethodSelect = async (value) => {
+        setPayment(value);
+        setModalVisible(false);
+    };
+
+    /* Obter nome do método de pagamento */
+    const getPaymentMethodLabel = (payment) => {
+        for(const paymentMethod of paymentMethods) {
+            if(paymentMethod.value === payment) {
+                return paymentMethod.label;
+            };
+        };
+    };
+
     /* Função para confirmar o pedido */
-    const confirmarPedido = async () => {
+    const confirmRequest = async () => {
         try {
 		    const pedidosString = await AsyncStorage.getItem("pedidos");
             let pedidosArray = pedidosString ? JSON.parse(pedidosString) : [];
@@ -189,8 +206,9 @@ export default function Carrinho() {
                 id: uuid.v4(),
                 userId: userId,
                 createdAt: new Date().getTime(),
+                payment: payment,
                 price: price,
-                pedidos: userCart
+                pedidos: userCart,
             }
             pedidosArray.push(pedidoFinal);
 		    await AsyncStorage.setItem("pedidos", JSON.stringify(pedidosArray));
@@ -216,10 +234,10 @@ export default function Carrinho() {
         <>
             <ScrollView>
                 <View style={carrinhoStyle.container}>
-                    <Text style={carrinhoStyle.title}>Itens adicionados</Text>
                     <View style={carrinhoStyle.pedidoView}>
                         {userCart.length !== 0 ? (
                             <>
+                                <Text style={carrinhoStyle.title}>Itens adicionados</Text>
                                 {userCart.map((produto) => (
                                     <View style={carrinhoStyle.produtoView} key={produto.id}>
                                         <View style={carrinhoStyle.produtoHeader}>
@@ -307,13 +325,37 @@ export default function Carrinho() {
                                         </View>
                                     </View>
                                 ))}
+                                <View style = {carrinhoStyle.settings}>
+                                    <View style = {carrinhoStyle.settingsFlex}>
+                                        <View style = {carrinhoStyle.settingsLeft}>
+                                            <Text style = {carrinhoStyle.settingsTitle}>Forma de pagamento</Text>
+                                            <Text style = {carrinhoStyle.settingsContent}>{!payment ? "Não informado" : getPaymentMethodLabel(payment)}</Text>
+                                        </View>
+                                        <View style = {carrinhoStyle.settingsRight}>
+                                            <TouchableOpacity style = {carrinhoStyle.settingsEditButton}>
+                                                <Text onPress={() => {paymentModalToggle()}} style = {carrinhoStyle.settingsEditText}>Editar</Text>
+                                            </TouchableOpacity>
+                                        </View>
+                                    </View>
+                                </View>
                             </>
                         ) : (
                             <View style = {carrinhoStyle.noProductsView}>
                                 <View style = {carrinhoStyle.noProductsIconView}>
                                     <Image source={require("../../svgs/cart/carrinho.svg")} style = {carrinhoStyle.noProductsIcon}></Image>
                                 </View>
-                                <Text style = {carrinhoStyle.noProductsText}>Seu carrinho está vazio</Text>
+                                <Text style = {carrinhoStyle.noProductsTitle}>Vazio</Text>
+                                <Text style = {carrinhoStyle.noProductsText}>Faça um pedido para encher o carrinho</Text>
+                                <View style = {carrinhoStyle.noProductsFlexButtons}>
+                                    <TouchableOpacity onPress={() => {navigation.navigate("Açaí")}} style = {carrinhoStyle.noProductsButton}>
+                                        <Image source={require("../../svgs/cart/acai.svg")} style = {carrinhoStyle.noProductsButtonIcon}></Image>
+                                        <Text style = {carrinhoStyle.noProductsButtonText}>Açaí</Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity onPress={() => {navigation.navigate("Sorvete")}} style = {carrinhoStyle.noProductsButton}>
+                                        <Image source={require("../../svgs/cart/icecream.svg")} style = {carrinhoStyle.noProductsButtonIcon}></Image>
+                                        <Text style = {carrinhoStyle.noProductsButtonText}>Sorvete</Text>
+                                    </TouchableOpacity>
+                                </View>
                             </View>
                         )
                         }
@@ -328,15 +370,40 @@ export default function Carrinho() {
                     </View>
                     {userCart.length !== 0 ? (
                         <View style = {carrinhoStyle.footerMainButtonView}>
-                            <TouchableOpacity onPress={() => {confirmarPedido()}} style = {carrinhoStyle.footerConfirmButton}>
-                                <Text style = {carrinhoStyle.footerConfirmButtonText}>Finalizar pedido</Text>
-                            </TouchableOpacity>
+                            {!payment ? (
+                                <TouchableOpacity onPress={() => {paymentModalToggle()}} style = {carrinhoStyle.footerConfirmButton}>
+                                    <Text style = {carrinhoStyle.footerConfirmButtonText}>Forma de pagamento</Text>
+                                </TouchableOpacity>
+                            ) : (
+                                <TouchableOpacity onPress={() => {confirmRequest()}} style = {carrinhoStyle.footerConfirmButton}>
+                                    <Text style = {carrinhoStyle.footerConfirmButtonText}>Finalizar pedido</Text>
+                                </TouchableOpacity>
+                            )}
                         </View>
                         ) : (
                             <></>
                         )
                     }
                 </View>
+            </View>
+            <View style = {carrinhoStyle.modalMain}>
+                <Modal animationType="slide" transparent={true} visible={modalVisible} onRequestClose={() => {setModalVisible(!modalVisible)}} style = {carrinhoStyle.modals}>
+                    <View style = {carrinhoStyle.modalView}>
+                        <View style = {carrinhoStyle.modalHeader}>
+                            <Text style = {carrinhoStyle.modalTitle}>Pague na entrega</Text>
+                        </View>
+                        <View style = {carrinhoStyle.modalMenu}>
+                            {paymentMethods.map((paymentMethod) => (
+                                <TouchableOpacity onPress = {() => {paymentMethodSelect(paymentMethod.value)}} style = {carrinhoStyle.modalMenuOption}>
+                                    <View style = {carrinhoStyle.modalMenuOptionLeft}>
+                                        <Image source={paymentMethod.icon} style = {carrinhoStyle.modalMenuOptionIcon}></Image>
+                                        <Text style = {carrinhoStyle.modalMenuOptionLabel}>{paymentMethod.label}</Text>
+                                    </View>
+                                </TouchableOpacity>
+                            ))}
+                        </View>
+                    </View>
+                </Modal>
             </View>
         </>
     );

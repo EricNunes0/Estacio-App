@@ -15,7 +15,8 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.ericnunes0.media"
     },
     "android": {
       "adaptiveIcon": {
@@ -39,7 +40,7 @@
     ],
     "extra": {
       "eas": {
-        "projectId": "bd36c282-bc4b-41a2-9b5e-91670d2b261f"
+        "projectId": "7b237a56-d348-4d00-95ab-9c3af8bb46df"
       }
     }
   }

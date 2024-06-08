@@ -1,6 +1,5 @@
 import { Dimensions, StyleSheet } from "react-native";
 
-const screen = Dimensions.get("screen");
 const produtoIconSize = 48;
 export const carrinhoStyle = StyleSheet.create({
     container: {
@@ -167,6 +166,38 @@ export const carrinhoStyle = StyleSheet.create({
         marginTop: 6,
         marginBottom: 2
     },
+    settings: {
+        width: "100%",
+        padding: 8
+    },
+    settingsFlex: {
+        width: "100%",
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center"
+    },
+    settingsLeft: {
+    },
+    settingsRight: {
+    },
+    settingsTitle: {
+        fontFamily: "Poppins",
+        fontSize: 14,
+        fontWeight: "bold"
+    },
+    settingsContent: {
+        color: "#444",
+        fontFamily: "Poppins",
+        fontSize: 12
+    },
+    settingsEditButton: {},
+    settingsEditText: {
+        color: "#802060",
+        fontFamily: "Poppins",
+        fontSize: 14,
+        fontWeight: "bold"
+    },
     noProductsView: {
         width: "100%",
         display: "flex",
@@ -186,12 +217,49 @@ export const carrinhoStyle = StyleSheet.create({
         width: "60%",
         height: "60%"
     },
-    noProductsText: {
-        color: "#000",
+    noProductsTitle: {
         fontFamily: "Poppins",
-        fontSize: 16,
+        fontSize: 24,
         fontWeight: "bold",
-        marginTop: 16
+        textAlign: "center",
+        marginTop: 8
+    },
+    noProductsText: {
+        fontFamily: "Poppins",
+        fontSize: 14
+    },
+    noProductsFlexButtons: {
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "center",
+        alignItems: "center",
+        gap: 16,
+        marginTop: 8
+    },
+    noProductsButton: {
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+        gap: 8,
+        backgroundColor: "#802060",
+        color: "#fff",
+        fontFamily: "Poppins",
+        fontSize: 14,
+        paddingTop: 8,
+        paddingBottom: 8,
+        paddingLeft: 16,
+        paddingRight: 16,
+        borderRadius: 50
+    },
+    noProductsButtonIcon: {
+        width: 14,
+        height: 14
+    },
+    noProductsButtonText: {
+        color: "#fff",
+        fontFamily: "Poppins",
+        fontSize: 14
     },
     footer: {
         width: "100%"
@@ -252,5 +320,66 @@ export const carrinhoStyle = StyleSheet.create({
         color: "#fff",
         fontFamily: "Poppins",
         fontSize: 14
-    }
+    },
+    modalMain: {
+        backgroundColor: "#fff"
+    },
+    modals: {
+        backgroundColor: "#ff0"
+    },
+    modalView: {
+        width: "100%",
+        flex: 1,
+        justifyContent: "flex-start",
+        alignItems: "center",
+        backgroundColor: "#fff",
+        padding: 16
+    },
+    modalHeader: {
+        width: "100%"
+    },
+    modalTitle: {
+        fontFamily: "Poppins",
+        fontSize: 14,
+        fontWeight: "bold",
+        textAlign: "center"
+    },
+    modalMenu: {
+        width: "100%",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center"
+    },
+    modalMenuOption: {
+        width: "100%",
+        height: 50,
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+        padding: 8,
+        borderBottomColor: "rgba(0, 0, 0, 0.2)",
+        borderBottomStyle: "solid",
+        borderBottomWidth: 1
+    },
+    modalMenuOptionLeft: {
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "center",
+        alignItems: "center",
+        gap: 8
+    },
+    modalMenuOptionIcon: {
+        width: 24,
+        height: 24
+    },
+    modalMenuOptionLabel: {
+        fontFamily: "Poppins",
+        fontSize: 14
+    },
+    modalMenuOptionArrow: {
+        width: 18,
+        height: 18
+    },
 })

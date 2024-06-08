@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { Button, Image, Modal, Pressable, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
-import { pedidosStyle } from "../../styles/pedidos";
+import { pedidosStyle } from "../../styles/home/pedidos";
 import { clearPedidos } from "../../../functions/clearPedidos";
 import { getUserById } from "../../../functions/getUserById";
 import { getUserByToken } from "../../../functions/getUserByToken";
