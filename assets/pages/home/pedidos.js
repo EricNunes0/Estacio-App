@@ -6,6 +6,8 @@ import { pedidosStyle } from "../../styles/home/pedidos";
 import { clearPedidos } from "../../../functions/clearPedidos";
 import { getUserById } from "../../../functions/getUserById";
 import { getUserByToken } from "../../../functions/getUserByToken";
+import { getPaymentIcon } from "../../../functions/getPaymentIcon";
+import { getPaymentName } from "../../../functions/getPaymentName";
 
 export default function Pedidos() {
     const navigation = useNavigation();
@@ -41,7 +43,6 @@ export default function Pedidos() {
 
                 const pedidos = JSON.parse(await AsyncStorage.getItem("pedidos"));
                 if(pedidos) {
-                    
                     if(user.admin === true) {
                         for(const pedido of pedidos) {
                             newPedidos.push(pedido);
@@ -94,6 +95,24 @@ export default function Pedidos() {
         setCurrentUser(await getUserById(userPedidos[i].userId));
     };
 
+    /* Deletar pedido */
+    const deletePedido = async (id) => {
+        console.log(id)
+        let newPedidos = [];
+        const pedidos = JSON.parse(await AsyncStorage.getItem("pedidos"));
+        if(pedidos) {
+            for(const pedido of pedidos) {
+                if(pedido.id !== id) {
+                    newPedidos.push(pedido);
+                }
+            };
+        };
+        await AsyncStorage.setItem("pedidos", JSON.stringify(newPedidos));
+        setUserPedidos(newPedidos);
+        setModalVisible(false);
+        setCurrentPedido(0);
+    };
+
     return (
         <ScrollView>
             <View style = {pedidosStyle.container}>
@@ -116,6 +135,7 @@ export default function Pedidos() {
                                         ))}
                                     </View>
                                     <View style = {pedidosStyle.pedidosPriceView}>
+                                        <Image source={getPaymentIcon(pedido.payment)} style = {pedidosStyle.pedidosPriceIcon}></Image>
                                         <Text style = {pedidosStyle.pedidosPrice}>{pedido.price.toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'})}</Text>
                                     </View>
                                 </View>
@@ -129,39 +149,59 @@ export default function Pedidos() {
                                         <View style={pedidosStyle.modalView}>
                                             <View style = {pedidosStyle.modalHeader}>
                                                 {userAdmin === true ? (
-                                                    <Text style={pedidosStyle.modalHeaderText}>Pedido por {currentUser.name}</Text>
+                                                    <View style = {pedidosStyle.modalHeaderAdmin}>
+                                                        <View>
+                                                            <Text style={pedidosStyle.modalHeaderText}>Pedido por {currentUser.name}</Text>
+                                                        </View>
+                                                        <View>
+                                                            <TouchableOpacity onPress={() => {deletePedido(userPedidos[currentPedido].id)}} style = {pedidosStyle.modalHeaderAdminButton}>
+                                                                <Image source={require("../../svgs/pedidos/delete.svg")} style = {pedidosStyle.modalHeaderAdminButtonIcon}></Image>
+                                                            </TouchableOpacity>
+                                                        </View>
+                                                    </View>
                                                 ): (
                                                     <Text style={pedidosStyle.modalHeaderText}>Pedido Nº {currentPedido + 1}</Text>
                                                 )}
                                             </View>
                                             <View style = {pedidosStyle.modalProdutosMain}>
                                                 {userPedidos[currentPedido].pedidos.map((produto) => (
-                                                    <View style = {pedidosStyle.modalProdutosView}>
-                                                        <View style = {pedidosStyle.modalProdutosCountView}>
-                                                            <Text style = {pedidosStyle.modalProdutosCount}>{produto.count}x</Text>
-                                                        </View>
-                                                        <View style = {pedidosStyle.modalProdutosDetailsMain}>
-                                                            <View style = {pedidosStyle.modalProdutosDetailsFlex}>
-                                                                <Text style = {pedidosStyle.modalProdutoTitle}>{getType(produto.type)} {produto.tamanho}ml</Text>
-                                                                <View style = {pedidosStyle.modalProdutosDetailsView}>
-                                                                    <Text style = {pedidosStyle.modalProdutoSubtitle}>Calda</Text>
-                                                                    <Text style = {pedidosStyle.modalProdutoContent}>{produto.calda}</Text>
+                                                    <View style = {pedidosStyle.modalProdutosArticle}>
+                                                        <View style = {pedidosStyle.modalProdutosView}>
+                                                            <View style = {pedidosStyle.modalProdutosCountView}>
+                                                                <Text style = {pedidosStyle.modalProdutosCount}>{produto.count}x</Text>
+                                                            </View>
+                                                            <View style = {pedidosStyle.modalProdutosDetailsMain}>
+                                                                <View style = {pedidosStyle.modalProdutosDetailsFlex}>
+                                                                    <Text style = {pedidosStyle.modalProdutoTitle}>{getType(produto.type)} {produto.tamanho}ml</Text>
+                                                                    <View style = {pedidosStyle.modalProdutosDetailsView}>
+                                                                        <Text style = {pedidosStyle.h6}>Calda</Text>
+                                                                        <Text style = {pedidosStyle.modalProdutoContent}>{produto.calda}</Text>
+                                                                    </View>
+                                                                    <View style = {pedidosStyle.modalProdutosDetailsView}>
+                                                                        <Text style = {pedidosStyle.h6}>Sabores</Text>
+                                                                        <Text style = {pedidosStyle.modalProdutoContent}>{produto.sabores.join("\n")}</Text>
+                                                                    </View>
+                                                                    <View style = {pedidosStyle.modalProdutosDetailsView}>
+                                                                        <Text style = {pedidosStyle.h6}>Condimentos</Text>
+                                                                        <Text style = {pedidosStyle.modalProdutoContent}>{produto.condimentos.join("\n")}</Text>
+                                                                    </View>
+                                                                    <View style = {pedidosStyle.modalProdutosDetailsView}>
+                                                                        <Text style = {pedidosStyle.h6}>Adicionais</Text>
+                                                                        <Text style = {pedidosStyle.modalProdutoContent}>{produto.adicionais.join("\n")}</Text>
+                                                                    </View>
                                                                 </View>
-                                                                <View style = {pedidosStyle.modalProdutosDetailsView}>
-                                                                    <Text style = {pedidosStyle.modalProdutoSubtitle}>Sabores</Text>
-                                                                    <Text style = {pedidosStyle.modalProdutoContent}>{produto.sabores.join("\n")}</Text>
-                                                                </View>
-                                                                <View style = {pedidosStyle.modalProdutosDetailsView}>
-                                                                    <Text style = {pedidosStyle.modalProdutoSubtitle}>Condimentos</Text>
-                                                                    <Text style = {pedidosStyle.modalProdutoContent}>{produto.condimentos.join("\n")}</Text>
-                                                                </View>
-                                                                <View style = {pedidosStyle.modalProdutosDetailsView}>
-                                                                    <Text style = {pedidosStyle.modalProdutoSubtitle}>Adicionais</Text>
-                                                                    <Text style = {pedidosStyle.modalProdutoContent}>{produto.adicionais.join("\n")}</Text>
+                                                                <View style = {pedidosStyle.modalProdutoPriceView}>
+                                                                    <Text style = {pedidosStyle.modalProdutoPrice}>{(produto.price * produto.count).toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'})}</Text>
                                                                 </View>
                                                             </View>
-                                                            <View style = {pedidosStyle.modalProdutoPriceView}>
-                                                                <Text style = {pedidosStyle.modalProdutoPrice}>{(produto.price * produto.count).toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'})}</Text>
+                                                        </View>
+                                                        <View style = {pedidosStyle.modalProdutoFooter}>
+                                                            <View>
+                                                                <Text style = {pedidosStyle.h6}>Forma de pagamento</Text>
+                                                                <View style = {pedidosStyle.modalProdutoFooterPayment}>
+                                                                    <Image source={getPaymentIcon(userPedidos[currentPedido].payment)} style = {pedidosStyle.pedidosPriceIcon}></Image>
+                                                                    <Text style = {pedidosStyle.p}>{getPaymentName(userPedidos[currentPedido].payment)}</Text>
+                                                                </View>
                                                             </View>
                                                         </View>
                                                     </View>

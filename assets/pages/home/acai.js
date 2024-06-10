@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Text, View, Alert, Button, Image, ImageBackground, TouchableOpacity, ScrollView } from "react-native";
 import { Checkbox, RadioButton, TextInput } from "react-native-paper";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import { mainStyle } from "../../styles/main";
 import { addPedidoToCart } from "../../../functions/addPedidoToCart";
 import uuid from "react-native-uuid";
@@ -18,10 +18,11 @@ export default function Acai() {
 
     useEffect(() => {
         tokenGetUser();
-    }, [])
+    }, []);
 
     const tokenGetUser = async () => {
         try {
+            console.log("Voltei")
             const resourcesString = await AsyncStorage.getItem("resources");
             let resourcesObject = JSON.parse(resourcesString);
             setResources(resourcesObject.acai);
@@ -63,7 +64,6 @@ export default function Acai() {
                 navigation.navigate("Login");
             }
         } catch (e) {
-            console.log(e)
             alert(`Houve um erro: ${e}`);
         }
     };

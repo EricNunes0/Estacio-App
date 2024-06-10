@@ -33,7 +33,7 @@ export default function Carrinho() {
             return () => {
             };
         }, [])
-      );
+    );
     
     const getUserData = async () => {
         try {

@@ -8,12 +8,37 @@ export const pedidosStyle = StyleSheet.create({
         flex: 1,
         backgroundColor: "#fff"
     },
+    h2: {
+        fontFamily: "Poppins",
+        fontSize: 24,
+        fontWeight: "bold"
+    },
+    h4: {
+        fontFamily: "Poppins",
+        fontSize: 18,
+        fontWeight: "bold"
+    },
+    h5: {
+        fontFamily: "Poppins",
+        fontSize: 16,
+        fontWeight: "bold"
+    },
+    h6: {
+        fontFamily: "Poppins",
+        fontSize: 14,
+        fontWeight: "bold"
+    },
+    p: {
+        fontFamily: "Poppins",
+        fontSize: 12
+    },
     pedidosMain: {
         width: "100%",
         display: "flex",
         flexDirection: "column-reverse",
         justifyContent: "center",
-        alignItems: "center"
+        alignItems: "center",
+        padding: 8
     },
     pedidosViews: {
         width: "100%",
@@ -65,7 +90,17 @@ export const pedidosStyle = StyleSheet.create({
     pedidosProductsText: {
         fontFamily: "Poppins"
     },
-    pedidosPriceView: {},
+    pedidosPriceView: {
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "center",
+        alignItems: "center",
+        gap: 8
+    },
+    pedidosPriceIcon: {
+        width: 16,
+        height: 16
+    },
     pedidosPrice: {
         fontFamily: "Poppins",
         fontSize: 14,
@@ -95,6 +130,24 @@ export const pedidosStyle = StyleSheet.create({
         alignItems: "flex-start",
         padding: 8
     },
+    modalHeaderAdmin: {
+        width: "100%",
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center"
+    },
+    modalHeaderAdminButton: {
+        width: 50,
+        height: 50,
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center"
+    },
+    modalHeaderAdminButtonIcon: {
+        width: "40%",
+        height: "40%"
+    },
     modalHeaderText: {
         color: "#fff",
         fontFamily: "Poppins",
@@ -105,13 +158,21 @@ export const pedidosStyle = StyleSheet.create({
         height: screen.height,
         backgroundColor: "#eee",
     },
-    modalProdutosView: {
+    modalProdutosArticle: {
         backgroundColor: "#fff",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "flex-start",
+        alignItems: "flex-start",
+        padding: 8,
+        gap: 8
+    },
+    modalProdutosView: {
+        width: "100%",
         display: "flex",
         flexDirection: "row",
         justifyContent: "flex-start",
         alignItems: "flex-start",
-        padding: 8,
         gap: 8
     },
     modalProdutosCountView: {
@@ -148,12 +209,6 @@ export const pedidosStyle = StyleSheet.create({
         fontSize: 16,
         fontWeight: "bold"
     },
-    modalProdutoSubtitle: {
-        color: "#000",
-        fontFamily: "Poppins",
-        fontSize: 14,
-        fontWeight: "bold"
-    },
     modalProdutoContent: {
         color: "#666",
         fontFamily: "Poppins",
@@ -173,6 +228,20 @@ export const pedidosStyle = StyleSheet.create({
         fontFamily: "Poppins",
         fontSize: 14,
         fontWeight: "bold"
+    },
+    modalProdutoFooter: {
+        width: "100%",
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center"
+    },
+    modalProdutoFooterPayment: {
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "flex-start",
+        alignItems: "center",
+        gap: 8
     },
     modalCloseButtonView: {
         pointerEvents: "none",
