@@ -8,10 +8,13 @@ import { getUserById } from "../../../functions/getUserById";
 import { getUserByToken } from "../../../functions/getUserByToken";
 import { getPaymentIcon } from "../../../functions/getPaymentIcon";
 import { getPaymentName } from "../../../functions/getPaymentName";
+import DeleteSVG from "../../svgs/settings/delete";
+import PaymentMethodSVG from "../../svgs/payment/method";
+import RightSVG from "../../svgs/settings/right";
+import EmptySVG from "../../svgs/pedidos/empty";
 
 export default function Pedidos() {
     const navigation = useNavigation();
-    const [userId, setUserId] = useState('');
     const [userAdmin, setUserAdmin] = useState(false);
     const [userPedidos, setUserPedidos] = useState([]);
     const [modalVisible, setModalVisible] = useState(false);
@@ -35,13 +38,11 @@ export default function Pedidos() {
             const tokenString = await AsyncStorage.getItem("token");
             if(tokenString) {
                 let user = await getUserByToken(tokenString);
-                setUserId(user.id);
                 setUserAdmin(user.admin);
-
                 let newPedidos = [];
                 let newModals = [];
-
-                const pedidos = JSON.parse(await AsyncStorage.getItem("pedidos"));
+                const pedidosString = await AsyncStorage.getItem("pedidos");
+                const pedidos = JSON.parse(pedidosString);
                 if(pedidos) {
                     if(user.admin === true) {
                         for(const pedido of pedidos) {
@@ -63,8 +64,8 @@ export default function Pedidos() {
                 alert(`Não existe um token: ${tokenString}`);
             }
         } catch (e) {
-            console.log(e)
-            alert(`Não foi possível obter o token: ${e}`);
+            console.log(e);
+            alert(`Houve um erro: ${e}`);
         }
     };
 
@@ -97,9 +98,9 @@ export default function Pedidos() {
 
     /* Deletar pedido */
     const deletePedido = async (id) => {
-        console.log(id)
         let newPedidos = [];
-        const pedidos = JSON.parse(await AsyncStorage.getItem("pedidos"));
+        const pedidosString = await AsyncStorage.getItem("pedidos");
+        const pedidos = JSON.parse(pedidosString);
         if(pedidos) {
             for(const pedido of pedidos) {
                 if(pedido.id !== id) {
@@ -119,7 +120,7 @@ export default function Pedidos() {
                 {userPedidos.length !== 0 ? (
                     <View style = {pedidosStyle.pedidosMain}>
                         {userPedidos.map((pedido) => (
-                            <TouchableOpacity onPress={() => {selectPedido(pedido.id)}} style = {pedidosStyle.pedidosViews}>
+                            <TouchableOpacity onPress={() => {selectPedido(pedido.id)}} style = {pedidosStyle.pedidosViews} key={pedido.id}>
                                 <View style = {pedidosStyle.pedidosDateView}>
                                     <View style = {pedidosStyle.pedidosDateSquare}>
                                         <Text style = {pedidosStyle.pedidosDateDay}>{new Date(pedido.createdAt).getDate()}</Text>
@@ -135,11 +136,11 @@ export default function Pedidos() {
                                         ))}
                                     </View>
                                     <View style = {pedidosStyle.pedidosPriceView}>
-                                        <Image source={getPaymentIcon(pedido.payment)} style = {pedidosStyle.pedidosPriceIcon}></Image>
+                                        <PaymentMethodSVG icon = {pedido.payment}></PaymentMethodSVG>
                                         <Text style = {pedidosStyle.pedidosPrice}>{pedido.price.toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'})}</Text>
                                     </View>
                                 </View>
-                                <Image style = {pedidosStyle.pedidosArrow} source = {require("../../svgs/settings/right.svg")}></Image>
+                                <RightSVG></RightSVG>
                             </TouchableOpacity>
                         ))}
                         <View style = {pedidosStyle.modalMain}>
@@ -155,7 +156,7 @@ export default function Pedidos() {
                                                         </View>
                                                         <View>
                                                             <TouchableOpacity onPress={() => {deletePedido(userPedidos[currentPedido].id)}} style = {pedidosStyle.modalHeaderAdminButton}>
-                                                                <Image source={require("../../svgs/pedidos/delete.svg")} style = {pedidosStyle.modalHeaderAdminButtonIcon}></Image>
+                                                                <DeleteSVG></DeleteSVG>
                                                             </TouchableOpacity>
                                                         </View>
                                                     </View>
@@ -199,7 +200,7 @@ export default function Pedidos() {
                                                             <View>
                                                                 <Text style = {pedidosStyle.h6}>Forma de pagamento</Text>
                                                                 <View style = {pedidosStyle.modalProdutoFooterPayment}>
-                                                                    <Image source={getPaymentIcon(userPedidos[currentPedido].payment)} style = {pedidosStyle.pedidosPriceIcon}></Image>
+                                                                    <PaymentMethodSVG icon = {userPedidos[currentPedido].payment}></PaymentMethodSVG>
                                                                     <Text style = {pedidosStyle.p}>{getPaymentName(userPedidos[currentPedido].payment)}</Text>
                                                                 </View>
                                                             </View>
@@ -221,13 +222,15 @@ export default function Pedidos() {
                 ) : (
                     <View style = {pedidosStyle.emptyContainer}>
                         <View style = {pedidosStyle.emptyIconView}>
-                            <Image source={require("../../svgs/pedidos/empty.svg")} style = {pedidosStyle.emptyIcon}></Image>
+                            <EmptySVG></EmptySVG>
                         </View>
                         <View style = {pedidosStyle.emptyTextsView}>
                             <Text style = {pedidosStyle.emptyTitle}>Nenhum</Text>
                             <Text style = {pedidosStyle.emptySubtitle}>Você ainda não fez nenhum pedido</Text>
                         </View>
-                        <TouchableOpacity onPress={() => {navigation.navigate("Fazer pedido")}} style = {pedidosStyle.emptyButton}>Fazer pedido</TouchableOpacity>
+                        <TouchableOpacity onPress={() => {navigation.navigate("Fazer pedido")}} style = {pedidosStyle.emptyButton}>
+                            <Text style = {pedidosStyle.emptyButtonText}>Fazer pedido</Text>
+                        </TouchableOpacity>
                     </View>
                 )}
             </View>

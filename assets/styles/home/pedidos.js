@@ -1,10 +1,9 @@
 import { Dimensions, StyleSheet } from "react-native";
 
-const screen = Dimensions.get("screen");
+const screen = Dimensions.get("window");
 const produtoIconSize = 48;
 export const pedidosStyle = StyleSheet.create({
     container: {
-        width: "100%",
         flex: 1,
         backgroundColor: "#fff"
     },
@@ -42,10 +41,10 @@ export const pedidosStyle = StyleSheet.create({
     },
     pedidosViews: {
         width: "100%",
-        minHeight: 80,
+        height: 120,
         display: "flex",
         flexDirection: "row",
-        justifyContent: "center",
+        justifyContent: "flex-start",
         alignItems: "center",
         borderBottomColor: "#aaa",
         borderBottomStyle: "solid",
@@ -192,7 +191,7 @@ export const pedidosStyle = StyleSheet.create({
         fontWeight: "bold"
     },
     modalProdutosDetailsMain: {
-        width: `calc(100% - ${30 + 8}px)`,
+        width: "90%",
         display: "flex",
         flexDirection: "row",
         justifyContent: "space-between",
@@ -215,7 +214,6 @@ export const pedidosStyle = StyleSheet.create({
         fontSize: 12
     },
     modalProdutoPriceView: {
-        height: "100%",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
@@ -244,7 +242,7 @@ export const pedidosStyle = StyleSheet.create({
         gap: 8
     },
     modalCloseButtonView: {
-        pointerEvents: "none",
+        /*pointerEvents: "none",*/
         position: "absolute",
         bottom: 0,
         width: "100%",
@@ -254,7 +252,7 @@ export const pedidosStyle = StyleSheet.create({
         alignItems: "center"
     },
     modalCloseButton: {
-        pointerEvents: "all",
+        /*pointerEvents: "all",*/
         width: "100%",
         height: 50,
         display: "flex",
@@ -268,20 +266,15 @@ export const pedidosStyle = StyleSheet.create({
         fontSize: 14
     },
     emptyContainer: {
-        position: "absolute",
         width: "100%",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        top: 0,
-        bottom: 0,
-        left: 0,
-        right: 0,
-        marginTop: 200
+        marginTop: 100
     },
     emptyIconView: {
         backgroundColor: "#ddd",
-        borderRadius: "50%",
+        borderRadius: 250,
         padding: 20
     },
     emptyIcon: {
@@ -316,5 +309,9 @@ export const pedidosStyle = StyleSheet.create({
         paddingLeft: 16,
         paddingRight: 16,
         borderRadius: 50
+    },
+    emptyButtonText: {
+        color: "#fff",
+        fontFamily: "Poppins"
     }
 })

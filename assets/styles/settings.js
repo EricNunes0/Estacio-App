@@ -11,7 +11,7 @@ export const settingsStyle = StyleSheet.create({
 		justifyContent: "flex-start"
 	},
     header: {
-        width: `calc(100% - ${8 * 2}px)`,
+        width: "100%",
         height: 80,
         display: "flex",
         flexDirection: "row",
@@ -19,23 +19,25 @@ export const settingsStyle = StyleSheet.create({
         alignItems: "center",
         gap: 10
     },
-    headerIconView: {},
+    headerIconView: {
+        marginLeft: 8
+    },
     headerIconButton: {
         width: 48,
         height: 48,
-        borderRadius: "50%"
+        borderRadius: 250
     },
     headerIcon: {
-        width: "100%",
-        height: "100%",
-        borderRadius: "50%"
+        width: 48,
+        height: 48,
+        borderRadius: 250,
+        resizeMode: "contain"
     },
     headerTextView: {},
     headerText: {
         color: "#666",
         fontFamily: "Poppins",
-        fontSize: 16,
-        fontWeight: "bold"
+        fontSize: 16
     },
     main: {
         width: "100%"
@@ -53,8 +55,7 @@ export const settingsStyle = StyleSheet.create({
     mainTitle: {
         color: "#000",
         fontFamily: "Poppins",
-        fontSize: 16,
-        fontWeight: "bold"
+        fontSize: 16
     },
     mainHeaderAddView: {
         display: "flex",
@@ -73,7 +74,10 @@ export const settingsStyle = StyleSheet.create({
         height: 24
     },
     mainArticle: {
-        width: "100%"
+        width: screen.width,
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center"
     },
     mainButtons: {
         width: "100%",
@@ -86,7 +90,7 @@ export const settingsStyle = StyleSheet.create({
         borderBottomWidth: 2
     },
     mainButtonsLeft: {
-        width: `calc(100% - ${32}px)`,
+        width: "90%",
         height: "100%",
         display: "flex",
         flexDirection: "row",
@@ -96,7 +100,7 @@ export const settingsStyle = StyleSheet.create({
         padding: 8
     },
     mainEditButtonsLeft: {
-        width: `calc(100% - ${100}px)`,
+        width: "70%",
         height: "100%",
         display: "flex",
         flexDirection: "row",
@@ -105,33 +109,43 @@ export const settingsStyle = StyleSheet.create({
         gap: 16,
         padding: 8
     },
-    mainButtonsIconView: {},
+    mainButtonsIconView: {
+        width: 24,
+        height: 24,
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+    },
     mainButtonsIcon: {
         width: 24,
         height: 24
     },
-    mainButtonsTextView: {},
+    mainButtonsTextView: {
+        width: "100%",
+        height: "100%",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "flex-start"
+    },
     mainButtonsTitle: {
         color: "#222",
         fontFamily: "Poppins",
-        fontSize: 16,
-        fontWeight: "bold"
+        fontSize: 14
     },
     mainButtonsTitle2: {
         color: "#222",
         fontFamily: "Poppins",
-        fontSize: 14,
-        fontWeight: "bold"
+        fontSize: 14
     },
     mainButtonsSubtitle: {
         color: "#666",
         fontFamily: "Poppins",
-        fontSize: 14
+        fontSize: 10
     },
     mainButtonsSubtitle2: {
         color: "#666",
         fontFamily: "Poppins",
-        fontSize: 14
+        fontSize: 10
     },
     mainButtonsRight: {
         width: 32,
@@ -142,7 +156,7 @@ export const settingsStyle = StyleSheet.create({
         alignItems: "center",
     },
     mainEditButtonsRight: {
-        width: 100,
+        width: "30%",
         height: "100%",
         display: "flex",
         flexDirection: "row",
@@ -173,9 +187,8 @@ export const settingsStyle = StyleSheet.create({
     },
     mainInfoView: {},
     mainInfoTitle: {
-        fontFamily: "Poppins",
-        fontSize: 18,
-        fontWeight: "bold"
+        fontFamily: "Poppins bold",
+        fontSize: 16
     },
     mainInfoDescription: {
         color: "#666",
@@ -186,15 +199,14 @@ export const settingsStyle = StyleSheet.create({
         marginTop: 4
     },
     mainInfoLabel: {
-        fontFamily: "Poppins",
+        fontFamily: "Poppins bold",
         fontSize: 14,
-        fontWeight: "bold",
         marginTop: 16
     },
     mainInfoItem: {
         color: "#666",
         fontFamily: "Poppins",
-        fontSize: 14,
+        fontSize: 12,
         textAlign: "left",
     },
     mainInputView: {
@@ -267,7 +279,7 @@ export const settingsStyle = StyleSheet.create({
         fontSize: 14
     },
     messagesView: {
-        pointerEvents: "none",
+        /*pointerEvents: "none",*/
         position: "absolute",
         top: 0,
         left: 0,
@@ -290,7 +302,7 @@ export const settingsStyle = StyleSheet.create({
         alignItems: "center"
     },
     editView: {
-        width: `calc(100% - ${8 * 2}px)`
+        width: "90%"
     },
     editTitle: {
         fontFamily: "Poppins",
@@ -320,14 +332,14 @@ export const settingsStyle = StyleSheet.create({
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        width: `calc(100% - ${8 * 2}px)`,
+        width: `90%`,
         height: 50,
         borderRadius: 5
     },
     editFooterButton1: {
         borderColor: "#802060",
         borderStyle: "solid",
-        borderWidth: 1,
+        borderWidth: 2,
     },
     editFooterButton2: {
         backgroundColor: "#802060"
@@ -454,7 +466,7 @@ export const settingsStyle = StyleSheet.create({
         width: 120,
         height: 120,
         backgroundColor: "rgba(0, 0, 0, 0.1)",
-        borderRadius: "50%",
+        borderRadius: 250,
         display: "flex",
         justifyContent: "center",
         alignItems: "center"
@@ -463,11 +475,15 @@ export const settingsStyle = StyleSheet.create({
         width: "60%",
         height: "60%"
     },
+    noAddressesTitle: {
+        color: "#000",
+        fontFamily: "Poppins bold",
+        fontSize: 24,
+        marginTop: 8
+    },
     noAddressesText: {
         color: "#000",
         fontFamily: "Poppins",
-        fontSize: 16,
-        fontWeight: "bold",
-        marginTop: 16
+        fontSize: 14
     }
 });

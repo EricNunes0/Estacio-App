@@ -1,6 +1,6 @@
 import { Dimensions, StyleSheet } from "react-native";
 
-const screen = Dimensions.get("screen");
+const screen = Dimensions.get("window");
 const formWidth = 280 > screen.width ? screen.width : 280; /* Largura do formulário */
 const buttonsHeight = 50; /* Altura dos botões */
 export const loginStyle = StyleSheet.create({
@@ -18,6 +18,7 @@ export const loginStyle = StyleSheet.create({
 		width: screen.width
 	},
 	mainArticle: {
+		width: formWidth
 	},
 	mainArticleLogoView: {
 		position: "relative",
@@ -29,7 +30,7 @@ export const loginStyle = StyleSheet.create({
 	},
 	mainArticleLogoCircle: {
 		position: "absolute",
-		borderRadius: "50%"
+		borderRadius: 250
 	},
 	mainArticleLogoCircle1: {
 		width: 110,
@@ -63,7 +64,7 @@ export const loginStyle = StyleSheet.create({
     },
 	mainArticleFormInput: {
 		width: formWidth,
-		height: 40,
+		height: 50,
 		backgroundColor: "#e0e0e0",
 		borderRadius: 10,
 		fontFamily: "Poppins",
@@ -109,14 +110,15 @@ export const loginStyle = StyleSheet.create({
     mainArticleFormPasswordButton: {
         position: "absolute",
         top: 5,
-        right: 4,
-        width: 40,
-        height: 40,
+        right: 0,
+        width: 50,
+        height: 50,
         flex: 1,
         display: "flex",
         justifyContent: "center",
-        alignItems: "center",
-        alignContent: "center"
+        alignItems: "center"
+    },
+    mainArticleFormPasswordButtonIcon: {
     },
 	mainArticleForgotView: {
 		width: formWidth,
@@ -176,8 +178,8 @@ export const loginStyle = StyleSheet.create({
 	title: {
 		color: "#000",
 		fontFamily: "Poppins",
-		fontSize: 40,
-		fontWeight: "bold",
+		fontSize: 32,
+		fontWeight: "400",
 		textAlign: "center"
 	},
 	subtitle: {
@@ -188,7 +190,10 @@ export const loginStyle = StyleSheet.create({
 		textAlign: "center"
 	},
 	forgot: {
-		width: 120,
+		width: formWidth,
+		display: "flex",
+		justifyContent: "center",
+		alignItems: "center",
 		color: "#000",
 		fontFamily: "Poppins",
 		fontSize: 12,
@@ -196,21 +201,39 @@ export const loginStyle = StyleSheet.create({
 		textAlign: "center",
 		margin: "auto"
 	},
+	forgotText: {
+		color: "#000",
+		fontFamily: "Poppins",
+		fontSize: 12,
+		textAlign: "center"
+	},
 	sub: {
+		height: 40,
+		display: "flex",
+		flexDirection: "row",
+		justifyContent: "center",
+		alignItems: "center",
 		color: "#000",
 		fontFamily: "Poppins",
 		fontSize: 12,
 		fontWeight: "100",
 		textAlign: "center",
-		marginBottom: 10
+		marginBottom: 10,
+		gap: 4
 	},
-	subButton: {
-		color: "#802060",
+	subText: {
+		color: "#000",
 		fontFamily: "Poppins",
 		fontSize: 12,
-		fontWeight: "bold",
-		textAlign: "center",
-		marginTop: 10
+		textAlign: "center"
+	},
+	subButton: {
+	},
+	subButtonText: {
+		fontFamily: "Poppins",
+		color: "#802060",
+		fontSize: 12,
+		textAlign: "center"
 	},
 	menuButtonView: {
 		alignItems: "center"

@@ -22,7 +22,6 @@ export default function Acai() {
 
     const tokenGetUser = async () => {
         try {
-            console.log("Voltei")
             const resourcesString = await AsyncStorage.getItem("resources");
             let resourcesObject = JSON.parse(resourcesString);
             setResources(resourcesObject.acai);
@@ -143,32 +142,34 @@ export default function Acai() {
 
         /* Alterando o valor em selects */
         let newSelect = selects[resource];
-        if(!newSelect.includes(value)) {
-            newSelect.push(value);
-        } else {
-            newSelect = newSelect.filter((e) => e !== value);
-        };
-        setSelects((prevState) => ({
-            ...prevState,
-            [resource]: newSelect
-        }));
+        if(newSelect) {
+            if(!newSelect.includes(value)) {
+                newSelect.push(value);
+            } else {
+                newSelect = newSelect.filter((e) => e !== value);
+            };
+            setSelects((prevState) => ({
+                ...prevState,
+                [resource]: newSelect
+            }));
 
-        /* Alterando o preço total */
-        let newPrices = prices;
-        switch(itemAction) {
-            case 0:
-                newPrices[resource][value] = parseFloat(itemFound.price);
-                break;
-            case 1:
-                if(newPrices[resource][value]) {
-                    newPrices[resource][value] = 0;
-                };
-                break;
-            default:
-                break;
+            /* Alterando o preço total */
+            let newPrices = prices;
+            switch(itemAction) {
+                case 0:
+                    newPrices[resource][value] = parseFloat(itemFound.price);
+                    break;
+                case 1:
+                    if(newPrices[resource][value]) {
+                        newPrices[resource][value] = 0;
+                    };
+                    break;
+                default:
+                    break;
+            }
+            setPrices(newPrices);
+            calculateFinalPrice();
         }
-        setPrices(newPrices);
-        calculateFinalPrice();
     };
 
     const observationMax = 140;
@@ -241,7 +242,7 @@ export default function Acai() {
                 <View style={mainStyle.customizeSection}>
                     {Object.keys(resources).map((resource) => (
                         <>
-                            <View style={mainStyle.headers}>
+                            <View style={mainStyle.headers} key={resource}>
                                 <View style={mainStyle.headerView}>
                                     <View>
                                         <Text style={mainStyle.headerTitle}>{resources[resource].title}</Text>
@@ -292,11 +293,16 @@ export default function Acai() {
                                                         <Text style={[mainStyle.radioTitle, mainStyle.radioTitleCenter]}>{item.label}</Text>
                                                     </>
                                                 )}
-                                                <Checkbox.Item
-                                                    key={item.label}
-                                                    status={selects[resource].includes(item.value) ? "checked" : "unchecked"}
-                                                    onPress={() => changeCheckboxResource(resource, item.value)}
-                                                />
+                                                {selects[resource] ? (
+                                                    <Checkbox.Item
+                                                        key={item.label}
+                                                        status={selects[resource].includes(item.value) ? "checked" : "unchecked"}
+                                                        onPress={() => changeCheckboxResource(resource, item.value)}
+                                                    />
+                                                ) : (
+                                                    <></>
+                                                )}
+                                                
                                             </View>
                                         ))}
                                     </View>

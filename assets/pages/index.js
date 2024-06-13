@@ -1,9 +1,9 @@
 import { Alert, Text, View, Image, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { LinearGradient } from 'expo-linear-gradient';
 import { indexStyle } from "../styles/index";
 import IndexBubble from "./animations/IndexBubble";
 import IndexWaveBackground from "./animations/IndexWaveBackground";
-import { clearStorage } from "../../functions/clearStorage";
 
 export default function Index() {
     const navigation = useNavigation();
@@ -11,12 +11,12 @@ export default function Index() {
     /* Gerando bolhas */
     let bubbles = [];
     for(let i = 1; i <= 20; i++) {
-        bubbles.push(<IndexBubble></IndexBubble>);
+        bubbles.push(<IndexBubble key={i}></IndexBubble>);
     };
 
     return (
         <View style={indexStyle.main}>
-            <View style={indexStyle.mainHeader}>
+            <LinearGradient colors={["#b040c0", "#802060"]} style={indexStyle.mainHeader}>
                 <View style = {indexStyle.bubblesView}>
                     {bubbles}
                 </View>
@@ -31,13 +31,17 @@ export default function Index() {
                         <Text style={indexStyle.mainSubtitle1}>Açaís e sorvetes</Text>
                     </View>
                 </View>
-            </View>
+            </LinearGradient>
             <View style={indexStyle.mainBackgroundFooter}>
-                <IndexWaveBackground></IndexWaveBackground>
+                {/*<IndexWaveBackground></IndexWaveBackground>*/}
                 <View style={indexStyle.navigateView}>
                     <View style={indexStyle.navigateViewContent}>
-                    <TouchableOpacity onPress={() => {navigation.navigate("Login")}} style={[indexStyle.navigateButtons, indexStyle.navigateButton1]}>Entrar</TouchableOpacity>
-                    <TouchableOpacity onPress={() => {navigation.navigate("Cadastro")}} style={[indexStyle.navigateButtons, indexStyle.navigateButton2]}>Cadastrar-se</TouchableOpacity>
+                        <TouchableOpacity onPress={() => {navigation.navigate("Login")}} style={[indexStyle.navigateButtons, indexStyle.navigateButton1]}>
+                            <Text style = {[indexStyle.navigateButtonText, indexStyle.navigateButtonText1]}>Entrar</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => {navigation.navigate("Cadastro")}} style={[indexStyle.navigateButtons, indexStyle.navigateButton2]}>
+                            <Text style = {[indexStyle.navigateButtonText, indexStyle.navigateButtonText2]}>Cadastrar-se</Text>
+                        </TouchableOpacity>
                     </View>
                 </View>
             </View>

@@ -5,6 +5,11 @@ import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import { messageStyle } from "../../../styles/message";
 import { settingsStyle } from "../../../styles/settings";
 import { getUserByToken } from "../../../../functions/getUserByToken";
+import DeleteSVG from "../../../svgs/settings/delete";
+import AddressSVG from "../../../svgs/settings/address";
+import CEPSVG from "../../../svgs/settings/cep";
+import CitySVG from "../../../svgs/settings/city";
+import AddressEmptySVG from "../../../svgs/settings/address_empty";
 
 export default function DataAddress() {
     const navigation = useNavigation();
@@ -60,7 +65,6 @@ export default function DataAddress() {
                 i++;
             };
         };
-        console.log(usersArray[i].addresses);
         await AsyncStorage.setItem("users", JSON.stringify(usersArray));
         setUserAddresses(usersArray[i].addresses);
     };
@@ -81,7 +85,7 @@ export default function DataAddress() {
                                             <View style = {settingsStyle.addressDataView}>
                                                 <View style = {settingsStyle.addressTopView}>
                                                     <View style = {settingsStyle.addressIconView}>
-                                                        <Image source={require("../../../svgs/settings/cep.svg")} style = {settingsStyle.addressIcon}></Image>
+                                                        <CEPSVG></CEPSVG>
                                                     </View>
                                                     <View style = {settingsStyle.addressTitleView}>
                                                         <Text style = {settingsStyle.addressTitle}>CEP</Text>
@@ -94,7 +98,7 @@ export default function DataAddress() {
                                             <View style = {settingsStyle.addressDataView}>
                                                 <View style = {settingsStyle.addressTopView}>
                                                     <View style = {settingsStyle.addressIconView}>
-                                                        <Image source={require("../../../svgs/settings/city.svg")} style = {settingsStyle.addressIcon}></Image>
+                                                        <CitySVG></CitySVG>
                                                     </View>
                                                     <View style = {settingsStyle.addressTitleView}>
                                                         <Text style = {settingsStyle.addressTitle}>Cidade</Text>
@@ -107,7 +111,7 @@ export default function DataAddress() {
                                             <View style = {settingsStyle.addressDataView}>
                                                 <View style = {settingsStyle.addressTopView}>
                                                     <View style = {settingsStyle.addressIconView}>
-                                                        <Image source={require("../../../svgs/settings/address.svg")} style = {settingsStyle.addressIcon}></Image>
+                                                        <AddressSVG></AddressSVG>
                                                     </View>
                                                     <View style = {settingsStyle.addressTitleView}>
                                                         <Text style = {settingsStyle.addressTitle}>Endereço</Text>
@@ -120,7 +124,7 @@ export default function DataAddress() {
                                         </View>
                                         <View style = {settingsStyle.addressDeleteView}>
                                             <TouchableOpacity onPress={() => addressDeleteById(address.id)} style = {settingsStyle.addressDeleteButton}>
-                                                <Image source={require("../../../svgs/settings/delete.svg")} style = {settingsStyle.addressDeleteIcon}></Image>
+                                                <DeleteSVG></DeleteSVG>
                                             </TouchableOpacity>
                                         </View>
                                     </View>
@@ -129,8 +133,9 @@ export default function DataAddress() {
                         ) : (
                             <View style = {settingsStyle.noAddressesView}>
                                 <View style = {settingsStyle.noAddressesIconView}>
-                                    <Image source={require("../../../svgs/settings/address_empty.svg")} style = {settingsStyle.noAddressesIcon}></Image>
+                                    <AddressEmptySVG></AddressEmptySVG>
                                 </View>
+                                <Text style = {settingsStyle.noAddressesTitle}>Vazio</Text>
                                 <Text style = {settingsStyle.noAddressesText}>Você não tem nenhum endereço salvo</Text>
                             </View>
                         )}

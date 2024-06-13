@@ -3,6 +3,7 @@ import { Button, Image, Text, TouchableOpacity, View } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import { settingsStyle } from "../../../styles/settings";
+import RightSVG from "../../../svgs/settings/right";
 
 export default function Resources() {
     const navigation = useNavigation();
@@ -55,7 +56,7 @@ export default function Resources() {
                     </View>
                     <View style = {settingsStyle.mainButtonsRight}>
                         <View style = {settingsStyle.mainButtonsArrowView}>
-                            <Image source={require("../../../svgs/settings/right.svg")} style = {settingsStyle.mainButtonsArrow}></Image>
+                            <RightSVG></RightSVG>
                         </View>
                     </View>
                 </TouchableOpacity>
@@ -68,7 +69,7 @@ export default function Resources() {
                     </View>
                     <View style = {settingsStyle.mainButtonsRight}>
                         <View style = {settingsStyle.mainButtonsArrowView}>
-                            <Image source={require("../../../svgs/settings/right.svg")} style = {settingsStyle.mainButtonsArrow}></Image>
+                            <RightSVG></RightSVG>
                         </View>
                     </View>
                 </TouchableOpacity>

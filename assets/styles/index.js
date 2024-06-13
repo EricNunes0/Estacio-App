@@ -19,8 +19,7 @@ export const indexStyle = StyleSheet.create({
         flex: 1,
         justifyContent: "flex-start",
         alignItems: "center",
-        backgroundColor: "#2090ff",
-        backgroundImage: "linear-gradient(180deg, #b040c0, #802060)",
+        backgroundColor: "#802060",
         padding: 40
     },
     mainHeaderFlex: {
@@ -37,7 +36,7 @@ export const indexStyle = StyleSheet.create({
         top: "100%",
         width: 20,
         height: 20,
-        borderRadius: "50%",
+        borderRadius: 250,
         backgroundColor: "rgba(250, 250, 255, 1)",
         opacity: 0.2
     },
@@ -64,7 +63,7 @@ export const indexStyle = StyleSheet.create({
         position: "relative",
         display: "flex",
         width: screen.width >= 360 ? 360 - 40 : screen.width - 40,
-        height: screen.width >= 360 ? 360 - 40 : screen.width - 40,
+        height: "70%",
         justifyContent: "center",
         alignItems: "center",
         width: screen.width
@@ -72,7 +71,7 @@ export const indexStyle = StyleSheet.create({
     mainBackgroundLogoCircle: {
         position: "absolute",
         display: "block",
-        borderRadius: "50%"
+        borderRadius: 250
 
     },
     mainBackgroundLogoCircle1: {
@@ -112,8 +111,8 @@ export const indexStyle = StyleSheet.create({
     mainTitle1: {
         color: "#fff",
         fontFamily: "Poppins",
-        fontSize: 42,
-        fontWeight: 100,
+        fontSize: 34,
+        fontWeight: "100",
         textAlign: "center"
     },
     mainSubtitle1: {
@@ -123,12 +122,14 @@ export const indexStyle = StyleSheet.create({
         textAlign: "center"
     },
     navigateView: {
+        display: "flex",
         justifyContent: "flex-end",
         alignItems: "center",
         width: "100%",
         height: "100%"
     },
     navigateViewContent: {
+        display: "flex",
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
@@ -136,25 +137,32 @@ export const indexStyle = StyleSheet.create({
         width: "100%"
     },
     navigateButtons: {
+        display: "flex",
         justifyContent: "center",
         alignItems: "center",
         width: "100%",
         maxWidth: 300,
-        height: 25,
-        padding: 20,
-        borderRadius: 10,
-        fontFamily: "Poppins"
+        height: 50,
+        borderRadius: 10
     },
     navigateButton1: {
         backgroundColor: "#802060",
-        color: "#fff",
         borderColor: "#802060",
         borderWidth: 2
     },
     navigateButton2: {
         backgroundColor: "transparent",
-        color: "#802060",
         borderColor: "#802060",
         borderWidth: 2
+    },
+    navigateButtonText: {
+        fontFamily: "Poppins",
+        fontSize: 14
+    },
+    navigateButtonText1: {
+        color: "#fff"
+    },
+    navigateButtonText2: {
+        color: "#802060"
     }
 });

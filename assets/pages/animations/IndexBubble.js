@@ -67,8 +67,8 @@ export default function IndexBubble() {
 	return (
 		<Bubble 
 			style={[indexStyle.bubble, {
-				top: bubbleTopAnimation,
-				left: bubbleLeftAnimation
+				/*top: bubbleTopAnimation,
+				left: bubbleLeftAnimation*/
 			}]}>
 		</Bubble>
 	);

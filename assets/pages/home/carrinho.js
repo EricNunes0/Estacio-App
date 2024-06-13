@@ -6,6 +6,18 @@ import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import { carrinhoStyle } from "../../styles/home/carrinho";
 import { getUserByToken } from "../../../functions/getUserByToken";
 import { removePedidosFromCart } from "../../../functions/removePedidosFromCart";
+import RedMinusSVG from "../../svgs/red_minus.js";
+import RedPlusSVG from "../../svgs/red_plus.js";
+import RedTrashSVG from "../../svgs/red_trash.js";
+import CarrinhoSVG from "../../svgs/cart/carrinho.js";
+import FlavorSVG from "../../svgs/cart/flavor.js";
+import SizeSVG from "../../svgs/cart/size.js";
+import SyrupSVG from "../../svgs/cart/syrup.js";
+import AcaiSVG from "../../svgs/cart/acai.js";
+import IceCreamSVG from "../../svgs/cart/icecream.js";
+import CondimentoSVG from "../../svgs/cart/condimento.js";
+import ExtraSVG from "../../svgs/cart/extra.js";
+import PaymentMethodSVG from "../../svgs/payment/method.js";
 
 export default function Carrinho() {
     const navigation = useNavigation();
@@ -17,10 +29,10 @@ export default function Carrinho() {
     const [modalVisible, setModalVisible] = useState(false);
 
     const paymentMethods = [
-        {value: "credit", label: "Crédito", icon: require(`../../svgs/payment/credit.svg`)},
-        {value: "debit", label: "Débito", icon: require(`../../svgs/payment/debit.svg`)},
-        {value: "pix", label: "Pix", icon: require(`../../svgs/payment/pix.svg`)},
-        {value: "cash", label: "Dinheiro", icon: require(`../../svgs/payment/cash.svg`)}
+        {value: "credit", label: "Crédito"},
+        {value: "debit", label: "Débito"},
+        {value: "pix", label: "Pix"},
+        {value: "cash", label: "Dinheiro"}
     ];
 
     useEffect(() => {
@@ -253,15 +265,17 @@ export default function Carrinho() {
                                                     <View style={carrinhoStyle.produtoButtonBox}>
                                                         {produto.count === 1 ?
                                                             (<TouchableOpacity onPress={() => {removePedidoFromCart(produto.id)}} style={[carrinhoStyle.produtoButtonOptions]}>
-                                                                <Image style={[carrinhoStyle.produtoButtonOptionsIcons]} source={require(`../../../assets/svgs/red_trash.svg`)}></Image>
+                                                                <RedTrashSVG></RedTrashSVG>
                                                             </TouchableOpacity>) : 
                                                             (<TouchableOpacity onPress={() => {removeCount(produto.id)}} style={[carrinhoStyle.produtoButtonOptions]}>
-                                                                <Image style={[carrinhoStyle.produtoButtonOptionsIcons]} source={require(`../../../assets/svgs/red_minus.svg`)}></Image>
+                                                                <RedMinusSVG></RedMinusSVG>
                                                             </TouchableOpacity>)
                                                         }
-                                                        <Text style={carrinhoStyle.produtoButtonCounter}>{produto.count}</Text>
+                                                        <View style={carrinhoStyle.produtoButtonCounterView}>
+                                                            <Text style={carrinhoStyle.produtoButtonCounter}>{produto.count}</Text>
+                                                        </View>
                                                         <TouchableOpacity onPress={() => {addCount(produto.id)}} style={[carrinhoStyle.produtoButtonOptions]}>
-                                                            <Image style={[carrinhoStyle.produtoButtonOptionsIcons]} source={require(`../../../assets/svgs/red_plus.svg`)}></Image>
+                                                            <RedPlusSVG></RedPlusSVG>
                                                         </TouchableOpacity>
                                                     </View>
                                                 </View>
@@ -272,7 +286,7 @@ export default function Carrinho() {
                                                 <View style={carrinhoStyle.produtoDetails}>
                                                     <View style={carrinhoStyle.produtoInfos}>
                                                         <View style={carrinhoStyle.produtoCounterCircle}>
-                                                            <Image source={require(`../../../assets/svgs/cart/size.svg`)} style={carrinhoStyle.produtoCounterIcon}/>
+                                                            <SizeSVG></SizeSVG>
                                                         </View>
                                                         <View style={carrinhoStyle.produtoTextView}>
                                                             <Text style = {carrinhoStyle.produtoTextTitle}>Tamanho:</Text>
@@ -281,7 +295,7 @@ export default function Carrinho() {
                                                     </View>
                                                     <View style={carrinhoStyle.produtoInfos}>
                                                         <View style={carrinhoStyle.produtoCounterCircle}>
-                                                            <Image source={require(`../../../assets/svgs/cart/syrup.svg`)} style={carrinhoStyle.produtoCounterIcon}/>
+                                                            <SyrupSVG></SyrupSVG>
                                                         </View>
                                                         <View style={carrinhoStyle.produtoTextView}>
                                                             <Text style = {carrinhoStyle.produtoTextTitle}>Calda:</Text>
@@ -290,7 +304,7 @@ export default function Carrinho() {
                                                     </View>
                                                     <View style={carrinhoStyle.produtoInfos}>
                                                         <View style={carrinhoStyle.produtoCounterCircle}>
-                                                            <Image source={require(`../../../assets/svgs/cart/flavor.svg`)} style={carrinhoStyle.produtoCounterIcon}/>
+                                                            <FlavorSVG></FlavorSVG>
                                                         </View>
                                                         <View style={carrinhoStyle.produtoTextView}>
                                                             <Text style = {carrinhoStyle.produtoTextTitle}>Sabores:</Text>
@@ -299,7 +313,7 @@ export default function Carrinho() {
                                                     </View>
                                                     <View style={carrinhoStyle.produtoInfos}>
                                                         <View style={carrinhoStyle.produtoCounterCircle}>
-                                                            <Image source={require(`../../../assets/svgs/cart/condimento.svg`)} style={carrinhoStyle.produtoCounterIcon}/>
+                                                            <CondimentoSVG></CondimentoSVG>
                                                         </View>
                                                         <View style={carrinhoStyle.produtoTextView}>
                                                             <Text style = {carrinhoStyle.produtoTextTitle}>Condimentos:</Text>
@@ -308,7 +322,7 @@ export default function Carrinho() {
                                                     </View>
                                                     <View style={carrinhoStyle.produtoInfos}>
                                                         <View style={carrinhoStyle.produtoCounterCircle}>
-                                                            <Image source={require(`../../../assets/svgs/cart/extra.svg`)} style={carrinhoStyle.produtoCounterIcon}/>
+                                                            <ExtraSVG></ExtraSVG>
                                                         </View>
                                                         <View style={carrinhoStyle.produtoTextView}>
                                                             <Text style = {carrinhoStyle.produtoTextTitle}>Adicionais:</Text>
@@ -342,17 +356,17 @@ export default function Carrinho() {
                         ) : (
                             <View style = {carrinhoStyle.noProductsView}>
                                 <View style = {carrinhoStyle.noProductsIconView}>
-                                    <Image source={require("../../svgs/cart/carrinho.svg")} style = {carrinhoStyle.noProductsIcon}></Image>
+                                    <CarrinhoSVG></CarrinhoSVG>
                                 </View>
                                 <Text style = {carrinhoStyle.noProductsTitle}>Vazio</Text>
                                 <Text style = {carrinhoStyle.noProductsText}>Faça um pedido para encher o carrinho</Text>
                                 <View style = {carrinhoStyle.noProductsFlexButtons}>
                                     <TouchableOpacity onPress={() => {navigation.navigate("Açaí")}} style = {carrinhoStyle.noProductsButton}>
-                                        <Image source={require("../../svgs/cart/acai.svg")} style = {carrinhoStyle.noProductsButtonIcon}></Image>
+                                        <AcaiSVG></AcaiSVG>
                                         <Text style = {carrinhoStyle.noProductsButtonText}>Açaí</Text>
                                     </TouchableOpacity>
                                     <TouchableOpacity onPress={() => {navigation.navigate("Sorvete")}} style = {carrinhoStyle.noProductsButton}>
-                                        <Image source={require("../../svgs/cart/icecream.svg")} style = {carrinhoStyle.noProductsButtonIcon}></Image>
+                                        <IceCreamSVG></IceCreamSVG>
                                         <Text style = {carrinhoStyle.noProductsButtonText}>Sorvete</Text>
                                     </TouchableOpacity>
                                 </View>
@@ -396,7 +410,7 @@ export default function Carrinho() {
                             {paymentMethods.map((paymentMethod) => (
                                 <TouchableOpacity onPress = {() => {paymentMethodSelect(paymentMethod.value)}} style = {carrinhoStyle.modalMenuOption}>
                                     <View style = {carrinhoStyle.modalMenuOptionLeft}>
-                                        <Image source={paymentMethod.icon} style = {carrinhoStyle.modalMenuOptionIcon}></Image>
+                                        <PaymentMethodSVG icon = {paymentMethod.value}></PaymentMethodSVG>
                                         <Text style = {carrinhoStyle.modalMenuOptionLabel}>{paymentMethod.label}</Text>
                                     </View>
                                 </TouchableOpacity>

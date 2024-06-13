@@ -64,7 +64,7 @@ export default function IceCream() {
                 navigation.navigate("Login");
             }
         } catch (e) {
-            console.log(e)
+            console.log(e);
             alert(`Houve um erro: ${e}`);
         }
     };
@@ -293,11 +293,15 @@ export default function IceCream() {
                                                         <Text style={[mainStyle.radioTitle, mainStyle.radioTitleCenter]}>{item.label}</Text>
                                                     </>
                                                 )}
-                                                <Checkbox.Item
-                                                    key={item.label}
-                                                    status={selects[resource].includes(item.value) ? "checked" : "unchecked"}
-                                                    onPress={() => changeCheckboxResource(resource, item.value)}
-                                                />
+                                                {selects[resource] ? (
+                                                    <Checkbox.Item
+                                                        key={item.label}
+                                                        status={selects[resource].includes(item.value) ? "checked" : "unchecked"}
+                                                        onPress={() => changeCheckboxResource(resource, item.value)}
+                                                    />
+                                                ) : (
+                                                    <></>
+                                                )}
                                             </View>
                                         ))}
                                     </View>

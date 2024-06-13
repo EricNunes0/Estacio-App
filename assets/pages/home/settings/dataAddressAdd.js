@@ -8,6 +8,7 @@ import { settingsStyle } from "../../../styles/settings";
 import { TextInput } from "react-native-paper";
 import { getUserByToken } from "../../../../functions/getUserByToken";
 import axios from "axios";
+import MessageSVG from "../../../svgs/messages/message";
 
 export default function DataAddressAdd() {
     const navigation = useNavigation();
@@ -65,7 +66,6 @@ export default function DataAddressAdd() {
                 setUserCity(null);
                 setUserAddress(null);
             } else {
-                console.log(response.data)
                 setUserCity(response.data.localidade);
                 setUserAddress(response.data.logradouro);
             }
@@ -111,27 +111,12 @@ export default function DataAddressAdd() {
                     i++;
                 }
             };
-            console.log(usersArray[i]);
             await AsyncStorage.setItem("users", JSON.stringify(usersArray));
             addMessage("success", "Endereço adicionado:", "Seu endereço foi adicionado com sucesso!");
             return navigation.goBack();
         } catch (e) {
             alert(`Não foi possível obter o token: ${e}`);
         }
-    };
-
-    const iconsPath = `../../../svgs/messages`;
-    const messageIcons = {
-        info: require(`${iconsPath}/info.svg`),
-        success: require(`${iconsPath}/success.svg`),
-        warning: require(`${iconsPath}/warning.svg`),
-        error: require(`${iconsPath}/error.svg`)
-    };
-    const messageCloseIcons = {
-        info: require(`${iconsPath}/close_info.svg`),
-        success: require(`${iconsPath}/close_success.svg`),
-        warning: require(`${iconsPath}/close_warning.svg`),
-        error: require(`${iconsPath}/close_error.svg`)
     };
 
     return (
@@ -165,6 +150,7 @@ export default function DataAddressAdd() {
                 {messages.map((msg) => (
                     <View style = {[messageStyle.message, messageStyle[`message_${msg.type}`]]} key={uuid.v4()}>
                         <View style = {messageStyle.messageIconView}>
+                            <MessageSVG type = {msg.type}></MessageSVG>
                             <Image source = {messageIcons[msg.type]} style = {[messageStyle.messageIcon]}></Image>
                         </View>
                         <View style = {messageStyle.messageTextView}>
@@ -173,7 +159,7 @@ export default function DataAddressAdd() {
                         </View>
                         <View style = {messageStyle.messageCloseView}>
                             <TouchableOpacity onPress={() => {deleteMessage(msg.id)}} style = {messageStyle.messageCloseButton}>
-                                <Image source = {messageCloseIcons[msg.type]} style = {[messageStyle.messageClose]}></Image>
+                                <MessageSVG type = {`close_${msg.type}`}></MessageSVG>
                             </TouchableOpacity>
                         </View>
                     </View>

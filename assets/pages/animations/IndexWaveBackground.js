@@ -1,39 +1,37 @@
-import { useEffect, useRef } from 'react';
-import { Animated, Dimensions, Easing, ImageBackground } from 'react-native';
-import { indexStyle } from "../../styles/index";
-import wave from "../../svgs/index_wave.svg"
+import React, { useEffect } from "react";
+import { Dimensions, View, Text, Image, StyleSheet } from "react-native";
+import Animated, { Easing, useSharedValue, useAnimatedStyle, withRepeat, withTiming } from "react-native-reanimated";
 
 export default function IndexWaveBackground() {
 	const screen = Dimensions.get("window");
-	const initialValue = 0;
-	const translateValue = useRef(new Animated.Value(initialValue)).current;
+	const translateX = useSharedValue(0);
 
 	useEffect(() => {
-		const translate = () => {
-			translateValue.setValue(initialValue);
-			Animated.timing(translateValue, {
-				toValue: 1,
-				duration: 5000,
+		console.log(translateX)
+		translateX.value = withRepeat(
+			withTiming(-100, {
+				duration: 1000,
 				easing: Easing.linear,
-				useNativeDriver: true,
-			}).start(() => translate());
-		};
-		translate();
-	}, [translateValue]);
+			}),
+			-1,
+			true,
+		);
+	}, [translateX]);
 
-	const translateAnimation = translateValue.interpolate({
-		inputRange: [0, 1],
-		outputRange: [-screen.width, 1],
+	const animatedStyle = useAnimatedStyle(() => {
+		return {
+			transform: [{ translateX: translateX.value }],
+		};
 	});
 
-	const Wave = Animated.createAnimatedComponent(ImageBackground);
 	return (
-		<Wave 
-			resizeMode="repeat" 
-			style={[indexStyle.mainBackgroundWave, {
-				left: translateAnimation
-			}]}
-			source = {wave}>
-		</Wave>
+		<View style = {{backgroundColor: "red"}}>
+			<Animated.View style={animatedStyle}>
+				<Image
+					source={require("../../images/index_wave.png")}
+					style={{width: screen.width * 3, height: 150, position: "absolute", top: -150, resizeMode: "contain"}}
+				/>
+			</Animated.View>
+		</View>
 	);
 }

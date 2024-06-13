@@ -1,9 +1,9 @@
 import { Dimensions, StyleSheet } from "react-native";
 
-const screen = Dimensions.get("screen");
+const screen = Dimensions.get("window");
 export const messageStyle = StyleSheet.create({
     message: {
-        pointerEvents: "all",
+        /*pointerEvents: "all",*/
         display: "flex",
         flexDirection: "row",
         justifyContent: "center",

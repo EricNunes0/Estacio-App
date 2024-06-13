@@ -8,6 +8,8 @@ import CryptoJS from "crypto-js";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { loginStyle } from "../styles/login";
 import { tokenAddToUser } from "../../functions/tokenAddToUser";
+import ErrorSVG from "../svgs/error";
+import ErrorTriangleSVG from "../svgs/error_triangle";
 
 export default function Login() {
     const navigation = useNavigation();
@@ -33,7 +35,7 @@ export default function Login() {
 	};
 
 	/* Validação de login */
-	const validateLogin = () => {
+	const validateLogin = async () => {
 		setEmailErrorMessage(null);
 		setPasswordErrorMessage(null);
 
@@ -52,7 +54,7 @@ export default function Login() {
 		};
 		setPasswordErrorMessage(null);
 		
-		getUser({
+		await getUser({
 			email: emailInput,
 			password: passwordInput
 		});
@@ -93,41 +95,50 @@ export default function Login() {
 						<Image source={require("../images/logo.png")} style={loginStyle.mainArticleLogo}></Image>
 					</View>
 					<View style={loginStyle.mainArticleTextsView}>
-						<Text style={loginStyle.title}>Bem-vindo</Text>
+						<Text numberOfLines={1} style={loginStyle.title}>Bem-vindo</Text>
 						<Text style={loginStyle.subtitle}>Faça o login para continuar</Text>
 					</View>
 					<View style={loginStyle.mainArticleFormView}>
 						<View style={loginStyle.mainArticleFormInputView}>
 							<TextInput autoComplete="email" keyboardType="email-address" placeholder="E-mail" placeholderTextColor="#888" value={emailInput} onChangeText={(text) => {setEmailInput(text)}} style={loginStyle.mainArticleFormInput}></TextInput>
 							<TouchableOpacity onPress={() => {setEmailErrorMessage(null)}} style={emailErrorMessage ?  [loginStyle.mainArticleFormErrorView] : {display: "none"}}>
-								<Image source={require("../svgs/error_triangle.svg")} style={loginStyle.mainArticleFormErrorArrow}></Image>
-								<Image source={require("../svgs/error.svg")} style={loginStyle.mainArticleFormErrorIcon}></Image>
+								<View style={loginStyle.mainArticleFormErrorArrow}>
+									<ErrorTriangleSVG></ErrorTriangleSVG>
+								</View>
+								<ErrorSVG></ErrorSVG>
 								<Text numberOfLines={2} style={loginStyle.mainArticleFormErrorText}>{emailErrorMessage}</Text>
 							</TouchableOpacity>
 						</View>
 						<View style={loginStyle.mainArticleFormInputView}>
 							<TextInput autoComplete="password" keyboardType="password" secureTextEntry={!showPassword} value={passwordInput} onChangeText={(text) => {setPasswordInput(text)}} placeholder="Senha"  placeholderTextColor="#888" style={loginStyle.mainArticleFormInput}></TextInput>
-							<MaterialCommunityIcons style={loginStyle.mainArticleFormPasswordButton} name={showPassword ? 'eye-off' : 'eye'} size={24} color="#aaa" onPress={toggleShowPassword}/>
+							<TouchableOpacity style={loginStyle.mainArticleFormPasswordButton} onPress={toggleShowPassword}>
+								<MaterialCommunityIcons style={loginStyle.mainArticleFormPasswordButtonIcon} name={showPassword ? 'eye-off' : 'eye'} size={24} color="#aaa"/>
+							</TouchableOpacity>
 							<TouchableOpacity onPress={() => {setPasswordErrorMessage(null)}} style={passwordErrorMessage ?  [loginStyle.mainArticleFormErrorView] : {display: "none"}}>
-								<Image source={require("../svgs/error_triangle.svg")} style={loginStyle.mainArticleFormErrorArrow}></Image>
-								<Image source={require("../svgs/error.svg")} style={loginStyle.mainArticleFormErrorIcon}></Image>
+								<View style={loginStyle.mainArticleFormErrorArrow}>
+									<ErrorTriangleSVG></ErrorTriangleSVG>
+								</View>
+								<ErrorSVG></ErrorSVG>
 								<Text numberOfLines={2} style={loginStyle.mainArticleFormErrorText}>{passwordErrorMessage}</Text>
 							</TouchableOpacity>
 						</View>
 					</View>
 					<View style={loginStyle.mainArticleForgotView}>
-						<TouchableOpacity style={loginStyle.forgot}>Esqueceu a senha?</TouchableOpacity>
+						<TouchableOpacity style={loginStyle.forgot}>
+							<Text numberOfLines={1} style={loginStyle.forgotText}>Esqueceu a senha?</Text>
+						</TouchableOpacity>
 					</View>
 				</View>
 			</View>
 			<View style={loginStyle.viewStretch}>
 				<View style={loginStyle.viewBottomMargin}>
 					<View style={loginStyle.viewStretch}>
-						<Text style={loginStyle.sub}>Não tem uma conta? 
+						<View style={loginStyle.sub}>
+							<Text style={loginStyle.subText}>Não tem uma conta?</Text>
 							<TouchableOpacity style={loginStyle.subButton} onPress={() => {navigation.navigate("Cadastro")}}>
-								<Text> Cadastre-se</Text>
+								<Text style={loginStyle.subButtonText}>Cadastre-se</Text>
 							</TouchableOpacity>
-						</Text>
+						</View>
 					</View>
 					<View style={loginStyle.menuButtonView}>
 						<TouchableOpacity onPress={() => {validateLogin()}} style={loginStyle.menuButton}>

@@ -15,7 +15,7 @@ export default function Main() {
 				borderBottomWidth: 4,
 				borderBottomColor: "#802060",
 				borderStyle: "solid",
-				height: 50
+				height: 80
 			},
 			drawerActiveBackgroundColor: "#F0A0D0",
 			drawerLabelStyle: {

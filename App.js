@@ -9,7 +9,9 @@ import { checkIfResourcesExists } from "./functions/checkIfResourcesExists.js";
 export default function App() {
 	const [fontsLoaded] = useFonts({
 		"Poppins": require("./assets/fonts/Poppins.ttf"),
-		"Poppins thin": require("./assets/fonts/Poppins_thin.ttf")
+		"Poppins thin": require("./assets/fonts/Poppins_thin.ttf"),
+		"Poppins medium": require("./assets/fonts/Poppins_medium.ttf"),
+		"Poppins bold": require("./assets/fonts/Poppins_bold.ttf")
 	});
 
 	const [token, setToken] = useState(null);

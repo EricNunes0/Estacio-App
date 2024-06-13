@@ -3,6 +3,8 @@ import { Button, Image, ScrollView, Text, TouchableOpacity, View } from "react-n
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import { settingsStyle } from "../../../styles/settings";
+import CrownFalseSVG from "../../../svgs/settings/crown_false.js";
+import CrownTrueSVG from "../../../svgs/settings/crown_true.js";
 
 export default function Admins() {
     const navigation = useNavigation();
@@ -84,9 +86,9 @@ export default function Admins() {
                             <View>
                                 <TouchableOpacity onPress={() => {toggleAdmin(user.id)}} style = {settingsStyle.adminsButton}>
                                     {user.admin === true ? (
-                                        <Image source={require("../../../svgs/settings/crown_true.svg")} style = {settingsStyle.adminsButtonIcon}></Image>
+                                        <CrownTrueSVG></CrownTrueSVG>
                                     ) : (
-                                        <Image source={require("../../../svgs/settings/crown_false.svg")} style = {settingsStyle.adminsButtonIcon}></Image>
+                                        <CrownFalseSVG></CrownFalseSVG>
                                     )}
                                 </TouchableOpacity>
                             </View>

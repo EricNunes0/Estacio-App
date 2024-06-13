@@ -1,9 +1,11 @@
 import { Dimensions, StyleSheet } from "react-native";
 
+const screen = Dimensions.get("window");
 const produtoIconSize = 48;
 export const carrinhoStyle = StyleSheet.create({
     container: {
-        width: "100%"
+        flex: 1,
+		alignItems: "center"
     },
 	title: {
         fontFamily: "Poppins",
@@ -12,20 +14,24 @@ export const carrinhoStyle = StyleSheet.create({
         padding: 8
 	},
     pedidoView: {
+        width: screen.width,
         display: "flex",
-        justifyContent: "center"
+        justifyContent: "center",
+        alignItems: "center"
     },
     produtoView: {
-        margin: 8,
+        width: screen.width - 16,
         borderColor: "rgba(0, 0, 0, 0.3)",
         borderStyle: "solid",
-        borderBottomWidth: 2
+        borderBottomWidth: 2,
+        padding: 8
     },
     produtoHeader: {
-        width: "100%",
+        width: `100%`,
+        height: 48,
         display: "flex",
         flexDirection: "row",
-        justifyContent: "space-between",
+        justifyContent: "flex-start",
         alignItems: "flex-start"
     },
     produtoIconView: {
@@ -38,7 +44,7 @@ export const carrinhoStyle = StyleSheet.create({
         borderRadius: 5
     },
     produtoTitleView: {
-        width: `calc(100% - ${produtoIconSize}px)`,
+        width: screen.width - 48 - 30,
         height: "100%",
         display: "flex",
         flexDirection: "row",
@@ -98,16 +104,19 @@ export const carrinhoStyle = StyleSheet.create({
         width: 16,
         height: 16
     },
-    produtoButtonCounter: {
+    produtoButtonCounterView: {
         width: "20%",
         height: "100%",
         display: "flex",
         flexDirection: "row",
         justifyContent: "center",
         alignItems: "center",
+    },
+    produtoButtonCounter: {
         fontFamily: "Poppins",
         fontSize: 14,
-        fontWeight: "bold"
+        fontWeight: "bold",
+        textAlign: "center"
     },
     produtoMain: {
         width: "100%",
@@ -138,7 +147,7 @@ export const carrinhoStyle = StyleSheet.create({
         paddingRight: 7.5,
         borderRadius: 25,
         minWidth: 28,
-        height: 18,
+        height: 24,
         display: "flex",
         justifyContent: "center",
         alignItems: "center"
@@ -156,11 +165,12 @@ export const carrinhoStyle = StyleSheet.create({
     produtoTextTitle: {
         color: "#000",
         fontFamily: "Poppins",
-        fontWeight: "bold"
+        fontSize: 14
     },
     produtoText: {
-        color: "#444",
-        fontFamily: "Poppins"
+        color: "#666",
+        fontFamily: "Poppins",
+        fontSize: 12
     },
     produtoObservation: {
         marginTop: 6,
@@ -208,7 +218,7 @@ export const carrinhoStyle = StyleSheet.create({
         width: 120,
         height: 120,
         backgroundColor: "rgba(0, 0, 0, 0.1)",
-        borderRadius: "50%",
+        borderRadius: 250,
         display: "flex",
         justifyContent: "center",
         alignItems: "center"
@@ -289,15 +299,13 @@ export const carrinhoStyle = StyleSheet.create({
         color: "#666",
         fontFamily: "Poppins",
         fontSize: 12,
-        textAlign: "left",
-        lineHeight: 6
+        textAlign: "left"
     },
     footerConfirmButtonPrice: {
         color: "#000",
         fontFamily: "Poppins",
         fontSize: 16,
-        fontWeight: "bold",
-        lineHeight: 24
+        lineHeight: 18
     },
     footerMainButtonView: {
         width: "50%",
@@ -319,7 +327,7 @@ export const carrinhoStyle = StyleSheet.create({
     footerConfirmButtonText: {
         color: "#fff",
         fontFamily: "Poppins",
-        fontSize: 14
+        fontSize: 12
     },
     modalMain: {
         backgroundColor: "#fff"

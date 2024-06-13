@@ -1,11 +1,19 @@
 import { Button, Image, Text, TouchableOpacity, View } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
+import * as FileSystem from 'expo-file-system';
 import * as ImageManipulator from "expo-image-manipulator";
 import * as ImagePicker from "expo-image-picker";
+import * as MediaLibrary from 'expo-media-library';
 import { settingsStyle } from "../../../styles/settings";
 import { useCallback, useEffect, useState } from "react";
 import { tokenRemoveFromUser } from "../../../../functions/tokenRemoveFromUser";
+import AdminAddSVG from "../../../svgs/settings/admin_add";
+import RightSVG from "../../../svgs/settings/right";
+import AdminSVG from "../../../svgs/settings/admin";
+import OrderSVG from "../../../svgs/settings/order";
+import DataSVG from "../../../svgs/settings/data";
+import LogoutSVG from "../../../svgs/settings/logout";
 
 export default function Menu() {
     const navigation = useNavigation();
@@ -54,52 +62,68 @@ export default function Menu() {
         }
     };
 
-    /* Redimensionar imagem */
-    const resizeImage = async (uri) => {
-        const resizedImage = await ImageManipulator.manipulateAsync(
-            uri,
-            [{ resize: { width: 300, height: 300 } }],
-            {compress: 1, format: ImageManipulator.SaveFormat.JPEG}
-        );
-        return resizedImage.uri;
+    /* Converter imagem para base64 */
+    const convertToBase64 = async (uri) => {
+        try {
+            const base64Data = await FileSystem.readAsStringAsync(uri, {
+              encoding: FileSystem.EncodingType.Base64,
+            });
+            return base64Data;
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    /* Converter imagem para base64 */
+    const convertToImage = async (uri) => {
+        try {
+            const base64Data = await FileSystem.readAsStringAsync(uri, {
+              encoding: FileSystem.EncodingType.Base64,
+            });
+            return base64Data;
+        } catch (error) {
+            console.error(error);
+        }
     };
 
     /* Alterar ícone */
     const changeUserIcon = async () => {
-        const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+        const { status } = await MediaLibrary.requestPermissionsAsync();
         if (status !== "granted") {
             alert("É necessária permissão para acessar a biblioteca de mídia!");
             return;
-        }
-        const usersString = await AsyncStorage.getItem("users");
-        let usersArray = JSON.parse(usersString);
-        let i = 0;
-        for(let registeredUser of usersArray) {
-            if(registeredUser.id === userId) {
-                break;
-            } else {
-                i++;
-            }
-        };
-        let result = await ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.All,
-            allowsEditing: true,
-            aspect: [4, 3],
-            quality: 1,
-        });
-
-        if(!result.canceled) {
-            let allowedMimeTypes = ["image/png", "image/jpg", "image/jpeg", "image/gif", "image/webp"];
-            let newUserMimeType = result.assets[0].mimeType;
-            let newUserIconUri = result.assets[0].uri;
-            if(allowedMimeTypes.includes(newUserMimeType)) {
-                let newUserIcon = await resizeImage(newUserIconUri);
-                setUserIcon(newUserIcon);
-                usersArray[i].icon = newUserIcon;
-                await AsyncStorage.setItem("users", JSON.stringify(usersArray));
-            }
         } else {
-            alert("O usuário negou o acesso ao seletor de imagens");
+            const usersString = await AsyncStorage.getItem("users");
+            let usersArray = JSON.parse(usersString);
+            let i = 0;
+            for(let registeredUser of usersArray) {
+                if(registeredUser.id === userId) {
+                    break;
+                } else {
+                    i++;
+                }
+            };
+            let result = await ImagePicker.launchImageLibraryAsync({
+                mediaTypes: ImagePicker.MediaTypeOptions.All,
+                allowsEditing: true,
+                allowsMultipleSelection: false,
+                aspect: [1, 1],
+                quality: 1,
+            });
+
+            if(!result.canceled) {
+                let allowedMimeTypes = ["image/png", "image/jpg", "image/jpeg", "image/gif", "image/webp"];
+                let newUserMimeType = result.assets[0].mimeType;
+                let newUserIconUri = result.assets[0].uri;
+                if(allowedMimeTypes.includes(newUserMimeType)) {
+                    let newUserIcon = await convertToBase64(newUserIconUri);
+                    setUserIcon(newUserIcon);
+                    usersArray[i].icon = newUserIcon;
+                    await AsyncStorage.setItem("users", JSON.stringify(usersArray));
+                }
+            } else {
+                alert("O usuário negou o acesso ao seletor de imagens");
+            };
         };
     };
 
@@ -122,7 +146,7 @@ export default function Menu() {
             <View style = {settingsStyle.header}>
                 <View style = {settingsStyle.headerIconView}>
                     <TouchableOpacity onPress={() => {changeUserIcon()}} style = {settingsStyle.headerIconButton}>
-                        <Image source = {userIcon !== null ? userIcon : require("../../../images/user.png")} style = {settingsStyle.headerIcon}></Image>
+                        <Image source = {userIcon !== null ? {uri: `data:image/png;base64,${userIcon}`} : require("../../../images/user.png")} style = {settingsStyle.headerIcon}></Image>
                     </TouchableOpacity>
                 </View>
                 <View style = {settingsStyle.headerTextView}>
@@ -136,7 +160,7 @@ export default function Menu() {
                             <TouchableOpacity onPress={() => {navigation.navigate("Admins")}} style = {settingsStyle.mainButtons}>
                                 <View style = {settingsStyle.mainButtonsLeft}>
                                     <View style = {settingsStyle.mainButtonsIconView}>
-                                        <Image source={require("../../../svgs/settings/admin_add.svg")} style = {settingsStyle.mainButtonsIcon}></Image>
+                                        <AdminAddSVG></AdminAddSVG>
                                     </View>
                                     <View style = {settingsStyle.mainButtonsTextView}>
                                         <Text style = {settingsStyle.mainButtonsTitle}>Gerenciar administradores</Text>
@@ -145,14 +169,14 @@ export default function Menu() {
                                 </View>
                                 <View style = {settingsStyle.mainButtonsRight}>
                                     <View style = {settingsStyle.mainButtonsArrowView}>
-                                        <Image source={require("../../../svgs/settings/right.svg")} style = {settingsStyle.mainButtonsArrow}></Image>
+                                        <RightSVG></RightSVG>
                                     </View>
                                 </View>
                             </TouchableOpacity>
                             <TouchableOpacity onPress={() => {navigation.navigate("Resources")}} style = {settingsStyle.mainButtons}>
                             <View style = {settingsStyle.mainButtonsLeft}>
                                 <View style = {settingsStyle.mainButtonsIconView}>
-                                    <Image source={require("../../../svgs/settings/admin.svg")} style = {settingsStyle.mainButtonsIcon}></Image>
+                                <AdminSVG></AdminSVG>
                                 </View>
                                 <View style = {settingsStyle.mainButtonsTextView}>
                                     <Text style = {settingsStyle.mainButtonsTitle}>Editar recursos</Text>
@@ -161,7 +185,7 @@ export default function Menu() {
                             </View>
                             <View style = {settingsStyle.mainButtonsRight}>
                                 <View style = {settingsStyle.mainButtonsArrowView}>
-                                    <Image source={require("../../../svgs/settings/right.svg")} style = {settingsStyle.mainButtonsArrow}></Image>
+                                    <RightSVG></RightSVG>
                                 </View>
                             </View>
                             </TouchableOpacity>
@@ -174,7 +198,7 @@ export default function Menu() {
                 <TouchableOpacity onPress={() => {navigation.navigate("Pedidos")}} style = {settingsStyle.mainButtons}>
                     <View style = {settingsStyle.mainButtonsLeft}>
                         <View style = {settingsStyle.mainButtonsIconView}>
-                            <Image source={require("../../../svgs/settings/order.svg")} style = {settingsStyle.mainButtonsIcon}></Image>
+                            <OrderSVG></OrderSVG>
                         </View>
                         <View style = {settingsStyle.mainButtonsTextView}>
                             <Text style = {settingsStyle.mainButtonsTitle}>Ver pedidos</Text>
@@ -183,7 +207,7 @@ export default function Menu() {
                     </View>
                     <View style = {settingsStyle.mainButtonsRight}>
                         <View style = {settingsStyle.mainButtonsArrowView}>
-                            <Image source={require("../../../svgs/settings/right.svg")} style = {settingsStyle.mainButtonsArrow}></Image>
+                            <RightSVG></RightSVG>
                         </View>
                     </View>
                 </TouchableOpacity>
@@ -191,7 +215,7 @@ export default function Menu() {
                 <TouchableOpacity onPress={() => {navigation.navigate("Data")}} style = {settingsStyle.mainButtons}>
                     <View style = {settingsStyle.mainButtonsLeft}>
                         <View style = {settingsStyle.mainButtonsIconView}>
-                            <Image source={require("../../../svgs/settings/data.svg")} style = {settingsStyle.mainButtonsIcon}></Image>
+                            <DataSVG></DataSVG>
                         </View>
                         <View style = {settingsStyle.mainButtonsTextView}>
                             <Text style = {settingsStyle.mainButtonsTitle}>Dados da conta</Text>
@@ -200,7 +224,7 @@ export default function Menu() {
                     </View>
                     <View style = {settingsStyle.mainButtonsRight}>
                         <View style = {settingsStyle.mainButtonsArrowView}>
-                            <Image source={require("../../../svgs/settings/right.svg")} style = {settingsStyle.mainButtonsArrow}></Image>
+                            <RightSVG></RightSVG>
                         </View>
                     </View>
                 </TouchableOpacity>
@@ -208,7 +232,7 @@ export default function Menu() {
                 <TouchableOpacity onPress={() => {logout()} } style = {settingsStyle.mainButtons}>
                     <View style = {settingsStyle.mainButtonsLeft}>
                         <View style = {settingsStyle.mainButtonsIconView}>
-                            <Image source={require("../../../svgs/settings/logout.svg")} style = {settingsStyle.mainButtonsIcon}></Image>
+                            <LogoutSVG></LogoutSVG>
                         </View>
                         <View style = {settingsStyle.mainButtonsTextView}>
                             <Text style = {settingsStyle.mainButtonsTitle}>Sair</Text>
@@ -217,7 +241,7 @@ export default function Menu() {
                     </View>
                     <View style = {settingsStyle.mainButtonsRight}>
                         <View style = {settingsStyle.mainButtonsArrowView}>
-                            <Image source={require("../../../svgs/settings/right.svg")} style = {settingsStyle.mainButtonsArrow}></Image>
+                            <RightSVG></RightSVG>
                         </View>
                     </View>
                 </TouchableOpacity>

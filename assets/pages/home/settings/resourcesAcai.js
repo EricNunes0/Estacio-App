@@ -3,6 +3,9 @@ import { Button, Image, ScrollView, Text, TouchableOpacity, View } from "react-n
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import { settingsStyle } from "../../../styles/settings";
+import DeleteSVG from "../../../svgs/settings/delete";
+import EditSVG from "../../../svgs/settings/edit";
+import AddSVG from "../../../svgs/settings/add";
 
 export default function ResourcesAcai() {
     const navigation = useNavigation();
@@ -65,7 +68,6 @@ export default function ResourcesAcai() {
 
     /* Editar item */
     const editItem = async (resource, item) => {
-        console.log(item)
         navigation.navigate("ResourcesAcaiEdit", {
             resource: resource,
             item: item
@@ -101,7 +103,7 @@ export default function ResourcesAcai() {
                                 <Text style = {settingsStyle.mainTitle}>{resources[resource].title}</Text>
                                 <View style = {settingsStyle.mainHeaderAddView}>
                                     <TouchableOpacity onPress={() => {addItem(resource)}} style = {settingsStyle.mainHeaderAddButton}>
-                                        <Image source={require("../../../svgs/settings/add.svg")} style = {settingsStyle.mainHeaderAddIcon}></Image>
+                                        <AddSVG></AddSVG>
                                     </TouchableOpacity>
                                 </View>
                             </View>
@@ -123,10 +125,10 @@ export default function ResourcesAcai() {
                                         <View style = {settingsStyle.mainEditButtonsRight}>
                                             <View style = {settingsStyle.mainButtonsRightOptionsView}>
                                                 <TouchableOpacity onPress={() => {editItem(resource, item)}} style = {settingsStyle.mainButtonsRightOptions}>
-                                                    <Image source={require("../../../svgs/settings/edit.svg")} style = {settingsStyle.mainButtonsRightOptionsIcons}></Image>
+                                                    <EditSVG></EditSVG>
                                                 </TouchableOpacity>
                                                 <TouchableOpacity onPress={() => {deleteItem(resource, item)}} style = {settingsStyle.mainButtonsRightOptions}>
-                                                    <Image source={require("../../../svgs/settings/delete.svg")} style = {settingsStyle.mainButtonsRightOptionsIcons}></Image>
+                                                    <DeleteSVG></DeleteSVG>
                                                 </TouchableOpacity>
                                             </View>
                                         </View>

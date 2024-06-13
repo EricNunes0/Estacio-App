@@ -5,6 +5,7 @@ import { useNavigation } from "@react-navigation/native";
 import { messageStyle } from "../../../styles/message";
 import { settingsStyle } from "../../../styles/settings";
 import { TextInput } from "react-native-paper";
+import MessageSVG from "../../../svgs/messages/message";
 
 export default function DataName() {
     const navigation = useNavigation();
@@ -95,20 +96,6 @@ export default function DataName() {
         }
     };
 
-    const iconsPath = `../../../svgs/messages`;
-    const messageIcons = {
-        info: require(`${iconsPath}/info.svg`),
-        success: require(`${iconsPath}/success.svg`),
-        warning: require(`${iconsPath}/warning.svg`),
-        error: require(`${iconsPath}/error.svg`)
-    };
-    const messageCloseIcons = {
-        info: require(`${iconsPath}/close_info.svg`),
-        success: require(`${iconsPath}/close_success.svg`),
-        warning: require(`${iconsPath}/close_warning.svg`),
-        error: require(`${iconsPath}/close_error.svg`)
-    };
-
     return (
         <View style = {settingsStyle.container}>
             <View style = {settingsStyle.main}>
@@ -127,20 +114,20 @@ export default function DataName() {
             <View style = {settingsStyle.messagesView}>
                 {/* Mensagens */}
                 {messages.map((msg) => (
-                    <View style = {[messageStyle.message, messageStyle[`message_${msg.type}`]]}>
-                    <View style = {messageStyle.messageIconView}>
-                        <Image source = {messageIcons[msg.type]} style = {[messageStyle.messageIcon]}></Image>
+                    <View style = {[messageStyle.message, messageStyle[`message_${msg.type}`]]} key={Math.floor(Math.random() * 1000)}>
+                        <View style = {messageStyle.messageIconView}>
+                            <MessageSVG type = {msg.type}></MessageSVG>
+                        </View>
+                        <View style = {messageStyle.messageTextView}>
+                            <Text style = {[messageStyle.messageTitle, messageStyle[`messageTitle_${msg.type}`]]}>{msg.title}</Text>
+                            <Text style = {[messageStyle.messageContent, messageStyle[`messageContent_${msg.type}`]]}>{msg.content}</Text>
+                        </View>
+                        <View style = {messageStyle.messageCloseView}>
+                            <TouchableOpacity onPress={() => {deleteMessage(msg.id)}} style = {messageStyle.messageCloseButton}>
+                                <MessageSVG type = {`close_${msg.type}`}></MessageSVG>
+                            </TouchableOpacity>
+                        </View>
                     </View>
-                    <View style = {messageStyle.messageTextView}>
-                        <Text style = {[messageStyle.messageTitle, messageStyle[`messageTitle_${msg.type}`]]}>{msg.title}</Text>
-                        <Text style = {[messageStyle.messageContent, messageStyle[`messageContent_${msg.type}`]]}>{msg.content}</Text>
-                    </View>
-                    <View style = {messageStyle.messageCloseView}>
-                        <TouchableOpacity onPress={() => {deleteMessage(msg.id)}} style = {messageStyle.messageCloseButton}>
-                            <Image source = {messageCloseIcons[msg.type]} style = {[messageStyle.messageClose]}></Image>
-                        </TouchableOpacity>
-                    </View>
-                </View>
                 ))}
             </View>
         </View>

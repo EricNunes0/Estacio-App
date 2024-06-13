@@ -59,8 +59,7 @@ export const mainStyle = StyleSheet.create({
 	},
 	headerTitle: {
 		color: "#444",
-        fontFamily: "Poppins",
-        fontWeight: "bold",
+        fontFamily: "Poppins bold",
         fontSize: 16
 	},
 	headerSubtitle: {
@@ -89,11 +88,10 @@ export const mainStyle = StyleSheet.create({
     },
     radioTitle: {
         position: "absolute",
-        top: radioHeight / 2 - headerPadding,
+        top: radioHeight / 2 - headerPadding - 4,
         left: headerPadding,
         color: "#000",
-        fontFamily: "Poppins",
-        fontWeight: "bold"
+        fontFamily: "Poppins"
     },
     radioTitleCenter: {
         top: radioHeight / 2 - headerPadding / 1.5

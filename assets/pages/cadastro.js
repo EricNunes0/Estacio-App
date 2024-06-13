@@ -7,10 +7,9 @@ import { StatusBar } from "expo-status-bar";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import CryptoJS from "crypto-js";
 import { loginStyle } from "../styles/login";
-import { getRegisters } from "../../functions/getRegisters";
-import { clearStorage } from "../../functions/clearStorage";
 import { tokenAddToUser } from "../../functions/tokenAddToUser";
-import { clearRegisters } from "../../functions/clearRegisters";
+import ErrorSVG from "../svgs/error";
+import ErrorTriangleSVG from "../svgs/error_triangle";
 
 export default function Cadastro() {
     const navigation = useNavigation();
@@ -134,25 +133,33 @@ export default function Cadastro() {
 						<View style={loginStyle.mainArticleFormInputView}>
 							<TextInput autoComplete="name" keyboardType="default" placeholder="Nome completo" placeholderTextColor="#888" value={nameInput} onChangeText={(text) => {setNameInput(text)}}  style={loginStyle.mainArticleFormInput}></TextInput>
 							<View style={nameErrorMessage ?  [loginStyle.mainArticleFormErrorView] : {display: "none"}}>
-								<Image source={require("../svgs/error_triangle.svg")} style={loginStyle.mainArticleFormErrorArrow}></Image>
-								<Image source={require("../svgs/error.svg")} style={loginStyle.mainArticleFormErrorIcon}></Image>
+								<View style={loginStyle.mainArticleFormErrorArrow}>
+									<ErrorTriangleSVG></ErrorTriangleSVG>
+								</View>
+								<ErrorSVG></ErrorSVG>
 								<Text numberOfLines={2} style={loginStyle.mainArticleFormErrorText}>{nameErrorMessage}</Text>
 							</View>
 						</View>
 						<View style={loginStyle.mainArticleFormInputView}>
 							<TextInput autoComplete="email" keyboardType="email-address" placeholder="E-mail" placeholderTextColor="#888" value={emailInput} onChangeText={(text) => {setEmailInput(text)}} style={loginStyle.mainArticleFormInput}></TextInput>
 							<View style={emailErrorMessage ?  [loginStyle.mainArticleFormErrorView] : {display: "none"}}>
-								<Image source={require("../svgs/error_triangle.svg")} style={loginStyle.mainArticleFormErrorArrow}></Image>
-								<Image source={require("../svgs/error.svg")} style={loginStyle.mainArticleFormErrorIcon}></Image>
+								<View style={loginStyle.mainArticleFormErrorArrow}>
+									<ErrorTriangleSVG></ErrorTriangleSVG>
+								</View>
+								<ErrorSVG></ErrorSVG>
 								<Text numberOfLines={2} style={loginStyle.mainArticleFormErrorText}>{emailErrorMessage}</Text>
 							</View>
 						</View>
 						<View style={loginStyle.mainArticleFormInputView}>
 							<TextInput autoComplete="password" keyboardType="password" secureTextEntry={!showPassword} value={passwordInput} onChangeText={(text) => {setPasswordInput(text)}} placeholder="Senha"  placeholderTextColor="#888" style={loginStyle.mainArticleFormInput}></TextInput>
-							<MaterialCommunityIcons style={loginStyle.mainArticleFormPasswordButton} name={showPassword ? 'eye-off' : 'eye'}  size={24}  color="#aaa" onPress={toggleShowPassword} />
+							<TouchableOpacity style={loginStyle.mainArticleFormPasswordButton} onPress={toggleShowPassword}>
+								<MaterialCommunityIcons style={loginStyle.mainArticleFormPasswordButtonIcon} name={showPassword ? 'eye-off' : 'eye'} size={24} color="#aaa"/>
+							</TouchableOpacity>
 							<View style={passwordErrorMessage ?  [loginStyle.mainArticleFormErrorView] : {display: "none"}}>
-								<Image source={require("../svgs/error_triangle.svg")} style={loginStyle.mainArticleFormErrorArrow}></Image>
-								<Image source={require("../svgs/error.svg")} style={loginStyle.mainArticleFormErrorIcon}></Image>
+								<View style={loginStyle.mainArticleFormErrorArrow}>
+									<ErrorTriangleSVG></ErrorTriangleSVG>
+								</View>
+								<ErrorSVG></ErrorSVG>
 								<Text numberOfLines={2} style={loginStyle.mainArticleFormErrorText}>{passwordErrorMessage}</Text>
 							</View>
 						</View>
@@ -162,7 +169,12 @@ export default function Cadastro() {
 			<View style={loginStyle.viewStretch}>
 				<View style={loginStyle.viewBottomMargin}>
 					<View style={loginStyle.viewStretch}>
-						<Text style={loginStyle.sub}>Já tem uma conta? <TouchableOpacity style={loginStyle.subButton} onPress={() => {navigation.navigate("Login")}}>Faça o login</TouchableOpacity></Text>
+						<View style={loginStyle.sub}>
+							<Text style={loginStyle.subText}>Já tem uma conta?</Text>
+							<TouchableOpacity style={loginStyle.subButton} onPress={() => {navigation.navigate("Login")}}>
+								<Text style={loginStyle.subButtonText}>Faça o login</Text>
+							</TouchableOpacity>
+						</View>
 					</View>
 					<View style={loginStyle.menuButtonView}>
 						<TouchableOpacity onPress={() => {validateRegister()}} style={[loginStyle.menuButton]}>
